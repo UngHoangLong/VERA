@@ -1,0 +1,5 @@
+# System configuration parameters
+chunk_size: 4
+thresholds:
+  - 0.5
+z_score_baseline: 1.0
