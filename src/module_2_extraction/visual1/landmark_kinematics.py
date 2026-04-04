@@ -8,7 +8,7 @@ import numpy as np
 
 
 class MP468:
-    """Các index MediaPipe Face Mesh dùng để rút trích Facial Landmarks & Kinematics."""
+    """Các index MediaPipe Face Mesh dùng cho nhánh Facial Landmarks & Kinematics."""
     NOSE_TIP = 1
     UPPER_LIP = 13
     LOWER_LIP = 14
@@ -20,13 +20,35 @@ class MP468:
 
 class LandmarkKinematicsExtractor:
     """
-    Module 2: đọc toàn bộ data/interim và xuất đúng 1 file JSON.
-
-    Lưu ý thiết kế:
+    Module 2 tối giản:
+    - Đọc toàn bộ data/interim.
+    - Trích xuất riêng Facial Landmarks & Kinematics.
+    - Xuất đúng 1 file JSON cho cả interim.
     - Không gộp feature giữa các video khác nhau.
-    - 1 file JSON duy nhất chỉ là "vỏ chứa" cho nhiều video.
-    - Mỗi video vẫn có block riêng: video -> chunks -> slides.
+    - Không xuất mc/pairwise chi tiết để JSON gọn hơn.
     """
+
+    # Các feature cặp frame sẽ được tổng hợp thành mean/std/max ở mức slide.
+    PAIR_KEYS = [
+        "bbox_center_shift",
+        "bbox_width_change",
+        "bbox_height_change",
+        "left_eye_motion",
+        "right_eye_motion",
+        "nose_motion",
+        "mouth_left_motion",
+        "mouth_right_motion",
+        "mouth_center_motion",
+        "nose_velocity",
+        "mouth_center_velocity",
+        "eye_distance_change",
+        "mouth_width_change",
+        "mouth_opening_change",
+        "nose_eye_distance_change",
+        "nose_vs_eye_motion_ratio",
+        "eye_motion_asymmetry",
+        "mouth_corner_asymmetry",
+    ]
 
     def __init__(self, eps: float = 1e-6):
         self.eps = eps
@@ -42,10 +64,6 @@ class LandmarkKinematicsExtractor:
         if arr.ndim != 3 or arr.shape[2] < 2:
             raise ValueError(f"Sai shape landmark: {landmark_file} -> {arr.shape}")
         return arr[:, :, :2].astype(np.float32)
-
-    @staticmethod
-    def _to_list(pt: Optional[np.ndarray]) -> Optional[List[float]]:
-        return None if pt is None else [float(pt[0]), float(pt[1])]
 
     @staticmethod
     def _finite_number(x: Any) -> bool:
@@ -101,58 +119,35 @@ class LandmarkKinematicsExtractor:
         cx, cy, w, h = self._bbox_stats(bbox)
         return np.array([(pt[0] - cx) / w, (pt[1] - cy) / h], dtype=np.float32)
 
-    def build_mc(self, landmarks: np.ndarray) -> List[Dict[str, Any]]:
-        """Dựng Mc cho từng frame từ landmark đã lưu ở Module 1."""
-        mc: List[Dict[str, Any]] = []
-        for frame_idx, lm in enumerate(landmarks):
-            bbox = self._bbox_from_landmarks(lm)
-            if bbox is None:
-                mc.append({
-                    "frame_idx": frame_idx,
-                    "valid": False,
-                    "bbox": None,
-                    "bbox_center": None,
-                    "bbox_size": None,
-                    "left_eye": None,
-                    "right_eye": None,
-                    "nose": None,
-                    "mouth_left": None,
-                    "mouth_right": None,
-                    "mouth_center": None,
-                    "upper_lip": None,
-                    "lower_lip": None,
-                })
-                continue
+    def _frame_geom(self, lm: np.ndarray) -> Optional[Dict[str, Any]]:
+        """Rút vài điểm hình học chính từ landmark của 1 frame."""
+        bbox = self._bbox_from_landmarks(lm)
+        if bbox is None:
+            return None
 
-            left_eye = self._center(self._points(lm, MP468.LEFT_EYE))
-            right_eye = self._center(self._points(lm, MP468.RIGHT_EYE))
-            nose = self._point(lm, MP468.NOSE_TIP)
-            mouth_left = self._point(lm, MP468.MOUTH_LEFT)
-            mouth_right = self._point(lm, MP468.MOUTH_RIGHT)
-            upper_lip = self._point(lm, MP468.UPPER_LIP)
-            lower_lip = self._point(lm, MP468.LOWER_LIP)
-            mouth_center = None if mouth_left is None or mouth_right is None else ((mouth_left + mouth_right) / 2.0).astype(np.float32)
+        left_eye = self._center(self._points(lm, MP468.LEFT_EYE))
+        right_eye = self._center(self._points(lm, MP468.RIGHT_EYE))
+        nose = self._point(lm, MP468.NOSE_TIP)
+        mouth_left = self._point(lm, MP468.MOUTH_LEFT)
+        mouth_right = self._point(lm, MP468.MOUTH_RIGHT)
+        upper_lip = self._point(lm, MP468.UPPER_LIP)
+        lower_lip = self._point(lm, MP468.LOWER_LIP)
+        mouth_center = None if mouth_left is None or mouth_right is None else (mouth_left + mouth_right) / 2.0
 
-            cx, cy, w, h = self._bbox_stats(bbox)
-            mc.append({
-                "frame_idx": frame_idx,
-                "valid": True,
-                "bbox": [float(v) for v in bbox.tolist()],
-                "bbox_center": [float(cx), float(cy)],
-                "bbox_size": [float(w), float(h)],
-                "left_eye": self._to_list(left_eye),
-                "right_eye": self._to_list(right_eye),
-                "nose": self._to_list(nose),
-                "mouth_left": self._to_list(mouth_left),
-                "mouth_right": self._to_list(mouth_right),
-                "mouth_center": self._to_list(mouth_center),
-                "upper_lip": self._to_list(upper_lip),
-                "lower_lip": self._to_list(lower_lip),
-            })
-        return mc
+        return {
+            "bbox": bbox,
+            "left_eye": left_eye,
+            "right_eye": right_eye,
+            "nose": nose,
+            "mouth_left": mouth_left,
+            "mouth_right": mouth_right,
+            "mouth_center": mouth_center,
+            "upper_lip": upper_lip,
+            "lower_lip": lower_lip,
+        }
 
     def jitter(self, landmarks: np.ndarray) -> float:
-        """Đo rung lắc trung bình sau chuẩn hóa theo bbox từng frame."""
+        """Đo rung lắc trung bình sau khi chuẩn hóa landmark theo bbox từng frame."""
         norm_seq = []
         for lm in landmarks:
             bbox = self._bbox_from_landmarks(lm)
@@ -178,6 +173,7 @@ class LandmarkKinematicsExtractor:
         return float((v1 + v2) / (2.0 * h + 1e-6))
 
     def blinking_variance(self, landmarks: np.ndarray) -> float:
+        """Đo biến thiên EAR theo thời gian để phản ánh chớp mắt."""
         ears = []
         for lm in landmarks:
             left = self._points(lm, MP468.LEFT_EYE)
@@ -188,6 +184,7 @@ class LandmarkKinematicsExtractor:
         return float(np.var(ears)) if len(ears) >= 2 else 0.0
 
     def mouth_movement_variance(self, landmarks: np.ndarray) -> float:
+        """Đo biến thiên độ mở miệng sau chuẩn hóa theo bbox."""
         openings = []
         for lm in landmarks:
             bbox = self._bbox_from_landmarks(lm)
@@ -200,43 +197,43 @@ class LandmarkKinematicsExtractor:
             openings.append(float(np.linalg.norm(lower_n - upper_n)))
         return float(np.var(openings)) if len(openings) >= 2 else 0.0
 
-    def pairwise_kinematics(self, mc: List[Dict[str, Any]], fps: float) -> List[Dict[str, Any]]:
-        """Tính đặc trưng động học giữa các frame liên tiếp trong cùng một slide."""
+    def pairwise_kinematics(self, landmarks: np.ndarray, fps: float) -> List[Dict[str, Any]]:
+        """Tính các đặc trưng động học giữa các frame liên tiếp của 1 slide."""
         pairs: List[Dict[str, Any]] = []
         dt = 1.0 / max(fps, self.eps)
 
-        for i in range(len(mc) - 1):
-            prev, curr = mc[i], mc[i + 1]
-            if not prev["valid"] or not curr["valid"]:
-                pairs.append({"pair": [i, i + 1], "valid": False})
+        geoms = [self._frame_geom(lm) for lm in landmarks]
+        for i in range(len(geoms) - 1):
+            prev = geoms[i]
+            curr = geoms[i + 1]
+            if prev is None or curr is None:
                 continue
 
-            prev_bbox = np.array(prev["bbox"], dtype=np.float32)
-            curr_bbox = np.array(curr["bbox"], dtype=np.float32)
+            prev_bbox = prev["bbox"]
+            curr_bbox = curr["bbox"]
             prev_cx, prev_cy, prev_w, prev_h = self._bbox_stats(prev_bbox)
             curr_cx, curr_cy, curr_w, curr_h = self._bbox_stats(curr_bbox)
 
-            def get_norm(rec: Dict[str, Any], key: str, bbox: np.ndarray) -> Optional[np.ndarray]:
-                val = rec.get(key)
-                return None if val is None else self._norm_point(np.array(val, dtype=np.float32), bbox)
+            def norm(rec: Dict[str, Any], key: str, bbox: np.ndarray) -> Optional[np.ndarray]:
+                return self._norm_point(rec.get(key), bbox)
 
-            prev_left_eye = get_norm(prev, "left_eye", prev_bbox)
-            prev_right_eye = get_norm(prev, "right_eye", prev_bbox)
-            prev_nose = get_norm(prev, "nose", prev_bbox)
-            prev_mouth_left = get_norm(prev, "mouth_left", prev_bbox)
-            prev_mouth_right = get_norm(prev, "mouth_right", prev_bbox)
-            prev_mouth_center = get_norm(prev, "mouth_center", prev_bbox)
-            prev_upper_lip = get_norm(prev, "upper_lip", prev_bbox)
-            prev_lower_lip = get_norm(prev, "lower_lip", prev_bbox)
+            prev_left_eye = norm(prev, "left_eye", prev_bbox)
+            prev_right_eye = norm(prev, "right_eye", prev_bbox)
+            prev_nose = norm(prev, "nose", prev_bbox)
+            prev_mouth_left = norm(prev, "mouth_left", prev_bbox)
+            prev_mouth_right = norm(prev, "mouth_right", prev_bbox)
+            prev_mouth_center = norm(prev, "mouth_center", prev_bbox)
+            prev_upper_lip = norm(prev, "upper_lip", prev_bbox)
+            prev_lower_lip = norm(prev, "lower_lip", prev_bbox)
 
-            curr_left_eye = get_norm(curr, "left_eye", curr_bbox)
-            curr_right_eye = get_norm(curr, "right_eye", curr_bbox)
-            curr_nose = get_norm(curr, "nose", curr_bbox)
-            curr_mouth_left = get_norm(curr, "mouth_left", curr_bbox)
-            curr_mouth_right = get_norm(curr, "mouth_right", curr_bbox)
-            curr_mouth_center = get_norm(curr, "mouth_center", curr_bbox)
-            curr_upper_lip = get_norm(curr, "upper_lip", curr_bbox)
-            curr_lower_lip = get_norm(curr, "lower_lip", curr_bbox)
+            curr_left_eye = norm(curr, "left_eye", curr_bbox)
+            curr_right_eye = norm(curr, "right_eye", curr_bbox)
+            curr_nose = norm(curr, "nose", curr_bbox)
+            curr_mouth_left = norm(curr, "mouth_left", curr_bbox)
+            curr_mouth_right = norm(curr, "mouth_right", curr_bbox)
+            curr_mouth_center = norm(curr, "mouth_center", curr_bbox)
+            curr_upper_lip = norm(curr, "upper_lip", curr_bbox)
+            curr_lower_lip = norm(curr, "lower_lip", curr_bbox)
 
             left_eye_motion = self._dist(prev_left_eye, curr_left_eye)
             right_eye_motion = self._dist(prev_right_eye, curr_right_eye)
@@ -261,8 +258,6 @@ class LandmarkKinematicsExtractor:
                 mean_eye_motion = (left_eye_motion + right_eye_motion) / 2.0
 
             pairs.append({
-                "pair": [i, i + 1],
-                "valid": True,
                 "bbox_center_shift": float(np.linalg.norm([curr_cx - prev_cx, curr_cy - prev_cy])),
                 "bbox_width_change": float(abs(curr_w - prev_w) / (prev_w + self.eps)),
                 "bbox_height_change": float(abs(curr_h - prev_h) / (prev_h + self.eps)),
@@ -286,19 +281,10 @@ class LandmarkKinematicsExtractor:
         return pairs
 
     def aggregate_pairwise(self, pairs: List[Dict[str, Any]]) -> Dict[str, float]:
+        """Gộp pairwise features thành mean/std/max ở mức slide."""
         out: Dict[str, float] = {}
-        numeric_keys = set()
-        for rec in pairs:
-            if not rec.get("valid", False):
-                continue
-            for k, v in rec.items():
-                if k in {"pair", "valid"}:
-                    continue
-                if self._finite_number(v):
-                    numeric_keys.add(k)
-
-        for key in sorted(numeric_keys):
-            vals = [float(r[key]) for r in pairs if r.get("valid", False) and self._finite_number(r.get(key))]
+        for key in self.PAIR_KEYS:
+            vals = [float(p[key]) for p in pairs if self._finite_number(p.get(key))]
             if not vals:
                 continue
             out[f"{key}_mean"] = float(np.mean(vals))
@@ -308,7 +294,7 @@ class LandmarkKinematicsExtractor:
 
     @staticmethod
     def aggregate_feature_dicts(items: List[Dict[str, Any]]) -> Dict[str, float]:
-        """Gộp feature cùng cấp. Hàm này chỉ dùng trong nội bộ 1 video."""
+        """Gộp feature cùng cấp trong nội bộ 1 video."""
         out: Dict[str, float] = {}
         numeric_keys = set()
         for item in items:
@@ -332,37 +318,28 @@ class LandmarkKinematicsExtractor:
         raise ValueError(f"Không parse được slide index từ {file_name}")
 
     def extract_slide(self, landmark_file: Path, fps: float, slide_meta: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+        """Chỉ giữ thông tin cần thiết nhất cho 1 slide."""
         landmarks = self.load_landmarks(landmark_file)
-        mc = self.build_mc(landmarks)
-        pairs = self.pairwise_kinematics(mc, fps)
-        valid_frames = sum(1 for x in mc if x["valid"])
+        valid_frames = sum(1 for lm in landmarks if self._bbox_from_landmarks(lm) is not None)
 
         slide_features = {
-            "slide_file": landmark_file.name,
-            "fps": float(fps),
-            "num_frames_saved": int(len(landmarks)),
-            "valid_frames": int(valid_frames),
             "valid_frame_ratio": float(valid_frames / max(len(landmarks), 1)),
             "landmark_jitter_mean": float(self.jitter(landmarks)),
             "mouth_movement_variance": float(self.mouth_movement_variance(landmarks)),
             "blinking_variance": float(self.blinking_variance(landmarks)),
         }
-        slide_features.update(self.aggregate_pairwise(pairs))
+        slide_features.update(self.aggregate_pairwise(self.pairwise_kinematics(landmarks, fps)))
+
+        slide_output: Dict[str, Any] = {
+            "slide_features": slide_features,
+        }
 
         if slide_meta is not None:
-            slide_features.update({
-                "slide_id": slide_meta.get("slide_id"),
-                "start_sec": float(slide_meta.get("start_sec", 0.0)),
-                "end_sec": float(slide_meta.get("end_sec", 0.0)),
-                "start_frame": int(slide_meta.get("start_frame", 0)),
-                "end_frame": int(slide_meta.get("end_frame", 0)),
-            })
+            slide_output["slide_id"] = slide_meta.get("slide_id")
+            slide_output["start_sec"] = float(slide_meta.get("start_sec", 0.0))
+            slide_output["end_sec"] = float(slide_meta.get("end_sec", 0.0))
 
-        return {
-            "slide_features": slide_features,
-            "mc": mc,
-            "pairwise_kinematics": pairs,
-        }
+        return slide_output
 
     def extract_chunk(self, chunk_dir: Path) -> Dict[str, Any]:
         metadata = self.load_metadata(chunk_dir)
@@ -375,9 +352,9 @@ class LandmarkKinematicsExtractor:
         if not slide_files:
             raise FileNotFoundError(f"Không tìm thấy slide_*_landmarks.npy trong {slides_dir}")
 
+        slides_meta = metadata.get("slides", [])
         slide_outputs: Dict[str, Any] = {}
         slide_feature_list: List[Dict[str, Any]] = []
-        slides_meta = metadata.get("slides", [])
 
         for slide_file in slide_files:
             idx = self._slide_index(slide_file.name)
@@ -386,21 +363,15 @@ class LandmarkKinematicsExtractor:
             slide_outputs[slide_file.stem] = slide_out
             slide_feature_list.append(slide_out["slide_features"])
 
-        chunk_features = self.aggregate_feature_dicts(slide_feature_list)
-        chunk_features.update({
-            "video_id": metadata.get("video_id"),
-            "chunk_id": metadata.get("chunk_id"),
-            "fps": fps,
-            "num_slides_processed": len(slide_feature_list),
-        })
-
         return {
-            "chunk_features": chunk_features,
+            "chunk_id": metadata.get("chunk_id"),
+            "start_sec": float(metadata.get("start_sec", 0.0)),
+            "end_sec": float(metadata.get("end_sec", 0.0)),
+            "chunk_features": self.aggregate_feature_dicts(slide_feature_list),
             "slides": slide_outputs,
         }
 
     def extract_video(self, video_dir: Path) -> Dict[str, Any]:
-        """Gộp chunk trong cùng 1 video. Không trộn sang video khác."""
         chunk_dirs = sorted(p for p in video_dir.iterdir() if p.is_dir() and p.name.startswith("chunk_"))
         if not chunk_dirs:
             raise FileNotFoundError(f"Không tìm thấy chunk_xxxx trong {video_dir}")
@@ -413,15 +384,9 @@ class LandmarkKinematicsExtractor:
             chunk_outputs[chunk_dir.name] = chunk_out
             chunk_feature_list.append(chunk_out["chunk_features"])
 
-        video_features = self.aggregate_feature_dicts(chunk_feature_list)
-        video_features.update({
-            "video_id": video_dir.name,
-            "num_chunks_processed": len(chunk_feature_list),
-        })
-
         return {
             "video_id": video_dir.name,
-            "video_features": video_features,
+            "video_features": self.aggregate_feature_dicts(chunk_feature_list),
             "chunks": chunk_outputs,
         }
 
@@ -436,17 +401,12 @@ class LandmarkKinematicsExtractor:
         return video_dirs
 
     def extract_interim_root(self, interim_root: Path) -> Dict[str, Any]:
-        """
-        Xuất đúng 1 JSON cho cả interim, nhưng KHÔNG tạo feature tổng hợp toàn dataset.
-        Mỗi video là một block độc lập trong key `videos`.
-        """
         video_dirs = self.list_video_dirs(interim_root)
         if not video_dirs:
             raise FileNotFoundError(f"Không tìm thấy thư mục video hợp lệ trong {interim_root}")
 
         videos: Dict[str, Any] = {}
         errors: Dict[str, str] = {}
-
         for video_dir in video_dirs:
             try:
                 videos[video_dir.name] = self.extract_video(video_dir)
@@ -458,9 +418,7 @@ class LandmarkKinematicsExtractor:
 
         return {
             "dataset_root": str(interim_root),
-            "num_videos_found": len(video_dirs),
             "num_videos_processed": len(videos),
-            "num_videos_failed": len(errors),
             "video_names": list(videos.keys()),
             "videos": videos,
             "errors": errors,
@@ -468,7 +426,7 @@ class LandmarkKinematicsExtractor:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Extract Facial Landmarks & Kinematics từ data/interim")
+    parser = argparse.ArgumentParser(description="Extract Facial Landmarks & Kinematics (JSON tối giản) từ data/interim")
     parser.add_argument("interim_root", type=str, help="Đường dẫn tới thư mục data/interim")
     parser.add_argument(
         "--output",
@@ -489,19 +447,15 @@ def main() -> None:
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
-    # Chỉ in thông tin dataset-level, không in feature gộp toàn bộ video.
-    summary = {
+    print(json.dumps({
         "dataset_root": output["dataset_root"],
-        "num_videos_found": output["num_videos_found"],
         "num_videos_processed": output["num_videos_processed"],
-        "num_videos_failed": output["num_videos_failed"],
         "video_names": output["video_names"],
-    }
-    print(json.dumps(summary, indent=2, ensure_ascii=False))
+    }, indent=2, ensure_ascii=False))
     if output["errors"]:
         print("\nCác video bị lỗi:")
         print(json.dumps(output["errors"], indent=2, ensure_ascii=False))
-    print(f"\nĐã lưu JSON duy nhất tại: {output_path}")
+    print(f"\nĐã lưu JSON tại: {output_path}")
 
 
 if __name__ == "__main__":
