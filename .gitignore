@@ -1,4 +1,4 @@
 # Ignore data and sensitive files
 data/
 __pycache__/
-.env
+DFRAG_venv/
