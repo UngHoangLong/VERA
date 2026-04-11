@@ -36,7 +36,7 @@ class BlendingFeature:
     @staticmethod
     def _extract_single_frame_blending(face_frame, landmarks):
         """Đo lường mật độ 'răng cưa' tại vùng viền ghép của 1 ảnh."""
-        if face_frame is None or landmarks is None or len(landmarks) < 478:
+        if face_frame is None or landmarks is None or len(landmarks) < 468:
             return 0.0
 
         # Chuyển xám an toàn
@@ -51,7 +51,7 @@ class BlendingFeature:
             return 0.0
 
         # 2. Chạy Canny để tìm tất cả các cạnh sắc nét
-        edges = cv2.Canny(gray, threshold1=40, threshold2=120)
+        edges = cv2.Canny(gray, threshold1=20, threshold2=60)
 
         # 3. Kẹp mặt nạ: CHỈ giữ lại các cạnh rớt trúng vào vùng Nhẫn
         boundary_edges = cv2.bitwise_and(edges, boundary_mask)

@@ -20,7 +20,7 @@ class GLCMFeature:
         """
         empty_results = {"left_contrast": 0.0, "right_contrast": 0.0}
 
-        if face_frame is None or face_frame.size == 0 or landmarks is None or len(landmarks) < 478:
+        if face_frame is None or face_frame.size == 0 or landmarks is None or len(landmarks) < 468:
             return empty_results
 
         # 1. Chuyển xám và Ép kiểu uint8 an toàn (Kế thừa tính cẩn thận từ Trường)
@@ -55,7 +55,7 @@ class GLCMFeature:
         
         # 4. Trích xuất GLCM tách biệt cho từng bên với skimage (Quét 4 hướng)
         for side, center in cheek_targets:
-            cx, cy = int(center[0]), int(center[1])
+            cx, cy = int(np.round(center[0])), int(np.round(center[1]))
             y1, y2 = max(0, cy - half_patch), min(h, cy + half_patch)
             x1, x2 = max(0, cx - half_patch), min(w, cx + half_patch)
             
