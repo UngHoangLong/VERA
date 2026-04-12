@@ -2,7 +2,8 @@ import numpy as np
 import cv2
 
 # Đường dẫn tới file slide .npy
-slide_path = "data/interim/mavos-sample/chunk_0007/slides/slide_05.npy"
+slide_path = "data/interim/2gOvQIMWbCY_56_1/chunk_0001/slides/slide_07_faces.npy"
+
 
 # Load dữ liệu
 frames = np.load(slide_path)

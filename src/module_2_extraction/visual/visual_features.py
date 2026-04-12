@@ -87,8 +87,8 @@ if __name__ == "__main__":
 
     # Đảm bảo đường dẫn này trỏ tới thư mục dữ liệu mới nhất
     chunk_id = "chunk_0002"
-    chunk_slides_dir = Path(f"data/interim/mavos-sample/{chunk_id}/slides")
-    slide_id = "slide_00" 
+    chunk_slides_dir = Path(f"data/interim/30iBb8h9EQY_40_6/{chunk_id}/slides")
+    slide_id = "slide_03"
 
     face_path = chunk_slides_dir / f"{slide_id}_faces.npy"
     landmark_path = chunk_slides_dir / f"{slide_id}_landmarks.npy"
