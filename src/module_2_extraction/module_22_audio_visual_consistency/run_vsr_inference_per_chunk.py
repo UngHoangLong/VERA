@@ -113,6 +113,7 @@ def make_model(repo_root: Path, pretrained_model_path: Path, device: torch.devic
     model_module.cached_beam_search = get_beam_search_decoder(
         model_module.model,
         model_module.token_list,
+        beam_size=40,
     )
 
     return model_module, VideoTransform("test")

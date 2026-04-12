@@ -221,7 +221,9 @@ def run_one_chunk(
         if chunk_length_s > 0:
             pipe_kwargs["chunk_length_s"] = chunk_length_s
 
-        generate_kwargs = {}
+        generate_kwargs = {
+            "num_beams": 40,
+        }
 
         if condition_on_prev_tokens:
             generate_kwargs["condition_on_prev_tokens"] = True
