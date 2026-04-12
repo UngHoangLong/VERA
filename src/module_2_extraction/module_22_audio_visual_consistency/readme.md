@@ -1,10 +1,10 @@
 ````markdown
-# Module 2.2 - Audio Visual Consistency
+# Module 2.2 - Audio Visual Consistency (CCFD)
 
 ## Cài đặt thư viện
 
 ```bash
-pip install torch torchvision torchaudio pytorch-lightning sentencepiece av
+pip install torch torchvision torchaudio pytorch-lightning sentencepiece av transformers soundfile scipy
 ````
 
 ---
@@ -75,7 +75,7 @@ vsr_output/
     ...
 ```
 
-* Mỗi `chunk_XXXX.json` là kết quả VSR của một chunk
+* Mỗi `chunk_XXXX.json` chứa kết quả VSR của một chunk
 * `manifest.json` tổng hợp toàn bộ chunk
 
 ---
@@ -114,6 +114,66 @@ asr_output/
     ...
 ```
 
+* Mỗi `chunk_XXXX.json` chứa kết quả ASR của một chunk
+* `manifest.json` tổng hợp toàn bộ chunk
+
+---
+
+## 4. Tính CCFD từ ASR và VSR
+
+### File chạy
+
+```text
+compute_ccfd_from_asr_vsr.py
+```
+
+### Lệnh chạy
+
+```bash
+python ./src/module_2_extraction/module_22_audio_visual_consistency/compute_ccfd_from_asr_vsr.py \
+  --asr-root ./src/module_2_extraction/output/asr_output \
+  --vsr-root ./src/module_2_extraction/output/vsr_output \
+  --output-root ./src/module_2_extraction/output/ccfd_output \
+  --overwrite
+```
+
+### Quy ước
+
+* **ASR** được dùng làm **reference**
+* **VSR** được dùng làm **hypothesis**
+
+### Đầu ra
+
+```text
+ccfd_output/
+  manifest.json
+  <video_id_1>/
+    chunk_0000.json
+    chunk_0001.json
+    ...
+    summary.json
+  <video_id_2>/
+    chunk_0000.json
+    chunk_0001.json
+    ...
+    summary.json
+```
+
+Mỗi `chunk_XXXX.json` sẽ chứa các trường chính:
+
+* `reference_text_raw`
+* `hypothesis_text_raw`
+* `reference_text_norm`
+* `hypothesis_text_norm`
+* `edit_distance`
+* `wer`
+* `ccfd_score`
+
+Trong đó:
+
+* `wer` càng cao thì mức độ bất nhất giữa audio và khẩu hình càng lớn
+* `ccfd_score = 1 - min(wer, 1)`
+
 ---
 
 ## Thứ tự chạy
@@ -144,5 +204,15 @@ CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual
   --model-path ./pretrained_model/whisper-medium-en/model.safetensors \
   --output-root ./src/module_2_extraction/output/asr_output \
   --language english \
+  --overwrite
+```
+
+### Bước 4
+
+```bash
+python ./src/module_2_extraction/module_22_audio_visual_consistency/compute_ccfd_from_asr_vsr.py \
+  --asr-root ./src/module_2_extraction/output/asr_output \
+  --vsr-root ./src/module_2_extraction/output/vsr_output \
+  --output-root ./src/module_2_extraction/output/ccfd_output \
   --overwrite
 ```
