@@ -77,7 +77,7 @@ class VisualOrchestrator:
             "frames_analyzed": min_len,
             "features": {
                 "blending": BlendingFeature.extract_blending_fluctuation(face_frames, processed_landmarks),
-                "blur": BlurFeature.extract_blur_flickering(face_frames),
+                "blur": BlurFeature.extract_blur_flickering(face_frames, processed_landmarks),
                 "texture": GLCMFeature.extract_texture_fluctuation(face_frames, processed_landmarks),
                 "kinematics": KinematicsFeature.extract_kinematics_anomalies(processed_landmarks)
             }
