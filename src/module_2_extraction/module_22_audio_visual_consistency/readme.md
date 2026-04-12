@@ -27,7 +27,7 @@ python ./src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_in
 
 ### Đầu ra
 
-Script sẽ quét toàn bộ `./data/interim` và tạo file `vsr_input.mp4` trong từng `chunk_*`.
+Script sẽ quét toàn bộ `./data/interim` và tạo file `vsr_input.mp4` kích thước `96×96` trong từng thư mục `chunk_*`.
 
 Ví dụ:
 
