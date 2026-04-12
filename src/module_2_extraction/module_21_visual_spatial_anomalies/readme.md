@@ -3,13 +3,13 @@
 Ví dụ kiểm tra toàn bộ `data/interim`:
 
 ```bash
-python ./src/module_2_extraction/visual1/verify_landmark_projection.py data/interim
+python ./src/module_2_extraction/module_21_visual_spatial_anomalies/verify_landmark_projection.py data/interim
 ```
 
 Nếu chỉ muốn xem ít mẫu trước:
 
 ```bash
-python /src/module_2_extraction/visual1/verify_landmark_projection.py data/interim --max_slides 5 --max_frames 4
+python ./src/module_2_extraction/module_21_visual_spatial_anomalies/verify_landmark_projection.py data/interim --max_slides 5 --max_frames 4
 ```
 
 ## Đầu ra

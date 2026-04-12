@@ -5,7 +5,7 @@ Script sẽ đọc `metadata.json`, sắp xếp các slide theo thời gian, lo�
 
 ## Lệnh chạy
 ```bash
-python code.py --input-root data/interim/mavos-sample --overwrite
+python export_face_full_preview.py --input-root data/interim/mavos-sample --overwrite
 ````
 
 ## Tham số
