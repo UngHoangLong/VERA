@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
-
+import soundfile as sf # Cắt cả âm thanh
 import cv2
 import numpy as np
 
@@ -46,6 +46,26 @@ def natural_chunk_key(path: Path) -> Tuple[int, str]:
 
 # hàm này không ổn. Vì như ta đã bàn là trong 1 chunk thì không phải lúc nào slide cũng liên tục. Nên ở module 2.2 này với mỗi chunk ta sẽ tổng hợp và giữ lại 1 chuỗi slide liên tục dài nhất.
 # Còn hàm dưới này nó mặc định gom lại tất cả slide trong một chunk. Đúng là nó tuân theo thứ tự, nhưng không liên tục
+# def collect_slide_pairs(slides_dir: Path) -> List[PairInfo]:
+#     face_map: Dict[str, Path] = {}
+#     lmk_map: Dict[str, Path] = {}
+#     for p in sorted(slides_dir.glob('*.npy')):
+#         m = SLIDE_FACE_RE.match(p.name)
+#         if m:
+#             face_map[m.group(1)] = p
+#             continue
+#         m = SLIDE_LMK_RE.match(p.name)
+#         if m:
+#             lmk_map[m.group(1)] = p
+
+#     pairs: List[PairInfo] = []
+#     for slide_id, faces_path in sorted(face_map.items()):
+#         landmarks_path = lmk_map.get(slide_id)
+#         if landmarks_path is not None:
+#             pairs.append(PairInfo(slide_id=slide_id, faces_path=faces_path, landmarks_path=landmarks_path))
+#     return pairs
+
+# Hàm ghép slide liên tiếp
 def collect_slide_pairs(slides_dir: Path) -> List[PairInfo]:
     face_map: Dict[str, Path] = {}
     lmk_map: Dict[str, Path] = {}
@@ -58,13 +78,99 @@ def collect_slide_pairs(slides_dir: Path) -> List[PairInfo]:
         if m:
             lmk_map[m.group(1)] = p
 
-    pairs: List[PairInfo] = []
+    # 1. Ghép cặp và trích xuất luôn ID dạng số (integer) để dễ kiểm tra tính liên tục
+    pairs_with_idx: List[Tuple[int, PairInfo]] = []
     for slide_id, faces_path in sorted(face_map.items()):
         landmarks_path = lmk_map.get(slide_id)
         if landmarks_path is not None:
-            pairs.append(PairInfo(slide_id=slide_id, faces_path=faces_path, landmarks_path=landmarks_path))
-    return pairs
+            # Lấy con số từ chuỗi "slide_05" -> 5
+            idx_match = re.search(r'\d+', slide_id)
+            idx = int(idx_match.group()) if idx_match else -1
+            pairs_with_idx.append((idx, PairInfo(slide_id=slide_id, faces_path=faces_path, landmarks_path=landmarks_path)))
 
+    if not pairs_with_idx:
+        return []
+
+    # Sắp xếp lại cho chắc chắn theo thứ tự tăng dần của ID
+    pairs_with_idx.sort(key=lambda x: x[0])
+
+    # 2. Thuật toán tìm chuỗi liên tục dài nhất
+    longest_seq: List[PairInfo] = []
+    current_seq: List[PairInfo] = [pairs_with_idx[0][1]]
+    last_idx = pairs_with_idx[0][0]
+
+    for i in range(1, len(pairs_with_idx)):
+        curr_idx, pair_info = pairs_with_idx[i]
+        
+        if curr_idx == last_idx + 1:
+            # Slide liên tục -> Thêm vào chuỗi hiện tại
+            current_seq.append(pair_info)
+        else:
+            # Bị đứt gãy -> Kiểm tra và lưu lại chuỗi dài nhất, sau đó reset
+            if len(current_seq) > len(longest_seq):
+                longest_seq = current_seq
+            current_seq = [pair_info]
+            
+        last_idx = curr_idx
+
+    # Kiểm tra lần cuối khi kết thúc vòng lặp
+    if len(current_seq) > len(longest_seq):
+        longest_seq = current_seq
+
+    return longest_seq
+
+# hàm trích cắt âm thanh tương ứng với video miệng đã cắt
+def crop_audio_to_match_video(chunk_dir: Path, longest_seq: List[PairInfo], audio_name: str = 'audio.wav', sync_audio_name: str = 'sync_audio.wav') -> bool:
+    audio_path = chunk_dir / audio_name
+    meta_path = chunk_dir / 'metadata.json'
+
+    # Nếu không có audio hoặc metadata thì bỏ qua
+    if not audio_path.exists() or not meta_path.exists():
+        return False
+
+    with open(meta_path, 'r', encoding='utf-8') as f:
+        meta = json.load(f)
+
+    # 1. Lấy mốc thời gian gốc của Chunk
+    chunk_start_sec = meta.get('start_sec', 0.0)
+
+    # 2. Tìm slide đầu và slide cuối trong chuỗi (VD: "slide_05")
+    first_slide_id = longest_seq[0].slide_id
+    last_slide_id = longest_seq[-1].slide_id
+
+    def extract_num(s_id: str) -> int:
+        nums = re.findall(r'\d+', s_id)
+        return int(nums[-1]) if nums else -1
+
+    first_num = extract_num(first_slide_id)
+    last_num = extract_num(last_slide_id)
+
+    # 3. Lục tìm timestamp khớp con số thay vì khớp chữ
+    first_meta = next((s for s in meta.get('slides', []) if extract_num(s['slide_id']) == first_num), None)
+    last_meta = next((s for s in meta.get('slides', []) if extract_num(s['slide_id']) == last_num), None)
+    # -------------------------------------------------------------
+
+    if not first_meta or not last_meta:
+        return False
+
+    # 4. Tính toán thời gian tương đối
+    rel_start_sec = first_meta['start_sec'] - chunk_start_sec
+    rel_end_sec = last_meta['end_sec'] - chunk_start_sec
+
+    # 5. Cắt và lưu file audio mới
+    try:
+        data, samplerate = sf.read(str(audio_path))
+        start_sample = int(rel_start_sec * samplerate)
+        end_sample = int(rel_end_sec * samplerate)
+        
+        cropped_data = data[start_sample:end_sample]
+        
+        out_path = chunk_dir / sync_audio_name
+        sf.write(str(out_path), cropped_data, samplerate)
+        return True
+    except Exception as e:
+        print(f"Lỗi khi cắt audio tại {chunk_dir}: {e}")
+        return False
 
 def ensure_bgr_uint8(x: np.ndarray) -> np.ndarray:
     x = np.asarray(x)
@@ -156,23 +262,23 @@ def finite_mask(lm: np.ndarray) -> np.ndarray:
     return np.all(np.isfinite(lm[:, :2]), axis=1)
 
 
-def infer_bbox_from_landmarks(lm: np.ndarray) -> np.ndarray:
-    valid = finite_mask(lm)
-    if not np.any(valid):
-        raise ValueError('Không có landmarks hợp lệ để suy bbox')
-    pts = lm[valid, :2]
-    x1, y1 = np.min(pts, axis=0)
-    x2, y2 = np.max(pts, axis=0)
-    return np.array([x1, y1, x2, y2], dtype=np.float32)
+# def infer_bbox_from_landmarks(lm: np.ndarray) -> np.ndarray:
+#     valid = finite_mask(lm)
+#     if not np.any(valid):
+#         raise ValueError('Không có landmarks hợp lệ để suy bbox')
+#     pts = lm[valid, :2]
+#     x1, y1 = np.min(pts, axis=0)
+#     x2, y2 = np.max(pts, axis=0)
+#     return np.array([x1, y1, x2, y2], dtype=np.float32)
 
 # Lấy margin thừa thải, vì module 1 đã làm rồi
-def expand_bbox_xyxy(bbox_xyxy: np.ndarray, margin_ratio: float) -> np.ndarray:
-    x1, y1, x2, y2 = [float(v) for v in bbox_xyxy.tolist()]
-    w = max(x2 - x1, 1e-6)
-    h = max(y2 - y1, 1e-6)
-    mx = w * margin_ratio
-    my = h * margin_ratio
-    return np.array([x1 - mx, y1 - my, x2 + mx, y2 + my], dtype=np.float32)
+# def expand_bbox_xyxy(bbox_xyxy: np.ndarray, margin_ratio: float) -> np.ndarray:
+#     x1, y1, x2, y2 = [float(v) for v in bbox_xyxy.tolist()]
+#     w = max(x2 - x1, 1e-6)
+#     h = max(y2 - y1, 1e-6)
+#     mx = w * margin_ratio
+#     my = h * margin_ratio
+#     return np.array([x1 - mx, y1 - my, x2 + mx, y2 + my], dtype=np.float32)
 
 # Vì module 1, đã chuyển toạ độ ảnh gốc sang toạ độ ảnh crop_face tương ứng rồi nên không cần phải làm lại. Dễ dẫn đến bug
 # def map_landmarks_orig_to_face_crop(lm_orig: np.ndarray, face_w: int, face_h: int, margin_ratio: float) -> np.ndarray:
@@ -339,7 +445,7 @@ class ChunkMouthExporter:
     def __init__(
         self,
         target_size: int = 96,
-        margin_ratio: float = 0.20,
+        # margin_ratio: float = 0.20,
         ema_alpha: float = 0.65,
         min_crop_half_size: int = 28,
         max_crop_half_size: int = 96,
@@ -347,7 +453,7 @@ class ChunkMouthExporter:
         output_name: str = 'vsr_input.mp4',
     ) -> None:
         self.target_size = int(target_size)
-        self.margin_ratio = float(margin_ratio)
+        # self.margin_ratio = float(margin_ratio)
         self.ema_alpha = float(ema_alpha)
         self.min_crop_half_size = int(min_crop_half_size)
         self.max_crop_half_size = int(max_crop_half_size)
@@ -501,6 +607,7 @@ class ChunkMouthExporter:
             }
 
         write_mp4(crops, output_path, fps=fps)
+        crop_audio_to_match_video(chunk_dir, pairs) # "pairs" lúc này chính là longest_seq do ta đã sửa hàm
         return {
             'chunk_dir': str(chunk_dir),
             'output_path': str(output_path),
@@ -537,7 +644,7 @@ def main():
     parser.add_argument('--input-root', type=str, required=True, help='Ví dụ: ./data/interim')
     parser.add_argument('--fps', type=float, default=25.0, help='FPS mặc định nếu metadata không có')
     parser.add_argument('--target-size', type=int, default=96)
-    parser.add_argument('--margin-ratio', type=float, default=0.20)
+    # ĐÃ XÓA: parser.add_argument('--margin-ratio', ...)
     parser.add_argument('--ema-alpha', type=float, default=0.65)
     parser.add_argument('--min-crop-half-size', type=int, default=28)
     parser.add_argument('--max-crop-half-size', type=int, default=96)
@@ -552,7 +659,7 @@ def main():
 
     exporter = ChunkMouthExporter(
         target_size=args.target_size,
-        margin_ratio=args.margin_ratio,
+        # ĐÃ XÓA: margin_ratio=args.margin_ratio,
         ema_alpha=args.ema_alpha,
         min_crop_half_size=args.min_crop_half_size,
         max_crop_half_size=args.max_crop_half_size,
@@ -571,3 +678,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+# python src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_asr_input_from_slides.py --input-root ./data/interim --overwrite
