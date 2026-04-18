@@ -44,7 +44,8 @@ def natural_chunk_key(path: Path) -> Tuple[int, str]:
     m = re.search(r'chunk_(\d+)$', path.name)
     return (int(m.group(1)) if m else 10**9, path.name)
 
-
+# hàm này không ổn. Vì như ta đã bàn là trong 1 chunk thì không phải lúc nào slide cũng liên tục. Nên ở module 2.2 này với mỗi chunk ta sẽ tổng hợp và giữ lại 1 chuỗi slide liên tục dài nhất.
+# Còn hàm dưới này nó mặc định gom lại tất cả slide trong một chunk. Đúng là nó tuân theo thứ tự, nhưng không liên tục
 def collect_slide_pairs(slides_dir: Path) -> List[PairInfo]:
     face_map: Dict[str, Path] = {}
     lmk_map: Dict[str, Path] = {}
@@ -164,7 +165,7 @@ def infer_bbox_from_landmarks(lm: np.ndarray) -> np.ndarray:
     x2, y2 = np.max(pts, axis=0)
     return np.array([x1, y1, x2, y2], dtype=np.float32)
 
-
+# Lấy margin thừa thải, vì module 1 đã làm rồi
 def expand_bbox_xyxy(bbox_xyxy: np.ndarray, margin_ratio: float) -> np.ndarray:
     x1, y1, x2, y2 = [float(v) for v in bbox_xyxy.tolist()]
     w = max(x2 - x1, 1e-6)
@@ -173,19 +174,19 @@ def expand_bbox_xyxy(bbox_xyxy: np.ndarray, margin_ratio: float) -> np.ndarray:
     my = h * margin_ratio
     return np.array([x1 - mx, y1 - my, x2 + mx, y2 + my], dtype=np.float32)
 
+# Vì module 1, đã chuyển toạ độ ảnh gốc sang toạ độ ảnh crop_face tương ứng rồi nên không cần phải làm lại. Dễ dẫn đến bug
+# def map_landmarks_orig_to_face_crop(lm_orig: np.ndarray, face_w: int, face_h: int, margin_ratio: float) -> np.ndarray:
+#     bbox = infer_bbox_from_landmarks(lm_orig)
+#     crop_bbox = expand_bbox_xyxy(bbox, margin_ratio=margin_ratio)
+#     x1, y1, x2, y2 = [float(v) for v in crop_bbox.tolist()]
+#     crop_w = max(x2 - x1, 1e-6)
+#     crop_h = max(y2 - y1, 1e-6)
 
-def map_landmarks_orig_to_face_crop(lm_orig: np.ndarray, face_w: int, face_h: int, margin_ratio: float) -> np.ndarray:
-    bbox = infer_bbox_from_landmarks(lm_orig)
-    crop_bbox = expand_bbox_xyxy(bbox, margin_ratio=margin_ratio)
-    x1, y1, x2, y2 = [float(v) for v in crop_bbox.tolist()]
-    crop_w = max(x2 - x1, 1e-6)
-    crop_h = max(y2 - y1, 1e-6)
-
-    lm_face = np.full_like(lm_orig, np.nan, dtype=np.float32)
-    valid = finite_mask(lm_orig)
-    lm_face[valid, 0] = (lm_orig[valid, 0] - x1) * float(face_w) / crop_w
-    lm_face[valid, 1] = (lm_orig[valid, 1] - y1) * float(face_h) / crop_h
-    return lm_face
+#     lm_face = np.full_like(lm_orig, np.nan, dtype=np.float32)
+#     valid = finite_mask(lm_orig)
+#     lm_face[valid, 0] = (lm_orig[valid, 0] - x1) * float(face_w) / crop_w
+#     lm_face[valid, 1] = (lm_orig[valid, 1] - y1) * float(face_h) / crop_h
+#     return lm_face
 
 
 def point(lm: np.ndarray, idx: int) -> Optional[np.ndarray]:
@@ -363,12 +364,13 @@ class ChunkMouthExporter:
         face_h, face_w = face_bgr.shape[:2]
 
         try:
-            lm_face = map_landmarks_orig_to_face_crop(
-                lm_orig.astype(np.float32),
-                face_w,
-                face_h,
-                self.margin_ratio,
-            )
+            lm_face = lm_orig.astype(np.float32).copy()
+            valid = finite_mask(lm_face)
+            
+            # Nhân với chiều rộng/cao của ảnh face cắt ra (thường là 256x256) 
+            # để khôi phục lại tọa độ Pixel chính xác trên khung ảnh đó.
+            lm_face[valid, 0] = lm_face[valid, 0] * float(face_w)
+            lm_face[valid, 1] = lm_face[valid, 1] * float(face_h)
 
             mouth_left = point(lm_face, MP468.MOUTH_LEFT)
             mouth_right = point(lm_face, MP468.MOUTH_RIGHT)
