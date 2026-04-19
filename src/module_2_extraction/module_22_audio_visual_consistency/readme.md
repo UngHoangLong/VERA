@@ -93,8 +93,21 @@ Công thức:
 
 Yêu cầu:
 
+
 * repo `../av_hubert`
 * checkpoint AV-HuBERT, ví dụ: `./pretrained_model/base_vox_iter5.pt`
+=======
+Nếu gặp lỗi môi trường, dùng:
+
+```bash
+pip uninstall -y omegaconf hydra-core numpy
+pip install "omegaconf==2.0.6" "hydra-core==1.0.7" "numpy==1.23.5"
+```
+
+---
+
+## 6. Chạy SCFD theo từng chunk ---- Error
+
 
 ```bash
 CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/SCFD_per_chunk.py \
