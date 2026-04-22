@@ -1,15 +1,37 @@
 ````markdown
 # Module 2.2 - Audio Visual Consistency
 
+Module 2.2 gồm 3 nhánh:
+- **CCFD**: độ nhất quán nội dung giữa audio và khẩu hình
+- **SCFD**: độ nhất quán ngữ nghĩa giữa audio và video
+- **TCFD**: độ nhất quán thời gian giữa audio và khẩu hình
+
+Cuối cùng, 3 nhánh được hợp nhất bằng **System fusion**.
+
+---
+
 ## Cài đặt thư viện
 
 ```bash
-pip install torch torchvision torchaudio pytorch-lightning sentencepiece av transformers soundfile scipy
+pip install torch torchvision torchaudio pytorch-lightning sentencepiece av transformers soundfile scipy opencv-python numpy
 ````
 
 ---
 
-## 1. Tạo đầu vào cho VSR
+## Đầu vào
+
+Mỗi `chunk_*` trong `data/interim` cần có:
+
+* `audio.wav`
+* `slides/...`
+
+Sau bước chuẩn bị, mỗi chunk sẽ có thêm:
+
+* `vsr_input.mp4`
+
+---
+
+## Bước 1. Tạo `vsr_input.mp4`
 
 ```bash
 python ./src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_input_from_slides.py \
@@ -17,11 +39,11 @@ python ./src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_in
   --overwrite
 ```
 
-Đầu ra: tạo `vsr_input.mp4` kích thước `96×96` trong từng `chunk_*`.
+Đầu ra: tạo `vsr_input.mp4` kích thước `96x96` trong từng `chunk_*`.
 
 ---
 
-## 2. Chạy VSR theo từng chunk
+## Bước 2. Chạy VSR
 
 ```bash
 CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_vsr_inference_per_chunk.py \
@@ -31,20 +53,9 @@ CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual
   --overwrite
 ```
 
-Đầu ra:
-
-```text
-vsr_output/
-  manifest.json
-  <video_id>/
-    chunk_0000.json
-    chunk_0001.json
-    ...
-```
-
 ---
 
-## 3. Chạy ASR theo từng chunk
+## Bước 3. Chạy ASR
 
 ```bash
 CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_asr_inference_per_chunk.py \
@@ -55,23 +66,12 @@ CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual
   --overwrite
 ```
 
-Đầu ra:
-
-```text
-asr_output/
-  manifest.json
-  <video_id>/
-    chunk_0000.json
-    chunk_0001.json
-    ...
-```
-
 ---
 
-## 4. Tính CCFD từ ASR và VSR
+## Bước 4. Tính CCFD
 
 ```bash
-python ./src/module_2_extraction/module_22_audio_visual_consistency/compute_ccfd_from_asr_vsr.py \
+python ./src/module_2_extraction/module_22_audio_visual_consistency/CCFD_from_asr_vsr.py \
   --asr-root ./src/module_2_extraction/output/asr_output \
   --vsr-root ./src/module_2_extraction/output/vsr_output \
   --output-root ./src/module_2_extraction/output/ccfd_output \
@@ -80,57 +80,23 @@ python ./src/module_2_extraction/module_22_audio_visual_consistency/compute_ccfd
 
 Quy ước:
 
-* ASR = `reference`
-* VSR = `hypothesis`
+* **ASR = reference**
+* **VSR = hypothesis**
 
-Đầu ra:
+Công thức:
 
-```text
-ccfd_output/
-  manifest.json
-  <video_id>/
-    chunk_0000.json
-    chunk_0001.json
-    ...
-    summary.json
-```
-
-Các trường chính:
-
-* `edit_distance`
-* `wer`
-* `ccfd_score`
-
-Trong đó:
-
-* `wer` càng cao → audio và khẩu hình càng lệch
 * `ccfd_score = 1 - min(wer, 1)`
 
 ---
 
-## 5. Chuẩn bị AV-HuBERT cho SCFD
+## Bước 5. Chạy SCFD
 
-Mô hình khuyến nghị:
+Yêu cầu:
 
-* `AV-HuBERT Base`
-* `LRS3 + VoxCeleb2 (En)`
-* `No finetuning`
 
-Ví dụ checkpoint:
-
-```text
-./pretrained_model/base_vox_iter5.pt
-```
-
-Cài `fairseq` trong repo `../av_hubert`:
-
-```bash
-cd ../av_hubert
-git submodule update --init --recursive
-cd fairseq
-pip install -e ./
-```
-
+* repo `../av_hubert`
+* checkpoint AV-HuBERT, ví dụ: `./pretrained_model/base_vox_iter5.pt`
+=======
 Nếu gặp lỗi môi trường, dùng:
 
 ```bash
@@ -142,6 +108,7 @@ pip install "omegaconf==2.0.6" "hydra-core==1.0.7" "numpy==1.23.5"
 
 ## 6. Chạy SCFD theo từng chunk ---- Error
 
+
 ```bash
 CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/SCFD_per_chunk.py \
   --input-root ./data/interim \
@@ -153,81 +120,86 @@ CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual
   --overwrite
 ```
 
-Đầu ra:
+Ghi chú:
 
-```text
-scfd_output/
-  manifest.json
-  <video_id>/
-    chunk_0000.json
-    chunk_0001.json
-    ...
-    summary.json
-```
-
-Các trường chính:
-
-* `semantic_scores`
-* `scfd_score`
-* `num_steps`
-
-Trong đó:
-
-* `scfd_score` là **3rd percentile** của `semantic_scores`
-* `scfd_score` càng thấp → audio và video càng bất nhất về ngữ nghĩa
+* `scfd_score` là **3rd percentile** của các semantic scores trong chunk.
 
 ---
 
-## Thứ tự chạy
+## Bước 6. Chạy TCFD
 
-### Bước 1
+Yêu cầu:
+
+* repo `../MTDVocaLiST`
+* checkpoint: `./pretrained_model/pure_MTDVocaLiST.pth`
 
 ```bash
-python ./src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_input_from_slides.py \
+CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/TCFD_per_chunk.py \
   --input-root ./data/interim \
-  --overwrite
-```
-
-### Bước 2
-
-```bash
-CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_vsr_inference_per_chunk.py \
-  --input-root ./data/interim \
-  --model-path ./pretrained_model/vsr_trlrs2lrs3vox2avsp_base.pth \
-  --output-root ./src/module_2_extraction/output/vsr_output \
-  --overwrite
-```
-
-### Bước 3
-
-```bash
-CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_asr_inference_per_chunk.py \
-  --input-root ./data/interim \
-  --model-path ./pretrained_model/whisper-medium-en/model.safetensors \
-  --output-root ./src/module_2_extraction/output/asr_output \
-  --language english \
-  --overwrite
-```
-
-### Bước 4
-
-```bash
-python ./src/module_2_extraction/module_22_audio_visual_consistency/compute_ccfd_from_asr_vsr.py \
-  --asr-root ./src/module_2_extraction/output/asr_output \
-  --vsr-root ./src/module_2_extraction/output/vsr_output \
-  --output-root ./src/module_2_extraction/output/ccfd_output \
-  --overwrite
-```
-
-### Bước 5
-
-```bash
-CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/SCFD_per_chunk.py \
-  --input-root ./data/interim \
+  --checkpoint-path ./pretrained_model/pure_MTDVocaLiST.pth \
+  --output-json ./src/module_2_extraction/output/tcfd_output.json \
   --input-video-name vsr_input.mp4 \
-  --input-audio-name audio.wav \
-  --avhubert-root ../av_hubert \
-  --model-path ./pretrained_model/base_vox_iter5.pt \
-  --output-root ./src/module_2_extraction/output/scfd_output \
-  --overwrite
+  --audio-name audio.wav \
+  --video-layout mouth96 \
+  --mtdvocalist-root ../MTDVocaLiST \
+  --device cuda
+```
+
+Ghi chú:
+
+* dùng `vsr_input.mp4` và `audio.wav` ở cấp độ chunk
+* `tcfd_score` càng cao thì đồng bộ thời gian càng tốt
+
+---
+
+## Bước 7. System fusion
+
+```bash
+python ./src/module_2_extraction/module_22_audio_visual_consistency/module22_system_fusion.py \
+  --scfd-root ./src/module_2_extraction/output/scfd_output \
+  --ccfd-root ./src/module_2_extraction/output/ccfd_output \
+  --tcfd-json ./src/module_2_extraction/output/tcfd_output.json \
+  --output-json ./src/module_2_extraction/output/module22_fusion_output.json \
+  --require-all-three
+```
+
+Fusion theo paper:
+
+* **SCFD**: min-max normalization
+* **TCFD**: min-max normalization
+* **CCFD**: dùng `1 - min(wer, 1)`
+* **Fusion**: trung bình 3 nhánh
+
+---
+
+## Output cuối cùng
+
+```text
+src/module_2_extraction/output/
+  asr_output/
+  vsr_output/
+  ccfd_output/
+  scfd_output/
+  tcfd_output.json
+  module22_fusion_output.json
+```
+
+---
+
+## Thứ tự chạy nhanh
+
+```bash
+python ./src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_asr_input_from_slides.py --input-root ./data/interim --overwrite
+
+CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_vsr_inference_per_chunk.py --input-root ./data/interim --model-path ./pretrained_model/vsr_trlrs2lrs3vox2avsp_base.pth --output-root ./src/module_2_extraction/output/vsr_output --overwrite
+
+CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_asr_inference_per_chunk.py --input-root ./data/interim --model-path ./pretrained_model/whisper-medium-en/model.safetensors --output-root ./src/module_2_extraction/output/asr_output --language english --overwrite
+
+python ./src/module_2_extraction/module_22_audio_visual_consistency/CCFD_from_asr_vsr.py --asr-root ./src/module_2_extraction/output/asr_output --vsr-root ./src/module_2_extraction/output/vsr_output --output-root ./src/module_2_extraction/output/ccfd_output --overwrite
+
+CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/SCFD_per_chunk.py --input-root ./data/interim --input-video-name vsr_input.mp4 --input-audio-name audio.wav --avhubert-root ../av_hubert --model-path ./pretrained_model/base_vox_iter5.pt --output-root ./src/module_2_extraction/output/scfd_output --overwrite
+
+CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/TCFD_per_chunk.py --input-root ./data/interim --checkpoint-path ./pretrained_model/pure_MTDVocaLiST.pth --output-json ./src/module_2_extraction/output/tcfd_output.json --input-video-name vsr_input.mp4 --audio-name audio.wav --video-layout mouth96 --mtdvocalist-root ../MTDVocaLiST --device cuda
+
+python ./src/module_2_extraction/module_22_audio_visual_consistency/module22_system_fusion.py --scfd-root ./src/module_2_extraction/output/scfd_output --ccfd-root ./src/module_2_extraction/output/ccfd_output --tcfd-json ./src/module_2_extraction/output/tcfd_output.json --output-json ./src/module_2_extraction/output/module22_fusion_output.json --require-all-three
 ```

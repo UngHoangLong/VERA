@@ -1,0 +1,18 @@
+{
+  "video_id": "sample",
+  "chunk": "chunk_0001",
+  "asr_json": "src/module_2_extraction/output/asr_output/sample/chunk_0001.json",
+  "vsr_json": "src/module_2_extraction/output/vsr_output/sample/chunk_0001.json",
+  "output_json": "src/module_2_extraction/output/ccfd_output/sample/chunk_0001.json",
+  "ok": true,
+  "reason": "success",
+  "reference_text_raw": " And for us, and for me this was born in part out of a lack of interest.",
+  "hypothesis_text_raw": "and for us for me this was born a bar out of a lack of",
+  "reference_text_norm": "and for us and for me this was born in part out of a lack of interest",
+  "hypothesis_text_norm": "and for us for me this was born a bar out of a lack of",
+  "reference_word_count": 17,
+  "hypothesis_word_count": 15,
+  "edit_distance": 4,
+  "wer": 0.235294,
+  "ccfd_score": 0.764706
+}

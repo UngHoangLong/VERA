@@ -1,0 +1,14 @@
+{
+  "video_id": "sample",
+  "num_chunks": 5,
+  "num_ok": 5,
+  "num_failed": 0,
+  "mean_wer": 0.682124,
+  "median_wer": 0.818182,
+  "mean_ccfd_score": 0.317876,
+  "median_ccfd_score": 0.181818,
+  "best_chunk": "chunk_0001",
+  "best_chunk_score": 0.764706,
+  "worst_chunk": "chunk_0003",
+  "worst_chunk_wer": 1.0
+}

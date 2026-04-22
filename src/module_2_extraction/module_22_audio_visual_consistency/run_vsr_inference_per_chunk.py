@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python3
 from __future__ import annotations
 
@@ -25,12 +26,14 @@ AUTO_AVSR_ZIP_URL = "https://github.com/mpc001/auto_avsr/archive/refs/heads/main
 
 
 def natural_chunk_key(path: Path) -> Tuple[str, int, str]:
+    # Sap xep chunk theo video cha va chi so chunk.
     m = re.search(r"chunk_(\d+)$", path.name)
     chunk_idx = int(m.group(1)) if m else 10**9
     return (str(path.parent), chunk_idx, path.name)
 
 
 def parse_visible_gpu_ids() -> List[str]:
+    # Doc danh sach GPU dang visible cho tien trinh hien tai.
     visible = os.environ.get("CUDA_VISIBLE_DEVICES", "").strip()
     if visible:
         return [x.strip() for x in visible.split(",") if x.strip()]
@@ -40,6 +43,7 @@ def parse_visible_gpu_ids() -> List[str]:
 
 
 def ensure_auto_avsr_source(cache_root: Path, force_redownload: bool = False) -> Path:
+    # Tai hoac tai su dung ma nguon auto_avsr o local cache.
     cache_root = cache_root.resolve()
     repo_root = cache_root / "auto_avsr-main"
 
@@ -78,6 +82,7 @@ def ensure_auto_avsr_source(cache_root: Path, force_redownload: bool = False) ->
 
 
 def import_auto_avsr_components(repo_root: Path):
+    # Import cac thanh phan can thiet cua auto_avsr tu source local.
     repo_root_str = str(repo_root.resolve())
     if repo_root_str not in sys.path:
         sys.path.insert(0, repo_root_str)
@@ -88,7 +93,8 @@ def import_auto_avsr_components(repo_root: Path):
     return VideoTransform, ModelModule, get_beam_search_decoder
 
 
-def build_model_args(pretrained_model_path: str) -> Namespace:
+def build_model_args(pretrained_model_path: str, beam_size: int) -> Namespace:
+    # Tao Namespace cau hinh toi thieu cho auto_avsr.
     return Namespace(
         modality="video",
         pretrained_model_path=pretrained_model_path,
@@ -99,13 +105,15 @@ def build_model_args(pretrained_model_path: str) -> Namespace:
         weight_decay=0.0,
         warmup_epochs=1,
         max_epochs=1,
+        beam_size=beam_size,
     )
 
 
-def make_model(repo_root: Path, pretrained_model_path: Path, device: torch.device):
+def make_model(repo_root: Path, pretrained_model_path: Path, device: torch.device, beam_size: int):
+    # Khoi tao model VSR va beam search decoder.
     VideoTransform, ModelModule, get_beam_search_decoder = import_auto_avsr_components(repo_root)
 
-    args = build_model_args(str(pretrained_model_path.resolve()))
+    args = build_model_args(str(pretrained_model_path.resolve()), beam_size=beam_size)
     model_module = ModelModule(args)
     model_module.eval()
     model_module.to(device)
@@ -113,13 +121,14 @@ def make_model(repo_root: Path, pretrained_model_path: Path, device: torch.devic
     model_module.cached_beam_search = get_beam_search_decoder(
         model_module.model,
         model_module.token_list,
-        beam_size=40,
+        beam_size=beam_size,
     )
 
     return model_module, VideoTransform("test")
 
 
-def load_video_opencv(path: str) -> torch.Tensor:
+def load_video_rgb_array(path: str) -> np.ndarray:
+    # Doc toan bo mp4 thanh mang RGB uint8 co dang [T, H, W, C].
     cap = cv2.VideoCapture(path)
     if not cap.isOpened():
         raise RuntimeError(f"Khong mo duoc video: {path}")
@@ -140,13 +149,49 @@ def load_video_opencv(path: str) -> torch.Tensor:
     if not frames:
         raise RuntimeError(f"Khong doc duoc frame nao tu video: {path}")
 
-    arr = np.stack(frames, axis=0)  # T, H, W, C
-    return torch.from_numpy(arr).permute(0, 3, 1, 2).contiguous()  # T, C, H, W
+    return np.stack(frames, axis=0).astype(np.uint8)
 
 
-@torch.inference_mode()
-def decode_video(model_module, video_transform, video_path: Path, device: torch.device) -> str:
-    sample = load_video_opencv(str(video_path))
+def video_quality_report(frames_rgb: np.ndarray) -> Dict[str, object]:
+    # Cham nhanh chat luong video de phat hien truong hop gan nhu dung hinh hoac lap frame.
+    num_frames = int(frames_rgb.shape[0])
+    flags: List[str] = []
+
+    if num_frames < 4:
+        flags.append("too_few_frames")
+
+    if num_frames <= 1:
+        return {
+            "quality_ok": False,
+            "quality_flags": flags or ["too_few_frames"],
+            "num_frames": num_frames,
+            "mean_frame_delta": 0.0,
+            "static_like_ratio": 1.0,
+        }
+
+    diffs = np.abs(frames_rgb[1:].astype(np.float32) - frames_rgb[:-1].astype(np.float32))
+    mean_deltas = diffs.mean(axis=(1, 2, 3))
+    mean_frame_delta = float(np.mean(mean_deltas)) if len(mean_deltas) > 0 else 0.0
+    static_like_ratio = float(np.mean(mean_deltas < 0.75)) if len(mean_deltas) > 0 else 1.0
+
+    if mean_frame_delta < 0.75:
+        flags.append("low_visual_motion")
+    if static_like_ratio > 0.90:
+        flags.append("mostly_static_frames")
+
+    severe = any(flag in {"too_few_frames", "mostly_static_frames"} for flag in flags)
+    return {
+        "quality_ok": not severe,
+        "quality_flags": flags,
+        "num_frames": num_frames,
+        "mean_frame_delta": round(mean_frame_delta, 6),
+        "static_like_ratio": round(static_like_ratio, 6),
+    }
+
+
+def decode_video(model_module, video_transform, frames_rgb: np.ndarray, device: torch.device) -> str:
+    # Decode mot chuoi frame RGB thanh hypothesis van ban.
+    sample = torch.from_numpy(frames_rgb).permute(0, 3, 1, 2).contiguous()
     sample = video_transform(sample)
     sample = sample.to(device)
 
@@ -163,49 +208,50 @@ def decode_video(model_module, video_transform, video_path: Path, device: torch.
     return predicted
 
 
+def iter_chunk_dirs(input_root: Path) -> List[Path]:
+    # Quet tat ca thu muc chunk_* de xu ly ca truong hop thieu file dau vao.
+    chunk_dirs: List[Path] = []
+    for chunk_dir in input_root.rglob("chunk_*"):
+        if not chunk_dir.is_dir():
+            continue
+        rel = chunk_dir.relative_to(input_root)
+        if len(rel.parts) < 2:
+            continue
+        chunk_dirs.append(chunk_dir)
+    return sorted(chunk_dirs, key=natural_chunk_key)
+
+
 def build_chunk_tasks(input_root: Path, input_video_name: str) -> List[Dict]:
+    # Tao danh sach task theo moi chunk, ke ca khi file dau vao bi thieu.
     tasks: List[Dict] = []
 
-    for video_dir in sorted([p for p in input_root.iterdir() if p.is_dir()]):
-        for input_video in video_dir.rglob(input_video_name):
-            chunk_dir = input_video.parent
-            if not (chunk_dir.is_dir() and chunk_dir.name.startswith("chunk_")):
-                continue
+    for chunk_dir in iter_chunk_dirs(input_root):
+        rel = chunk_dir.relative_to(input_root)
+        video_id = rel.parts[0]
+        input_video = chunk_dir / input_video_name
+        tasks.append(
+            {
+                "video_id": video_id,
+                "chunk": chunk_dir.name,
+                "chunk_dir": str(chunk_dir),
+                "input_video": str(input_video),
+                "input_exists": input_video.exists(),
+            }
+        )
 
-            rel = chunk_dir.relative_to(input_root)
-            if len(rel.parts) < 2:
-                continue
-
-            video_id = rel.parts[0]
-            tasks.append(
-                {
-                    "video_id": video_id,
-                    "chunk": chunk_dir.name,
-                    "chunk_dir": str(chunk_dir),
-                    "input_video": str(input_video),
-                }
-            )
-
-    tasks.sort(key=lambda x: natural_chunk_key(Path(x["chunk_dir"])))
     return tasks
 
 
 def shard_tasks(tasks: List[Dict], num_workers: int) -> List[List[Dict]]:
+    # Chia deu task cho cac GPU worker.
     shards = [[] for _ in range(num_workers)]
     for i, task in enumerate(tasks):
         shards[i % num_workers].append(task)
     return shards
 
 
-def run_one_chunk(
-    model_module,
-    video_transform,
-    device: torch.device,
-    task: Dict,
-    output_root: Path,
-    overwrite: bool,
-    worker_info: Dict,
-) -> Dict:
+def make_base_record(task: Dict, output_root: Path, worker_info: Dict | None = None) -> Tuple[Dict, Path]:
+    # Tao record mac dinh, tranh de gia tri null khi chunk thieu input hoac xu ly loi.
     chunk_dir = Path(task["chunk_dir"])
     input_video = Path(task["input_video"])
     video_id = task["video_id"]
@@ -214,57 +260,60 @@ def run_one_chunk(
     out_dir.mkdir(parents=True, exist_ok=True)
     out_json = out_dir / f"{chunk_dir.name}.json"
 
+    worker_info = worker_info or {}
+    record = {
+        "video_id": video_id,
+        "chunk": chunk_dir.name,
+        "chunk_dir": str(chunk_dir),
+        "input_video": str(input_video),
+        "input_found": bool(task.get("input_exists", input_video.exists())),
+        "output_json": str(out_json),
+        "ok": False,
+        "decode_ok": False,
+        "quality_ok": False,
+        "quality_flags": [],
+        "hypothesis": "",
+        "reason": "",
+        "elapsed_sec": 0.0,
+        "num_frames": 0,
+        "mean_frame_delta": 0.0,
+        "static_like_ratio": 0.0,
+        "worker_gpu_local": worker_info.get("local_idx", -1),
+        "worker_gpu_physical": worker_info.get("physical_id", ""),
+        "worker_gpu_name": worker_info.get("name", ""),
+    }
+    return record, out_json
+
+
+def write_record(out_json: Path, record: Dict) -> Dict:
+    # Ghi json ket qua cho moi chunk.
+    out_json.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+    return record
+
+
+def write_missing_input_record(task: Dict, output_root: Path, overwrite: bool) -> Dict:
+    # Ghi ket qua ro rang cho chunk khong co video dau vao, khong dung gia tri null.
+    record, out_json = make_base_record(task=task, output_root=output_root)
     if out_json.exists() and not overwrite:
         try:
             return json.loads(out_json.read_text(encoding="utf-8"))
         except Exception:
             pass
 
-    record = {
-        "video_id": video_id,
-        "chunk": chunk_dir.name,
-        "chunk_dir": str(chunk_dir),
-        "input_video": str(input_video),
-        "output_json": str(out_json),
-        "ok": False,
-        "hypothesis": None,
-        "reason": None,
-        "elapsed_sec": None,
-        "worker_gpu_local": worker_info["local_idx"],
-        "worker_gpu_physical": worker_info["physical_id"],
-        "worker_gpu_name": worker_info["name"],
-    }
+    record["reason"] = "input_video_not_found"
+    record["quality_flags"] = ["input_video_not_found"]
+    return write_record(out_json, record)
 
-    if not input_video.exists():
-        record["reason"] = "input_video_not_found"
-        out_json.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
-        return record
-
-    t0 = time.time()
-    try:
-        record["hypothesis"] = decode_video(
-            model_module=model_module,
-            video_transform=video_transform,
-            video_path=input_video,
-            device=device,
-        )
-        record["ok"] = True
-        record["reason"] = "success"
-    except Exception as e:
-        record["reason"] = f"{type(e).__name__}: {e}"
-    finally:
-        record["elapsed_sec"] = round(time.time() - t0, 3)
-
-    out_json.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
-    return record
 
 def chunk_json_sort_key(path: Path):
+    # Sap xep file json dau ra theo thu tu chunk.
     m = re.search(r"chunk_(\d+)\.json$", path.name)
     idx = int(m.group(1)) if m else 10**9
     return (path.parent.name, idx, path.name)
 
 
 def collect_results_from_output_root(output_root: Path) -> List[Dict]:
+    # Thu hoi moi ket qua json de ghep manifest cuoi.
     results: List[Dict] = []
 
     if not output_root.exists():
@@ -283,11 +332,77 @@ def collect_results_from_output_root(output_root: Path) -> List[Dict]:
                         "chunk": jf.stem,
                         "output_json": str(jf),
                         "ok": False,
+                        "decode_ok": False,
+                        "quality_ok": False,
+                        "quality_flags": ["manifest_read_error"],
+                        "hypothesis": "",
                         "reason": f"manifest_read_error: {type(e).__name__}: {e}",
+                        "elapsed_sec": 0.0,
+                        "num_frames": 0,
+                        "mean_frame_delta": 0.0,
+                        "static_like_ratio": 0.0,
                     }
                 )
 
     return results
+
+
+def run_one_chunk(
+    model_module,
+    video_transform,
+    device: torch.device,
+    task: Dict,
+    output_root: Path,
+    overwrite: bool,
+    worker_info: Dict,
+    allow_suspicious_output: bool,
+) -> Dict:
+    # Chay VSR cho mot chunk va ap quality gate len video dau vao.
+    record, out_json = make_base_record(task=task, output_root=output_root, worker_info=worker_info)
+
+    if out_json.exists() and not overwrite:
+        try:
+            return json.loads(out_json.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+
+    input_video = Path(task["input_video"])
+    if not input_video.exists():
+        record["reason"] = "input_video_not_found"
+        record["quality_flags"] = ["input_video_not_found"]
+        return write_record(out_json, record)
+
+    t0 = time.time()
+    try:
+        frames_rgb = load_video_rgb_array(str(input_video))
+        quality = video_quality_report(frames_rgb)
+        record.update(quality)
+
+        record["hypothesis"] = decode_video(
+            model_module=model_module,
+            video_transform=video_transform,
+            frames_rgb=frames_rgb,
+            device=device,
+        )
+        record["decode_ok"] = True
+
+        if quality["quality_ok"]:
+            record["ok"] = True
+            record["reason"] = "success"
+        elif allow_suspicious_output:
+            record["ok"] = True
+            record["reason"] = "success_with_quality_warning"
+        else:
+            record["ok"] = False
+            flags = ",".join(quality["quality_flags"]) if quality["quality_flags"] else "unknown_quality_issue"
+            record["reason"] = f"quality_gate_failed: {flags}"
+    except Exception as e:
+        record["reason"] = f"{type(e).__name__}: {e}"
+    finally:
+        record["elapsed_sec"] = round(time.time() - t0, 3)
+
+    return write_record(out_json, record)
+
 
 def worker_main(
     worker_info: Dict,
@@ -296,8 +411,11 @@ def worker_main(
     model_path: str,
     output_root: str,
     overwrite: bool,
+    beam_size: int,
+    allow_suspicious_output: bool,
     queue: mp.Queue,
 ) -> None:
+    # Chay mot worker VSR tren mot GPU local.
     local_idx = int(worker_info["local_idx"])
     device = torch.device(f"cuda:{local_idx}")
     torch.cuda.set_device(local_idx)
@@ -306,6 +424,7 @@ def worker_main(
         repo_root=Path(repo_root),
         pretrained_model_path=Path(model_path),
         device=device,
+        beam_size=beam_size,
     )
 
     print(
@@ -330,6 +449,7 @@ def worker_main(
             output_root=Path(output_root),
             overwrite=overwrite,
             worker_info=worker_info,
+            allow_suspicious_output=allow_suspicious_output,
         )
         results.append(rec)
 
@@ -350,7 +470,8 @@ def worker_main(
     )
 
 
-def main() -> None:
+def build_argparser() -> argparse.ArgumentParser:
+    # Khai bao tham so CLI cho script.
     parser = argparse.ArgumentParser(
         description="Run chunk-level VSR inference in parallel on all GPUs listed in CUDA_VISIBLE_DEVICES."
     )
@@ -359,9 +480,64 @@ def main() -> None:
     parser.add_argument("--model-path", type=str, default="./pretrained_model/vsr_trlrs2lrs3vox2avsp_base.pth", help="Path to pretrained VSR checkpoint")
     parser.add_argument("--output-root", type=str, default="./src/module_2_extraction/vsr_output", help="Directory to save per-chunk outputs")
     parser.add_argument("--cache-root", type=str, default="./.cache/auto_avsr_src", help="Where auto_avsr source is cached locally")
+    parser.add_argument("--beam-size", type=int, default=10, help="Beam size for VSR decoding")
+    parser.add_argument("--allow-suspicious-output", action="store_true", help="Keep output even if video quality gate flags strong issues")
     parser.add_argument("--max-chunks", type=int, default=0, help="0 = all chunks, otherwise only first N chunks")
     parser.add_argument("--force-redownload", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
+    return parser
+
+
+def write_manifest(
+    output_root: Path,
+    input_root: Path,
+    model_path: Path,
+    cache_root: Path,
+    repo_root: Path | None,
+    args,
+    worker_payloads: List[Dict],
+    active_workers: int,
+    note: str = "",
+) -> Path:
+    # Tong hop manifest cuoi cung tu cac json da ghi tren dia.
+    all_results = collect_results_from_output_root(output_root)
+    manifest = {
+        "input_root": str(input_root),
+        "model_path": str(model_path),
+        "output_root": str(output_root),
+        "cache_root": str(cache_root),
+        "auto_avsr_repo_root": str(repo_root) if repo_root is not None else "",
+        "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
+        "beam_size": args.beam_size,
+        "allow_suspicious_output": args.allow_suspicious_output,
+        "input_video_name": args.input_video_name,
+        "num_workers": active_workers,
+        "workers": [
+            {
+                "local_idx": payload["worker"]["local_idx"],
+                "physical_id": payload["worker"]["physical_id"],
+                "name": payload["worker"]["name"],
+                "num_tasks": payload["num_tasks"],
+            }
+            for payload in sorted(worker_payloads, key=lambda x: x["worker"]["local_idx"])
+        ],
+        "num_chunks": len(all_results),
+        "num_ok": sum(1 for r in all_results if r.get("ok")),
+        "num_failed": sum(1 for r in all_results if not r.get("ok")),
+        "num_decode_ok": sum(1 for r in all_results if r.get("decode_ok")),
+        "num_quality_ok": sum(1 for r in all_results if r.get("quality_ok")),
+        "num_missing_input": sum(1 for r in all_results if r.get("reason") == "input_video_not_found"),
+        "note": note,
+        "results": all_results,
+    }
+    manifest_path = output_root / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    return manifest_path
+
+
+def main() -> None:
+    # Diem vao chinh: parse args, tach chunk thieu input, roi moi goi GPU neu can.
+    parser = build_argparser()
     args = parser.parse_args()
 
     input_root = Path(args.input_root)
@@ -371,6 +547,87 @@ def main() -> None:
 
     if not input_root.exists():
         raise FileNotFoundError(f"Khong ton tai input_root: {input_root}")
+
+    output_root.mkdir(parents=True, exist_ok=True)
+
+    tasks = build_chunk_tasks(input_root=input_root, input_video_name=args.input_video_name)
+    if args.max_chunks > 0:
+        tasks = tasks[: args.max_chunks]
+
+    if not tasks:
+        manifest_path = write_manifest(
+            output_root=output_root,
+            input_root=input_root,
+            model_path=model_path,
+            cache_root=cache_root,
+            repo_root=None,
+            args=args,
+            worker_payloads=[],
+            active_workers=0,
+            note="no_chunk_directories_found",
+        )
+        print(
+            json.dumps(
+                {
+                    "output_root": str(output_root),
+                    "manifest": str(manifest_path),
+                    "num_workers": 0,
+                    "num_chunks": 0,
+                    "num_ok": 0,
+                    "num_failed": 0,
+                    "num_decode_ok": 0,
+                    "num_quality_ok": 0,
+                    "num_missing_input": 0,
+                    "note": "no_chunk_directories_found",
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            flush=True,
+        )
+        return
+
+    missing_tasks = [task for task in tasks if not task.get("input_exists")]
+    runnable_tasks = [task for task in tasks if task.get("input_exists")]
+
+    for task in missing_tasks:
+        write_missing_input_record(task=task, output_root=output_root, overwrite=bool(args.overwrite))
+
+    if not runnable_tasks:
+        manifest_path = write_manifest(
+            output_root=output_root,
+            input_root=input_root,
+            model_path=model_path,
+            cache_root=cache_root,
+            repo_root=None,
+            args=args,
+            worker_payloads=[],
+            active_workers=0,
+            note="all_chunks_missing_input_video",
+        )
+        all_results = collect_results_from_output_root(output_root)
+        print(
+            json.dumps(
+                {
+                    "output_root": str(output_root),
+                    "manifest": str(manifest_path),
+                    "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
+                    "num_workers": 0,
+                    "num_chunks": len(all_results),
+                    "num_ok": 0,
+                    "num_failed": len(all_results),
+                    "num_decode_ok": 0,
+                    "num_quality_ok": 0,
+                    "num_missing_input": len(all_results),
+                    "note": "all_chunks_missing_input_video",
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            flush=True,
+        )
+        return
+
     if not model_path.exists():
         raise FileNotFoundError(f"Khong ton tai model_path: {model_path}")
 
@@ -402,21 +659,12 @@ def main() -> None:
             }
         )
 
-    output_root.mkdir(parents=True, exist_ok=True)
-
     repo_root = ensure_auto_avsr_source(
         cache_root=cache_root,
         force_redownload=args.force_redownload,
     )
 
-    tasks = build_chunk_tasks(input_root=input_root, input_video_name=args.input_video_name)
-    if args.max_chunks > 0:
-        tasks = tasks[: args.max_chunks]
-
-    if not tasks:
-        raise FileNotFoundError(f"Khong tim thay {args.input_video_name} ben trong: {input_root}")
-
-    shards = shard_tasks(tasks, len(workers))
+    shards = shard_tasks(runnable_tasks, len(workers))
 
     print(
         json.dumps(
@@ -424,7 +672,11 @@ def main() -> None:
                 "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
                 "workers": workers,
                 "num_tasks": len(tasks),
+                "num_runnable_tasks": len(runnable_tasks),
+                "num_missing_input": len(missing_tasks),
                 "num_workers": len(workers),
+                "beam_size": args.beam_size,
+                "input_video_name": args.input_video_name,
             },
             ensure_ascii=False,
             indent=2,
@@ -450,6 +702,8 @@ def main() -> None:
                 str(model_path),
                 str(output_root),
                 bool(args.overwrite),
+                int(args.beam_size),
+                bool(args.allow_suspicious_output),
                 queue,
             ),
         )
@@ -464,33 +718,19 @@ def main() -> None:
         if p.exitcode != 0:
             raise RuntimeError(f"Worker process failed with exit code {p.exitcode}")
 
-    all_results = collect_results_from_output_root(output_root)
+    manifest_path = write_manifest(
+        output_root=output_root,
+        input_root=input_root,
+        model_path=model_path,
+        cache_root=cache_root,
+        repo_root=repo_root,
+        args=args,
+        worker_payloads=worker_payloads,
+        active_workers=active_workers,
+        note="",
+    )
 
-    manifest = {
-        "input_root": str(input_root),
-        "model_path": str(model_path),
-        "output_root": str(output_root),
-        "cache_root": str(cache_root),
-        "auto_avsr_repo_root": str(repo_root),
-        "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
-        "num_workers": active_workers,
-        "workers": [
-            {
-                "local_idx": payload["worker"]["local_idx"],
-                "physical_id": payload["worker"]["physical_id"],
-                "name": payload["worker"]["name"],
-                "num_tasks": payload["num_tasks"],
-            }
-            for payload in sorted(worker_payloads, key=lambda x: x["worker"]["local_idx"])
-        ],
-        "num_chunks": len(all_results),
-        "num_ok": sum(1 for r in all_results if r.get("ok")),
-        "num_failed": sum(1 for r in all_results if not r.get("ok")),
-        "results": all_results,
-    }
-    manifest_path = output_root / "manifest.json"
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
-
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     print(
         json.dumps(
             {
@@ -501,6 +741,9 @@ def main() -> None:
                 "num_chunks": manifest["num_chunks"],
                 "num_ok": manifest["num_ok"],
                 "num_failed": manifest["num_failed"],
+                "num_decode_ok": manifest["num_decode_ok"],
+                "num_quality_ok": manifest["num_quality_ok"],
+                "num_missing_input": manifest["num_missing_input"],
             },
             ensure_ascii=False,
             indent=2,
