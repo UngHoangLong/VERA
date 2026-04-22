@@ -3,18 +3,21 @@
   "chunk": "chunk_0004",
   "chunk_dir": "data/interim/sample/chunk_0004",
   "input_video": "data/interim/sample/chunk_0004/vsr_input.mp4",
+  "input_found": false,
   "output_json": "src/module_2_extraction/output/vsr_output/sample/chunk_0004.json",
-  "ok": true,
-  "decode_ok": true,
-  "quality_ok": true,
-  "quality_flags": [],
-  "hypothesis": "we're going to talk about",
-  "reason": "success",
-  "elapsed_sec": 0.491,
-  "num_frames": 36,
-  "mean_frame_delta": 2.327463,
+  "ok": false,
+  "decode_ok": false,
+  "quality_ok": false,
+  "quality_flags": [
+    "input_video_not_found"
+  ],
+  "hypothesis": "",
+  "reason": "input_video_not_found",
+  "elapsed_sec": 0.0,
+  "num_frames": 0,
+  "mean_frame_delta": 0.0,
   "static_like_ratio": 0.0,
-  "worker_gpu_local": 0,
-  "worker_gpu_physical": "3",
-  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+  "worker_gpu_local": -1,
+  "worker_gpu_physical": "",
+  "worker_gpu_name": ""
 }
