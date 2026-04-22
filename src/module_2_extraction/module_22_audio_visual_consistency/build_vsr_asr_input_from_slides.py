@@ -606,6 +606,19 @@ class ChunkMouthExporter:
                 'fps': fps,
             }
 
+        # ========== KIỂM TRA ĐIỀU KIỆN LỚN HƠN 2 GIÂY ==========
+        duration_sec = len(crops) / fps
+        if duration_sec <= 2.0:
+            return {
+                'chunk_dir': str(chunk_dir),
+                'output_path': str(output_path),
+                'ok': False,
+                'reason': f'duration_too_short_({duration_sec:.2f}s)',
+                'frames_written': 0,
+                'failed_frames': failed_frames,
+                'fps': fps,
+            }
+
         write_mp4(crops, output_path, fps=fps)
         crop_audio_to_match_video(chunk_dir, pairs) # "pairs" lúc này chính là longest_seq do ta đã sửa hàm
         return {
