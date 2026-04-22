@@ -2,32 +2,13 @@
   "video_id": "sample",
   "chunk": "chunk_0000",
   "chunk_dir": "data/interim/sample/chunk_0000",
-  "input_audio": "data/interim/sample/chunk_0000/sync_audio.wav",
+  "input_audio": "data/interim/sample/chunk_0000/audio.wav",
   "output_json": "src/module_2_extraction/output/asr_output/sample/chunk_0000.json",
   "ok": true,
-  "decode_ok": true,
-  "quality_ok": true,
-  "quality_flags": [],
-  "text": "and and for us and for me this was born",
-  "chunks": [
-    {
-      "timestamp": [
-        0.0,
-        3.92
-      ],
-      "text": " and and for us and for me this was born"
-    }
-  ],
+  "text": " among all those things and and for us and for me this was born",
+  "chunks": null,
   "reason": "success",
-  "elapsed_sec": 1.455,
-  "audio_duration_sec": 2.0,
-  "audio_rms": 0.07395149767398834,
-  "audio_peak_abs": 0.4071807861328125,
-  "num_words": 10,
-  "unique_word_ratio": 0.7,
-  "words_per_sec": 5.0,
-  "most_repeated_sentence": "and and for us and for me this was born",
-  "most_repeated_sentence_count": 1,
+  "elapsed_sec": 4.825,
   "worker_gpu_local": 0,
   "worker_gpu_physical": "3",
   "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"

@@ -8,19 +8,13 @@
   "beam_size": 10,
   "allow_suspicious_output": false,
   "input_video_name": "vsr_input.mp4",
-  "num_workers": 2,
+  "num_workers": 1,
   "workers": [
     {
       "local_idx": 0,
       "physical_id": "3",
       "name": "NVIDIA GeForce RTX 2080 Ti",
-      "num_tasks": 5
-    },
-    {
-      "local_idx": 1,
-      "physical_id": "5",
-      "name": "NVIDIA GeForce RTX 2080 Ti",
-      "num_tasks": 4
+      "num_tasks": 1
     }
   ],
   "num_chunks": 9,
@@ -61,12 +55,12 @@
       "quality_flags": [],
       "hypothesis": "and for us for me this was more the mirror out of a",
       "reason": "success",
-      "elapsed_sec": 1.673,
+      "elapsed_sec": 10.677,
       "num_frames": 84,
       "mean_frame_delta": 3.642421,
       "static_like_ratio": 0.0,
-      "worker_gpu_local": 1,
-      "worker_gpu_physical": "5",
+      "worker_gpu_local": 0,
+      "worker_gpu_physical": "3",
       "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
     },
     {

@@ -2,32 +2,13 @@
   "video_id": "sample",
   "chunk": "chunk_0001",
   "chunk_dir": "data/interim/sample/chunk_0001",
-  "input_audio": "data/interim/sample/chunk_0001/sync_audio.wav",
+  "input_audio": "data/interim/sample/chunk_0001/audio.wav",
   "output_json": "src/module_2_extraction/output/asr_output/sample/chunk_0001.json",
   "ok": true,
-  "decode_ok": true,
-  "quality_ok": true,
-  "quality_flags": [],
-  "text": "And for us, and for me, this was born in part out of a...",
-  "chunks": [
-    {
-      "timestamp": [
-        0.0,
-        3.0
-      ],
-      "text": " And for us, and for me, this was born in part out of a..."
-    }
-  ],
+  "text": " And for us, and for me this was born in part out of a lack of interest.",
+  "chunks": null,
   "reason": "success",
-  "elapsed_sec": 1.683,
-  "audio_duration_sec": 3.5,
-  "audio_rms": 0.0678451657295227,
-  "audio_peak_abs": 0.4071807861328125,
-  "num_words": 14,
-  "unique_word_ratio": 0.857143,
-  "words_per_sec": 4.0,
-  "most_repeated_sentence": "and for us, and for me, this was born in part out of a",
-  "most_repeated_sentence_count": 1,
+  "elapsed_sec": 4.722,
   "worker_gpu_local": 1,
   "worker_gpu_physical": "5",
   "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
