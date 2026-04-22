@@ -11,9 +11,14 @@ import soundfile as sf # Cắt cả âm thanh
 import cv2
 import numpy as np
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+from src.utils.file_io import collect_slide_pairs
 
-SLIDE_FACE_RE = re.compile(r'^(slide_\d+)_faces\.npy$')
-SLIDE_LMK_RE = re.compile(r'^(slide_\d+)_landmarks\.npy$')
+
+# SLIDE_FACE_RE = re.compile(r'^(slide_\d+)_faces\.npy$')
+# SLIDE_LMK_RE = re.compile(r'^(slide_\d+)_landmarks\.npy$')
 
 
 class MP468:
@@ -66,58 +71,58 @@ def natural_chunk_key(path: Path) -> Tuple[int, str]:
 #     return pairs
 
 # Hàm ghép slide liên tiếp
-def collect_slide_pairs(slides_dir: Path) -> List[PairInfo]:
-    face_map: Dict[str, Path] = {}
-    lmk_map: Dict[str, Path] = {}
-    for p in sorted(slides_dir.glob('*.npy')):
-        m = SLIDE_FACE_RE.match(p.name)
-        if m:
-            face_map[m.group(1)] = p
-            continue
-        m = SLIDE_LMK_RE.match(p.name)
-        if m:
-            lmk_map[m.group(1)] = p
+# def collect_slide_pairs(slides_dir: Path) -> List[PairInfo]:
+#     face_map: Dict[str, Path] = {}
+#     lmk_map: Dict[str, Path] = {}
+#     for p in sorted(slides_dir.glob('*.npy')):
+#         m = SLIDE_FACE_RE.match(p.name)
+#         if m:
+#             face_map[m.group(1)] = p
+#             continue
+#         m = SLIDE_LMK_RE.match(p.name)
+#         if m:
+#             lmk_map[m.group(1)] = p
 
-    # 1. Ghép cặp và trích xuất luôn ID dạng số (integer) để dễ kiểm tra tính liên tục
-    pairs_with_idx: List[Tuple[int, PairInfo]] = []
-    for slide_id, faces_path in sorted(face_map.items()):
-        landmarks_path = lmk_map.get(slide_id)
-        if landmarks_path is not None:
-            # Lấy con số từ chuỗi "slide_05" -> 5
-            idx_match = re.search(r'\d+', slide_id)
-            idx = int(idx_match.group()) if idx_match else -1
-            pairs_with_idx.append((idx, PairInfo(slide_id=slide_id, faces_path=faces_path, landmarks_path=landmarks_path)))
+#     # 1. Ghép cặp và trích xuất luôn ID dạng số (integer) để dễ kiểm tra tính liên tục
+#     pairs_with_idx: List[Tuple[int, PairInfo]] = []
+#     for slide_id, faces_path in sorted(face_map.items()):
+#         landmarks_path = lmk_map.get(slide_id)
+#         if landmarks_path is not None:
+#             # Lấy con số từ chuỗi "slide_05" -> 5
+#             idx_match = re.search(r'\d+', slide_id)
+#             idx = int(idx_match.group()) if idx_match else -1
+#             pairs_with_idx.append((idx, PairInfo(slide_id=slide_id, faces_path=faces_path, landmarks_path=landmarks_path)))
 
-    if not pairs_with_idx:
-        return []
+#     if not pairs_with_idx:
+#         return []
 
-    # Sắp xếp lại cho chắc chắn theo thứ tự tăng dần của ID
-    pairs_with_idx.sort(key=lambda x: x[0])
+#     # Sắp xếp lại cho chắc chắn theo thứ tự tăng dần của ID
+#     pairs_with_idx.sort(key=lambda x: x[0])
 
-    # 2. Thuật toán tìm chuỗi liên tục dài nhất
-    longest_seq: List[PairInfo] = []
-    current_seq: List[PairInfo] = [pairs_with_idx[0][1]]
-    last_idx = pairs_with_idx[0][0]
+#     # 2. Thuật toán tìm chuỗi liên tục dài nhất
+#     longest_seq: List[PairInfo] = []
+#     current_seq: List[PairInfo] = [pairs_with_idx[0][1]]
+#     last_idx = pairs_with_idx[0][0]
 
-    for i in range(1, len(pairs_with_idx)):
-        curr_idx, pair_info = pairs_with_idx[i]
+#     for i in range(1, len(pairs_with_idx)):
+#         curr_idx, pair_info = pairs_with_idx[i]
         
-        if curr_idx == last_idx + 1:
-            # Slide liên tục -> Thêm vào chuỗi hiện tại
-            current_seq.append(pair_info)
-        else:
-            # Bị đứt gãy -> Kiểm tra và lưu lại chuỗi dài nhất, sau đó reset
-            if len(current_seq) > len(longest_seq):
-                longest_seq = current_seq
-            current_seq = [pair_info]
+#         if curr_idx == last_idx + 1:
+#             # Slide liên tục -> Thêm vào chuỗi hiện tại
+#             current_seq.append(pair_info)
+#         else:
+#             # Bị đứt gãy -> Kiểm tra và lưu lại chuỗi dài nhất, sau đó reset
+#             if len(current_seq) > len(longest_seq):
+#                 longest_seq = current_seq
+#             current_seq = [pair_info]
             
-        last_idx = curr_idx
+#         last_idx = curr_idx
 
-    # Kiểm tra lần cuối khi kết thúc vòng lặp
-    if len(current_seq) > len(longest_seq):
-        longest_seq = current_seq
+#     # Kiểm tra lần cuối khi kết thúc vòng lặp
+#     if len(current_seq) > len(longest_seq):
+#         longest_seq = current_seq
 
-    return longest_seq
+#     return longest_seq
 
 # hàm trích cắt âm thanh tương ứng với video miệng đã cắt
 def crop_audio_to_match_video(chunk_dir: Path, longest_seq: List[PairInfo], audio_name: str = 'audio.wav', sync_audio_name: str = 'sync_audio.wav') -> bool:
