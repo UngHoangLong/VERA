@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python3
 from __future__ import annotations
 
@@ -25,12 +26,14 @@ AUTO_AVSR_ZIP_URL = "https://github.com/mpc001/auto_avsr/archive/refs/heads/main
 
 
 def natural_chunk_key(path: Path) -> Tuple[str, int, str]:
+    # S?p x?p chunk theo video cha và ch? s? chunk.
     m = re.search(r"chunk_(\d+)$", path.name)
     chunk_idx = int(m.group(1)) if m else 10**9
     return (str(path.parent), chunk_idx, path.name)
 
 
 def parse_visible_gpu_ids() -> List[str]:
+    # Ð?c danh sách GPU dang visible cho ti?n trình hi?n t?i.
     visible = os.environ.get("CUDA_VISIBLE_DEVICES", "").strip()
     if visible:
         return [x.strip() for x in visible.split(",") if x.strip()]
@@ -40,6 +43,7 @@ def parse_visible_gpu_ids() -> List[str]:
 
 
 def ensure_auto_avsr_source(cache_root: Path, force_redownload: bool = False) -> Path:
+    # T?i ho?c tái s? d?ng mã ngu?n auto_avsr ? local cache.
     cache_root = cache_root.resolve()
     repo_root = cache_root / "auto_avsr-main"
 
@@ -78,6 +82,7 @@ def ensure_auto_avsr_source(cache_root: Path, force_redownload: bool = False) ->
 
 
 def import_auto_avsr_components(repo_root: Path):
+    # Import các thành ph?n c?n thi?t c?a auto_avsr t? source local.
     repo_root_str = str(repo_root.resolve())
     if repo_root_str not in sys.path:
         sys.path.insert(0, repo_root_str)
@@ -88,7 +93,8 @@ def import_auto_avsr_components(repo_root: Path):
     return VideoTransform, ModelModule, get_beam_search_decoder
 
 
-def build_model_args(pretrained_model_path: str) -> Namespace:
+def build_model_args(pretrained_model_path: str, beam_size: int) -> Namespace:
+    # T?o Namespace c?u hình t?i thi?u cho auto_avsr.
     return Namespace(
         modality="video",
         pretrained_model_path=pretrained_model_path,
@@ -99,13 +105,15 @@ def build_model_args(pretrained_model_path: str) -> Namespace:
         weight_decay=0.0,
         warmup_epochs=1,
         max_epochs=1,
+        beam_size=beam_size,
     )
 
 
-def make_model(repo_root: Path, pretrained_model_path: Path, device: torch.device):
+def make_model(repo_root: Path, pretrained_model_path: Path, device: torch.device, beam_size: int):
+    # Kh?i t?o model VSR và beam search decoder.
     VideoTransform, ModelModule, get_beam_search_decoder = import_auto_avsr_components(repo_root)
 
-    args = build_model_args(str(pretrained_model_path.resolve()))
+    args = build_model_args(str(pretrained_model_path.resolve()), beam_size=beam_size)
     model_module = ModelModule(args)
     model_module.eval()
     model_module.to(device)
@@ -113,13 +121,14 @@ def make_model(repo_root: Path, pretrained_model_path: Path, device: torch.devic
     model_module.cached_beam_search = get_beam_search_decoder(
         model_module.model,
         model_module.token_list,
-        beam_size=40,
+        beam_size=beam_size,
     )
 
     return model_module, VideoTransform("test")
 
 
-def load_video_opencv(path: str) -> torch.Tensor:
+def load_video_rgb_array(path: str) -> np.ndarray:
+    # Ð?c toàn b? mp4 thành m?ng RGB uint8 có d?ng [T, H, W, C].
     cap = cv2.VideoCapture(path)
     if not cap.isOpened():
         raise RuntimeError(f"Khong mo duoc video: {path}")
@@ -140,13 +149,49 @@ def load_video_opencv(path: str) -> torch.Tensor:
     if not frames:
         raise RuntimeError(f"Khong doc duoc frame nao tu video: {path}")
 
-    arr = np.stack(frames, axis=0)  # T, H, W, C
-    return torch.from_numpy(arr).permute(0, 3, 1, 2).contiguous()  # T, C, H, W
+    return np.stack(frames, axis=0).astype(np.uint8)
 
 
-@torch.inference_mode()
-def decode_video(model_module, video_transform, video_path: Path, device: torch.device) -> str:
-    sample = load_video_opencv(str(video_path))
+def video_quality_report(frames_rgb: np.ndarray) -> Dict[str, object]:
+    # Ch?m nhanh ch?t lu?ng video d? phát hi?n tru?ng h?p g?n nhu d?ng hình ho?c l?p frame.
+    num_frames = int(frames_rgb.shape[0])
+    flags: List[str] = []
+
+    if num_frames < 4:
+        flags.append("too_few_frames")
+
+    if num_frames <= 1:
+        return {
+            "quality_ok": False,
+            "quality_flags": flags or ["too_few_frames"],
+            "num_frames": num_frames,
+            "mean_frame_delta": 0.0,
+            "static_like_ratio": 1.0,
+        }
+
+    diffs = np.abs(frames_rgb[1:].astype(np.float32) - frames_rgb[:-1].astype(np.float32))
+    mean_deltas = diffs.mean(axis=(1, 2, 3))
+    mean_frame_delta = float(np.mean(mean_deltas)) if len(mean_deltas) > 0 else 0.0
+    static_like_ratio = float(np.mean(mean_deltas < 0.75)) if len(mean_deltas) > 0 else 1.0
+
+    if mean_frame_delta < 0.75:
+        flags.append("low_visual_motion")
+    if static_like_ratio > 0.90:
+        flags.append("mostly_static_frames")
+
+    severe = any(flag in {"too_few_frames", "mostly_static_frames"} for flag in flags)
+    return {
+        "quality_ok": not severe,
+        "quality_flags": flags,
+        "num_frames": num_frames,
+        "mean_frame_delta": round(mean_frame_delta, 6),
+        "static_like_ratio": round(static_like_ratio, 6),
+    }
+
+
+def decode_video(model_module, video_transform, frames_rgb: np.ndarray, device: torch.device) -> str:
+    # Decode m?t chu?i frame RGB thành hypothesis van b?n.
+    sample = torch.from_numpy(frames_rgb).permute(0, 3, 1, 2).contiguous()
     sample = video_transform(sample)
     sample = sample.to(device)
 
@@ -164,6 +209,7 @@ def decode_video(model_module, video_transform, video_path: Path, device: torch.
 
 
 def build_chunk_tasks(input_root: Path, input_video_name: str) -> List[Dict]:
+    # T?o danh sách chunk c?n ch?y d?a trên tên file video d?u vào.
     tasks: List[Dict] = []
 
     for video_dir in sorted([p for p in input_root.iterdir() if p.is_dir()]):
@@ -191,6 +237,7 @@ def build_chunk_tasks(input_root: Path, input_video_name: str) -> List[Dict]:
 
 
 def shard_tasks(tasks: List[Dict], num_workers: int) -> List[List[Dict]]:
+    # Chia d?u task cho các GPU worker.
     shards = [[] for _ in range(num_workers)]
     for i, task in enumerate(tasks):
         shards[i % num_workers].append(task)
@@ -205,7 +252,9 @@ def run_one_chunk(
     output_root: Path,
     overwrite: bool,
     worker_info: Dict,
+    allow_suspicious_output: bool,
 ) -> Dict:
+    # Ch?y VSR cho m?t chunk và áp quality gate lên video d?u vào.
     chunk_dir = Path(task["chunk_dir"])
     input_video = Path(task["input_video"])
     video_id = task["video_id"]
@@ -227,9 +276,15 @@ def run_one_chunk(
         "input_video": str(input_video),
         "output_json": str(out_json),
         "ok": False,
+        "decode_ok": False,
+        "quality_ok": False,
+        "quality_flags": [],
         "hypothesis": None,
         "reason": None,
         "elapsed_sec": None,
+        "num_frames": None,
+        "mean_frame_delta": None,
+        "static_like_ratio": None,
         "worker_gpu_local": worker_info["local_idx"],
         "worker_gpu_physical": worker_info["physical_id"],
         "worker_gpu_name": worker_info["name"],
@@ -242,14 +297,28 @@ def run_one_chunk(
 
     t0 = time.time()
     try:
+        frames_rgb = load_video_rgb_array(str(input_video))
+        quality = video_quality_report(frames_rgb)
+        record.update(quality)
+
         record["hypothesis"] = decode_video(
             model_module=model_module,
             video_transform=video_transform,
-            video_path=input_video,
+            frames_rgb=frames_rgb,
             device=device,
         )
-        record["ok"] = True
-        record["reason"] = "success"
+        record["decode_ok"] = True
+
+        if quality["quality_ok"]:
+            record["ok"] = True
+            record["reason"] = "success"
+        elif allow_suspicious_output:
+            record["ok"] = True
+            record["reason"] = "success_with_quality_warning"
+        else:
+            record["ok"] = False
+            flags = ",".join(quality["quality_flags"]) if quality["quality_flags"] else "unknown_quality_issue"
+            record["reason"] = f"quality_gate_failed: {flags}"
     except Exception as e:
         record["reason"] = f"{type(e).__name__}: {e}"
     finally:
@@ -258,13 +327,16 @@ def run_one_chunk(
     out_json.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
     return record
 
+
 def chunk_json_sort_key(path: Path):
+    # S?p x?p file json d?u ra theo th? t? chunk.
     m = re.search(r"chunk_(\d+)\.json$", path.name)
     idx = int(m.group(1)) if m else 10**9
     return (path.parent.name, idx, path.name)
 
 
 def collect_results_from_output_root(output_root: Path) -> List[Dict]:
+    # Thu h?i m?i k?t qu? json d? ghép manifest cu?i.
     results: List[Dict] = []
 
     if not output_root.exists():
@@ -289,6 +361,7 @@ def collect_results_from_output_root(output_root: Path) -> List[Dict]:
 
     return results
 
+
 def worker_main(
     worker_info: Dict,
     tasks: List[Dict],
@@ -296,8 +369,11 @@ def worker_main(
     model_path: str,
     output_root: str,
     overwrite: bool,
+    beam_size: int,
+    allow_suspicious_output: bool,
     queue: mp.Queue,
 ) -> None:
+    # Ch?y m?t worker VSR trên m?t GPU local.
     local_idx = int(worker_info["local_idx"])
     device = torch.device(f"cuda:{local_idx}")
     torch.cuda.set_device(local_idx)
@@ -306,6 +382,7 @@ def worker_main(
         repo_root=Path(repo_root),
         pretrained_model_path=Path(model_path),
         device=device,
+        beam_size=beam_size,
     )
 
     print(
@@ -330,6 +407,7 @@ def worker_main(
             output_root=Path(output_root),
             overwrite=overwrite,
             worker_info=worker_info,
+            allow_suspicious_output=allow_suspicious_output,
         )
         results.append(rec)
 
@@ -350,7 +428,8 @@ def worker_main(
     )
 
 
-def main() -> None:
+def build_argparser() -> argparse.ArgumentParser:
+    # Khai báo tham s? CLI cho script.
     parser = argparse.ArgumentParser(
         description="Run chunk-level VSR inference in parallel on all GPUs listed in CUDA_VISIBLE_DEVICES."
     )
@@ -359,9 +438,17 @@ def main() -> None:
     parser.add_argument("--model-path", type=str, default="./pretrained_model/vsr_trlrs2lrs3vox2avsp_base.pth", help="Path to pretrained VSR checkpoint")
     parser.add_argument("--output-root", type=str, default="./src/module_2_extraction/vsr_output", help="Directory to save per-chunk outputs")
     parser.add_argument("--cache-root", type=str, default="./.cache/auto_avsr_src", help="Where auto_avsr source is cached locally")
+    parser.add_argument("--beam-size", type=int, default=10, help="Beam size for VSR decoding")
+    parser.add_argument("--allow-suspicious-output", action="store_true", help="Keep output even if video quality gate flags strong issues")
     parser.add_argument("--max-chunks", type=int, default=0, help="0 = all chunks, otherwise only first N chunks")
     parser.add_argument("--force-redownload", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
+    return parser
+
+
+def main() -> None:
+    # Ði?m vào chính: parse args, t?o worker, r?i ghi manifest t?ng.
+    parser = build_argparser()
     args = parser.parse_args()
 
     input_root = Path(args.input_root)
@@ -425,6 +512,8 @@ def main() -> None:
                 "workers": workers,
                 "num_tasks": len(tasks),
                 "num_workers": len(workers),
+                "beam_size": args.beam_size,
+                "input_video_name": args.input_video_name,
             },
             ensure_ascii=False,
             indent=2,
@@ -450,6 +539,8 @@ def main() -> None:
                 str(model_path),
                 str(output_root),
                 bool(args.overwrite),
+                int(args.beam_size),
+                bool(args.allow_suspicious_output),
                 queue,
             ),
         )
@@ -473,6 +564,9 @@ def main() -> None:
         "cache_root": str(cache_root),
         "auto_avsr_repo_root": str(repo_root),
         "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
+        "beam_size": args.beam_size,
+        "allow_suspicious_output": args.allow_suspicious_output,
+        "input_video_name": args.input_video_name,
         "num_workers": active_workers,
         "workers": [
             {
@@ -486,6 +580,8 @@ def main() -> None:
         "num_chunks": len(all_results),
         "num_ok": sum(1 for r in all_results if r.get("ok")),
         "num_failed": sum(1 for r in all_results if not r.get("ok")),
+        "num_decode_ok": sum(1 for r in all_results if r.get("decode_ok")),
+        "num_quality_ok": sum(1 for r in all_results if r.get("quality_ok")),
         "results": all_results,
     }
     manifest_path = output_root / "manifest.json"
@@ -501,6 +597,8 @@ def main() -> None:
                 "num_chunks": manifest["num_chunks"],
                 "num_ok": manifest["num_ok"],
                 "num_failed": manifest["num_failed"],
+                "num_decode_ok": manifest["num_decode_ok"],
+                "num_quality_ok": manifest["num_quality_ok"],
             },
             ensure_ascii=False,
             indent=2,
@@ -511,3 +609,13 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+# =============================
+# GHI CHÚ C?P NH?T / ÐI?M M?I
+# =============================
+# 1) B? sung quality gate cho video d?u vào d? phát hi?n chunk quá ng?n ho?c g?n nhu d?ng hình.
+# 2) Manifest m?i tách decode_ok và quality_ok d? th?y rõ chunk nào decode du?c nhung d?u vào dáng ng?.
+# 3) Gi?m beam m?c d?nh còn 10 d? decode g?n hon và d? ki?m soát hon.
+# 4) Ghi thêm num_frames, mean_frame_delta, static_like_ratio d? debug tr?c ti?p trên vsr_input.mp4.
+# 5) V?n gi? nguyên logic input m?c d?nh là vsr_input.mp4 d? kh?p v?i file build m?i.

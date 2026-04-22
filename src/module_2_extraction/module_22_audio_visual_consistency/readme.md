@@ -189,7 +189,7 @@ src/module_2_extraction/output/
 ## Thứ tự chạy nhanh
 
 ```bash
-python ./src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_input_from_slides.py --input-root ./data/interim --overwrite
+python ./src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_asr_input_from_slides.py --input-root ./data/interim --overwrite
 
 CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_vsr_inference_per_chunk.py --input-root ./data/interim --model-path ./pretrained_model/vsr_trlrs2lrs3vox2avsp_base.pth --output-root ./src/module_2_extraction/output/vsr_output --overwrite
 

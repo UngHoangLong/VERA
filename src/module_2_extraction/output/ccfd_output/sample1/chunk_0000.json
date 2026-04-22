@@ -1,0 +1,18 @@
+{
+  "video_id": "sample1",
+  "chunk": "chunk_0000",
+  "asr_json": "src/module_2_extraction/output/asr_output/sample1/chunk_0000.json",
+  "vsr_json": "src/module_2_extraction/output/vsr_output/sample1/chunk_0000.json",
+  "output_json": "src/module_2_extraction/output/ccfd_output/sample1/chunk_0000.json",
+  "ok": true,
+  "reason": "success",
+  "reference_text_raw": " working three part-time jobs just to pay his rent.",
+  "hypothesis_text_raw": "working three parttime jobs just to pay his rent",
+  "reference_text_norm": "working three part time jobs just to pay his rent",
+  "hypothesis_text_norm": "working three parttime jobs just to pay his rent",
+  "reference_word_count": 10,
+  "hypothesis_word_count": 9,
+  "edit_distance": 2,
+  "wer": 0.2,
+  "ccfd_score": 0.8
+}

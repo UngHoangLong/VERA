@@ -1,0 +1,43 @@
+{
+  "video_id": "sample1",
+  "chunk": "chunk_0003",
+  "chunk_dir": "data/interim/sample1/chunk_0003",
+  "input_audio": "data/interim/sample1/chunk_0003/sync_audio.wav",
+  "output_json": "src/module_2_extraction/output/asr_output/sample1/chunk_0003.json",
+  "ok": false,
+  "decode_ok": true,
+  "quality_ok": false,
+  "quality_flags": [
+    "too_many_words_per_second"
+  ],
+  "text": "and click on the link in the description for more information. Thank you for watching and see you in the next video.",
+  "chunks": [
+    {
+      "timestamp": [
+        0.0,
+        4.0
+      ],
+      "text": " and click on the link in the description for more information."
+    },
+    {
+      "timestamp": [
+        4.0,
+        8.0
+      ],
+      "text": " Thank you for watching and see you in the next video."
+    }
+  ],
+  "reason": "quality_gate_failed: too_many_words_per_second",
+  "elapsed_sec": 0.853,
+  "audio_duration_sec": 0.5,
+  "audio_rms": 0.03445885702967644,
+  "audio_peak_abs": 0.188323974609375,
+  "num_words": 22,
+  "unique_word_ratio": 0.727273,
+  "words_per_sec": 44.0,
+  "most_repeated_sentence": "and click on the link in the description for more information",
+  "most_repeated_sentence_count": 1,
+  "worker_gpu_local": 0,
+  "worker_gpu_physical": "3",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

@@ -11,20 +11,20 @@ from typing import Dict, List, Tuple
 
 _CHUNK_JSON_RE = re.compile(r"chunk_(\d+)\.json$")
 
-
+# Tạo khóa để sắp xếp file chunk_*.json đúng thứ tự chunk.
 def chunk_sort_key(path: Path) -> Tuple[int, str]:
     m = _CHUNK_JSON_RE.match(path.name)
     idx = int(m.group(1)) if m else 10**9
     return idx, path.name
 
-
+# Chuẩn hóa văn bản trước khi so sánh.
 def normalize_text(text: str) -> str:
     text = (text or "").lower()
     text = re.sub(r"[^a-z0-9\s']", " ", text)
     text = " ".join(text.split())
     return text
 
-
+# Tính số phép chỉnh sửa khác nhau giữa 2 câu ở mức từ.
 def levenshtein_words(ref_words: List[str], hyp_words: List[str]) -> int:
     n = len(ref_words)
     m = len(hyp_words)
@@ -51,7 +51,7 @@ def levenshtein_words(ref_words: List[str], hyp_words: List[str]) -> int:
 
     return prev[m]
 
-
+# Tính WER và suy ra ccfd_score từ text ASR và VSR.
 def compute_wer(reference: str, hypothesis: str) -> Dict:
     ref_norm = normalize_text(reference)
     hyp_norm = normalize_text(hypothesis)
@@ -80,18 +80,18 @@ def compute_wer(reference: str, hypothesis: str) -> Dict:
         "ccfd_score": float(round(ccfd_score, 6)),
     }
 
-
+# Đọc file JSON.
 def load_json(path: Path) -> Dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
-
+# Gom các file chunk của một video thành danh sách/ánh xạ để xử lý.
 def collect_chunk_paths(video_dir: Path) -> Dict[str, Path]:
     paths: Dict[str, Path] = {}
     for p in sorted(video_dir.glob("chunk_*.json"), key=chunk_sort_key):
         paths[p.stem] = p
     return paths
 
-
+# Tổng hợp kết quả toàn bộ chunk của một video.
 def build_video_summary(video_id: str, rows: List[Dict]) -> Dict:
     valid = [r for r in rows if r.get("ok")]
     failed = [r for r in rows if not r.get("ok")]
@@ -133,7 +133,7 @@ def build_video_summary(video_id: str, rows: List[Dict]) -> Dict:
 
     return summary
 
-
+# Đọc input, duyệt video/chunk, tính kết quả, lưu summary.json và manifest.json.
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Complete CCFD by using ASR text as reference, VSR text as hypothesis, and computing WER per chunk."

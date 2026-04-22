@@ -1,0 +1,34 @@
+{
+  "video_id": "sample",
+  "chunk": "chunk_0004",
+  "chunk_dir": "data/interim/sample/chunk_0004",
+  "input_audio": "data/interim/sample/chunk_0004/sync_audio.wav",
+  "output_json": "src/module_2_extraction/output/asr_output/sample/chunk_0004.json",
+  "ok": true,
+  "decode_ok": true,
+  "quality_ok": true,
+  "quality_flags": [],
+  "text": "of the people. Give me your money.",
+  "chunks": [
+    {
+      "timestamp": [
+        0.0,
+        3.36
+      ],
+      "text": " of the people. Give me your money."
+    }
+  ],
+  "reason": "success",
+  "elapsed_sec": 0.384,
+  "audio_duration_sec": 1.5,
+  "audio_rms": 0.08360075950622559,
+  "audio_peak_abs": 0.4261627197265625,
+  "num_words": 7,
+  "unique_word_ratio": 1.0,
+  "words_per_sec": 4.666667,
+  "most_repeated_sentence": "of the people",
+  "most_repeated_sentence_count": 1,
+  "worker_gpu_local": 0,
+  "worker_gpu_physical": "3",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

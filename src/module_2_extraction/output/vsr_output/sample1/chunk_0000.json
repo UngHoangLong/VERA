@@ -1,0 +1,20 @@
+{
+  "video_id": "sample1",
+  "chunk": "chunk_0000",
+  "chunk_dir": "data/interim/sample1/chunk_0000",
+  "input_video": "data/interim/sample1/chunk_0000/vsr_input.mp4",
+  "output_json": "src/module_2_extraction/output/vsr_output/sample1/chunk_0000.json",
+  "ok": true,
+  "decode_ok": true,
+  "quality_ok": true,
+  "quality_flags": [],
+  "hypothesis": "so",
+  "reason": "success",
+  "elapsed_sec": 0.335,
+  "num_frames": 23,
+  "mean_frame_delta": 5.747034,
+  "static_like_ratio": 0.0,
+  "worker_gpu_local": 1,
+  "worker_gpu_physical": "5",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

@@ -220,9 +220,12 @@ def run_one_chunk(
             pipe_kwargs["return_timestamps"] = True
         if chunk_length_s > 0:
             pipe_kwargs["chunk_length_s"] = chunk_length_s
-
+        # Thêm các tham số cho quá trình sinh văn bản
         generate_kwargs = {
-            "num_beams": 40,
+            "num_beams": 5,                # Vẫn phải hạ xuống 5 nhé! 40 nhánh cho 2 giây là quá lãng phí và dễ gây ảo giác.
+            "repetition_penalty": 1.2,     # Phạt lặp từ ở mức tiêu chuẩn.
+            "no_repeat_ngram_size": 3,     # BẬT LÊN ĐƯỢC RỒI! Cấm lặp một cụm 3 từ (VD: cấm nói "hello hello hello").
+            "compression_ratio_threshold": 2.4,
         }
 
         if condition_on_prev_tokens:
@@ -328,7 +331,7 @@ def main() -> None:
         description="Run chunk-level ASR inference with local Whisper on all GPUs listed in CUDA_VISIBLE_DEVICES."
     )
     parser.add_argument("--input-root", type=str, default="./data/interim", help="Root dir containing <video_id> folders")
-    parser.add_argument("--input-audio-name", type=str, default="audio.wav", help="Chunk-level wav file name")
+    parser.add_argument("--input-audio-name", type=str, default="sync_audio.wav", help="Chunk-level wav file name") # Đổi đường chuyền âm thanh
     parser.add_argument("--model-path", type=str, default="./pretrained_model/whisper-medium-en/model.safetensors", help="Path to model.safetensors")
     parser.add_argument("--output-root", type=str, default="./src/module_2_extraction/asr_output", help="Directory to save per-chunk outputs")
     parser.add_argument("--language", type=str, default="english", help='Language hint for multilingual Whisper. Ignored for English-only models.')
@@ -495,3 +498,11 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# python run_asr_inference_per_chunk.py \
+#     --input-root ./data/interim \
+#     --input-audio-name sync_audio.wav \
+#     --model-path ./pretrained_model/whisper-medium.en/model.safetensors \
+#     --output-root ./src/module_2_extraction/asr_output \
+#     --batch-size 4 \
+#     --english-only
