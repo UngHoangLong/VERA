@@ -1,0 +1,21 @@
+{
+  "video_id": "Professor_Andrew_Goddard ",
+  "chunk": "chunk_0134",
+  "chunk_dir": "data/interim/Professor_Andrew_Goddard /chunk_0134",
+  "input_video": "data/interim/Professor_Andrew_Goddard /chunk_0134/vsr_input.mp4",
+  "input_found": true,
+  "output_json": "src/module_2_extraction/output/vsr_output/Professor_Andrew_Goddard /chunk_0134.json",
+  "ok": true,
+  "decode_ok": true,
+  "quality_ok": true,
+  "quality_flags": [],
+  "hypothesis": "in the long run it saves england's money one",
+  "reason": "success",
+  "elapsed_sec": 0.749,
+  "num_frames": 100,
+  "mean_frame_delta": 5.1634,
+  "static_like_ratio": 0.0,
+  "worker_gpu_local": 1,
+  "worker_gpu_physical": "6",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

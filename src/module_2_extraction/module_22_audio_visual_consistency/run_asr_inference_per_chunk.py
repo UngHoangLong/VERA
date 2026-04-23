@@ -149,6 +149,87 @@ def load_audio_array(path: str) -> Tuple[np.ndarray, int]:
     return audio, int(sr)
 
 
+def normalize_transcript_text(text: str) -> str:
+    # Chuan hoa khoang trang de de phat hien lap va luu output gon hon.
+    return re.sub(r"\s+", " ", (text or "")).strip()
+
+
+def trim_incomplete_tail(text: str) -> str:
+    # Bo bot tu noi o cuoi neu cum lap bi cat o diem chua tron nghia.
+    trailing_fillers = {"and", "or", "but", "so", "because", "that", "to", "of", "for", "in", "on", "with", "a", "an", "the"}
+    words = normalize_transcript_text(text).split(" ")
+    while words and words[-1].lower() in trailing_fillers:
+        words.pop()
+    return " ".join(words)
+
+
+def collapse_pathological_repetition(text: str, min_unit_words: int = 4, min_repeats: int = 3) -> Tuple[str, bool]:
+    # Neu output la mot cum tu dau tien bi lap lien tiep nhieu lan, chi giu lai 1 lan.
+    normalized = normalize_transcript_text(text)
+    if not normalized:
+        return "", False
+
+    words = normalized.split(" ")
+    if len(words) < min_unit_words * min_repeats:
+        return normalized, False
+
+    max_unit_words = min(24, len(words) // min_repeats)
+    best_text = normalized
+    best_found = False
+
+    for unit_words in range(max_unit_words, min_unit_words - 1, -1):
+        phrase_words = words[:unit_words]
+        repeats = 0
+        idx = 0
+        while idx + unit_words <= len(words) and words[idx:idx + unit_words] == phrase_words:
+            repeats += 1
+            idx += unit_words
+
+        if repeats < min_repeats:
+            continue
+
+        covered_ratio = idx / len(words)
+        if covered_ratio < 0.75:
+            continue
+
+        best_text = trim_incomplete_tail(" ".join(phrase_words))
+        best_found = True
+        break
+
+    return best_text, best_found
+
+
+def build_generate_kwargs(
+    language: str,
+    condition_on_prev_tokens: bool,
+    is_english_only: bool,
+    num_beams: int,
+    repetition_penalty: float,
+    no_repeat_ngram_size: int,
+) -> Dict:
+    # Gom cac tham so generate de giam lap transcript.
+    generate_kwargs: Dict = {}
+
+    if num_beams > 0:
+        generate_kwargs["num_beams"] = int(num_beams)
+
+    generate_kwargs["condition_on_prev_tokens"] = bool(condition_on_prev_tokens)
+
+    if repetition_penalty > 1.0:
+        generate_kwargs["repetition_penalty"] = float(repetition_penalty)
+
+    if no_repeat_ngram_size > 0:
+        generate_kwargs["no_repeat_ngram_size"] = int(no_repeat_ngram_size)
+
+    # English-only Whisper must NOT receive task/language.
+    if not is_english_only:
+        generate_kwargs["task"] = "transcribe"
+        if language:
+            generate_kwargs["language"] = language
+
+    return generate_kwargs
+
+
 def make_asr_pipeline(model_dir: Path, local_idx: int, dtype, batch_size: int):
     # Khoi tao Whisper pipeline tren mot GPU local.
     from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
@@ -242,6 +323,12 @@ def run_one_chunk(
     chunk_length_s: float,
     condition_on_prev_tokens: bool,
     is_english_only: bool,
+    num_beams: int,
+    repetition_penalty: float,
+    no_repeat_ngram_size: int,
+    retry_num_beams: int,
+    retry_repetition_penalty: float,
+    retry_no_repeat_ngram_size: int,
 ) -> Dict:
     # Chay ASR cho mot chunk va dam bao output khong de null.
     record, out_json = make_base_record(task=task, output_root=output_root, worker_info=worker_info)
@@ -279,29 +366,60 @@ def run_one_chunk(
         if chunk_length_s > 0:
             pipe_kwargs["chunk_length_s"] = chunk_length_s
 
-        generate_kwargs = {
-            "num_beams": 40,
-        }
-
-        if condition_on_prev_tokens:
-            generate_kwargs["condition_on_prev_tokens"] = True
-
-        # English-only Whisper must NOT receive task/language.
-        if not is_english_only:
-            generate_kwargs["task"] = "transcribe"
-            if language:
-                generate_kwargs["language"] = language
+        generate_kwargs = build_generate_kwargs(
+            language=language,
+            condition_on_prev_tokens=condition_on_prev_tokens,
+            is_english_only=is_english_only,
+            num_beams=num_beams,
+            repetition_penalty=repetition_penalty,
+            no_repeat_ngram_size=no_repeat_ngram_size,
+        )
 
         if generate_kwargs:
             pipe_kwargs["generate_kwargs"] = generate_kwargs
 
         result = pipe(model_input, **pipe_kwargs)
+        initial_text = normalize_transcript_text(result.get("text") or "")
+        final_text, repeated_detected = collapse_pathological_repetition(initial_text)
+        final_result = result
+        postprocess_note = ""
+
+        if repeated_detected:
+            retry_kwargs = build_generate_kwargs(
+                language=language,
+                condition_on_prev_tokens=False,
+                is_english_only=is_english_only,
+                num_beams=retry_num_beams,
+                repetition_penalty=retry_repetition_penalty,
+                no_repeat_ngram_size=retry_no_repeat_ngram_size,
+            )
+
+            retry_pipe_kwargs = dict(pipe_kwargs)
+            retry_pipe_kwargs["generate_kwargs"] = retry_kwargs
+            retry_result = pipe(model_input, **retry_pipe_kwargs)
+            retry_text = normalize_transcript_text(retry_result.get("text") or "")
+            retry_text_collapsed, retry_still_repeated = collapse_pathological_repetition(retry_text)
+
+            if retry_text and not retry_still_repeated:
+                final_text = retry_text
+                final_result = retry_result
+                postprocess_note = "retry_decode"
+            elif retry_text_collapsed:
+                final_text = retry_text_collapsed
+                final_result = retry_result
+                postprocess_note = "retry_decode_then_collapse_repetition"
+            else:
+                postprocess_note = "collapse_repetition"
+
+            if final_text != initial_text:
+                record["text_raw"] = initial_text
+                record["repetition_fix"] = postprocess_note
 
         record["ok"] = True
-        record["text"] = (result.get("text") or "").strip()
+        record["text"] = final_text
         if return_timestamps:
-            record["chunks"] = result.get("chunks") or []
-        record["reason"] = "success"
+            record["chunks"] = final_result.get("chunks") or []
+        record["reason"] = "success" if not postprocess_note else f"success_{postprocess_note}"
     except Exception as e:
         record["reason"] = f"{type(e).__name__}: {e}"
     finally:
@@ -322,6 +440,12 @@ def worker_main(
     chunk_length_s: float,
     condition_on_prev_tokens: bool,
     is_english_only: bool,
+    num_beams: int,
+    repetition_penalty: float,
+    no_repeat_ngram_size: int,
+    retry_num_beams: int,
+    retry_repetition_penalty: float,
+    retry_no_repeat_ngram_size: int,
     queue: mp.Queue,
 ) -> None:
     # Chay mot worker ASR tren mot GPU local.
@@ -361,6 +485,12 @@ def worker_main(
             chunk_length_s=chunk_length_s,
             condition_on_prev_tokens=condition_on_prev_tokens,
             is_english_only=is_english_only,
+            num_beams=num_beams,
+            repetition_penalty=repetition_penalty,
+            no_repeat_ngram_size=no_repeat_ngram_size,
+            retry_num_beams=retry_num_beams,
+            retry_repetition_penalty=retry_repetition_penalty,
+            retry_no_repeat_ngram_size=retry_no_repeat_ngram_size,
         )
         results.append(rec)
 
@@ -406,6 +536,12 @@ def write_manifest(
         "chunk_length_s": args.chunk_length_s,
         "return_timestamps": args.return_timestamps,
         "condition_on_prev_tokens": args.condition_on_prev_tokens,
+        "num_beams": args.num_beams,
+        "repetition_penalty": args.repetition_penalty,
+        "no_repeat_ngram_size": args.no_repeat_ngram_size,
+        "retry_num_beams": args.retry_num_beams,
+        "retry_repetition_penalty": args.retry_repetition_penalty,
+        "retry_no_repeat_ngram_size": args.retry_no_repeat_ngram_size,
         "num_workers": active_workers,
         "workers": [
             {
@@ -444,6 +580,12 @@ def main() -> None:
     parser.add_argument("--return-timestamps", action="store_true")
     parser.add_argument("--condition-on-prev-tokens", action="store_true")
     parser.add_argument("--english-only", action="store_true", help="Force English-only behavior: do not pass task/language to generate")
+    parser.add_argument("--num-beams", type=int, default=40, help="Beam size cho lan decode dau tien. Giam tu 40 xuong 5 de tranh lap transcript.")
+    parser.add_argument("--repetition-penalty", type=float, default=1.15, help="Phat transcript lap o lan decode dau tien.")
+    parser.add_argument("--no-repeat-ngram-size", type=int, default=4, help="Cam lap lai n-gram o lan decode dau tien.")
+    parser.add_argument("--retry-num-beams", type=int, default=1, help="Beam size cho lan decode lai khi phat hien lap transcript.")
+    parser.add_argument("--retry-repetition-penalty", type=float, default=1.25, help="Phat lap manh hon cho lan decode lai.")
+    parser.add_argument("--retry-no-repeat-ngram-size", type=int, default=4, help="Cam lap n-gram cho lan decode lai.")
     parser.add_argument("--max-chunks", type=int, default=0, help="0 = all chunks, otherwise only first N chunks")
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
@@ -578,6 +720,12 @@ def main() -> None:
                 "model_dir": str(model_dir),
                 "model_path": str(model_path),
                 "is_english_only": is_english_only,
+                "num_beams": args.num_beams,
+                "repetition_penalty": args.repetition_penalty,
+                "no_repeat_ngram_size": args.no_repeat_ngram_size,
+                "retry_num_beams": args.retry_num_beams,
+                "retry_repetition_penalty": args.retry_repetition_penalty,
+                "retry_no_repeat_ngram_size": args.retry_no_repeat_ngram_size,
             },
             ensure_ascii=False,
             indent=2,
@@ -608,6 +756,12 @@ def main() -> None:
                 float(args.chunk_length_s),
                 bool(args.condition_on_prev_tokens),
                 bool(is_english_only),
+                int(args.num_beams),
+                float(args.repetition_penalty),
+                int(args.no_repeat_ngram_size),
+                int(args.retry_num_beams),
+                float(args.retry_repetition_penalty),
+                int(args.retry_no_repeat_ngram_size),
                 queue,
             ),
         )

@@ -1,0 +1,21 @@
+{
+  "video_id": "Professor_Andrew_Goddard ",
+  "chunk": "chunk_0120",
+  "chunk_dir": "data/interim/Professor_Andrew_Goddard /chunk_0120",
+  "input_video": "data/interim/Professor_Andrew_Goddard /chunk_0120/vsr_input.mp4",
+  "input_found": true,
+  "output_json": "src/module_2_extraction/output/vsr_output/Professor_Andrew_Goddard /chunk_0120.json",
+  "ok": true,
+  "decode_ok": true,
+  "quality_ok": true,
+  "quality_flags": [],
+  "hypothesis": "and i think it's shameful that last year",
+  "reason": "success",
+  "elapsed_sec": 0.624,
+  "num_frames": 100,
+  "mean_frame_delta": 4.497733,
+  "static_like_ratio": 0.010101,
+  "worker_gpu_local": 1,
+  "worker_gpu_physical": "6",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

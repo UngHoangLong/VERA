@@ -1,0 +1,19 @@
+{
+  "video_id": "Kamala_Harriss",
+  "chunk": "chunk_0020",
+  "chunk_dir": "data/interim/Kamala_Harriss/chunk_0020",
+  "input_audio": "data/interim/Kamala_Harriss/chunk_0020/sync_audio.wav",
+  "input_found": true,
+  "output_json": "src/module_2_extraction/output/asr_output/Kamala_Harriss/chunk_0020.json",
+  "ok": true,
+  "text": "Biden and I are working to end this war such that",
+  "chunks": [],
+  "reason": "success",
+  "elapsed_sec": 1.089,
+  "sampling_rate": 16000,
+  "num_samples": 64000,
+  "duration_sec": 4.0,
+  "worker_gpu_local": 0,
+  "worker_gpu_physical": "1",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}
