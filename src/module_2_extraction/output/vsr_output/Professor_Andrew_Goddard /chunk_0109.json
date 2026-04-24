@@ -1,0 +1,21 @@
+{
+  "video_id": "Professor_Andrew_Goddard ",
+  "chunk": "chunk_0109",
+  "chunk_dir": "data/interim/Professor_Andrew_Goddard /chunk_0109",
+  "input_video": "data/interim/Professor_Andrew_Goddard /chunk_0109/vsr_input.mp4",
+  "input_found": true,
+  "output_json": "src/module_2_extraction/output/vsr_output/Professor_Andrew_Goddard /chunk_0109.json",
+  "ok": true,
+  "decode_ok": true,
+  "quality_ok": true,
+  "quality_flags": [],
+  "hypothesis": "are you scared to talk about it with their gp",
+  "reason": "success",
+  "elapsed_sec": 0.945,
+  "num_frames": 100,
+  "mean_frame_delta": 4.331416,
+  "static_like_ratio": 0.0,
+  "worker_gpu_local": 0,
+  "worker_gpu_physical": "1",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

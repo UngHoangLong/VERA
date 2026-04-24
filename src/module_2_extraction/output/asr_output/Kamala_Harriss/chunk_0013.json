@@ -1,0 +1,19 @@
+{
+  "video_id": "Kamala_Harriss",
+  "chunk": "chunk_0013",
+  "chunk_dir": "data/interim/Kamala_Harriss/chunk_0013",
+  "input_audio": "data/interim/Kamala_Harriss/chunk_0013/sync_audio.wav",
+  "input_found": true,
+  "output_json": "src/module_2_extraction/output/asr_output/Kamala_Harriss/chunk_0013.json",
+  "ok": true,
+  "text": "putting Donald Trump back in the White House",
+  "chunks": [],
+  "reason": "success",
+  "elapsed_sec": 1.034,
+  "sampling_rate": 16000,
+  "num_samples": 56000,
+  "duration_sec": 3.5,
+  "worker_gpu_local": 1,
+  "worker_gpu_physical": "6",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

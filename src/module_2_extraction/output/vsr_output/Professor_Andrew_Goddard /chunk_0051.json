@@ -1,0 +1,21 @@
+{
+  "video_id": "Professor_Andrew_Goddard ",
+  "chunk": "chunk_0051",
+  "chunk_dir": "data/interim/Professor_Andrew_Goddard /chunk_0051",
+  "input_video": "data/interim/Professor_Andrew_Goddard /chunk_0051/vsr_input.mp4",
+  "input_found": true,
+  "output_json": "src/module_2_extraction/output/vsr_output/Professor_Andrew_Goddard /chunk_0051.json",
+  "ok": true,
+  "decode_ok": true,
+  "quality_ok": true,
+  "quality_flags": [],
+  "hypothesis": "both to be thin or to be omit a",
+  "reason": "success",
+  "elapsed_sec": 1.017,
+  "num_frames": 100,
+  "mean_frame_delta": 4.263246,
+  "static_like_ratio": 0.0,
+  "worker_gpu_local": 0,
+  "worker_gpu_physical": "1",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

@@ -10,6 +10,7 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 import soundfile as sf # Cắt cả âm thanh
 import cv2
 import numpy as np
+import shutil
 
 import sys
 import os
@@ -49,80 +50,6 @@ def natural_chunk_key(path: Path) -> Tuple[int, str]:
     m = re.search(r'chunk_(\d+)$', path.name)
     return (int(m.group(1)) if m else 10**9, path.name)
 
-# hàm này không ổn. Vì như ta đã bàn là trong 1 chunk thì không phải lúc nào slide cũng liên tục. Nên ở module 2.2 này với mỗi chunk ta sẽ tổng hợp và giữ lại 1 chuỗi slide liên tục dài nhất.
-# Còn hàm dưới này nó mặc định gom lại tất cả slide trong một chunk. Đúng là nó tuân theo thứ tự, nhưng không liên tục
-# def collect_slide_pairs(slides_dir: Path) -> List[PairInfo]:
-#     face_map: Dict[str, Path] = {}
-#     lmk_map: Dict[str, Path] = {}
-#     for p in sorted(slides_dir.glob('*.npy')):
-#         m = SLIDE_FACE_RE.match(p.name)
-#         if m:
-#             face_map[m.group(1)] = p
-#             continue
-#         m = SLIDE_LMK_RE.match(p.name)
-#         if m:
-#             lmk_map[m.group(1)] = p
-
-#     pairs: List[PairInfo] = []
-#     for slide_id, faces_path in sorted(face_map.items()):
-#         landmarks_path = lmk_map.get(slide_id)
-#         if landmarks_path is not None:
-#             pairs.append(PairInfo(slide_id=slide_id, faces_path=faces_path, landmarks_path=landmarks_path))
-#     return pairs
-
-# Hàm ghép slide liên tiếp
-# def collect_slide_pairs(slides_dir: Path) -> List[PairInfo]:
-#     face_map: Dict[str, Path] = {}
-#     lmk_map: Dict[str, Path] = {}
-#     for p in sorted(slides_dir.glob('*.npy')):
-#         m = SLIDE_FACE_RE.match(p.name)
-#         if m:
-#             face_map[m.group(1)] = p
-#             continue
-#         m = SLIDE_LMK_RE.match(p.name)
-#         if m:
-#             lmk_map[m.group(1)] = p
-
-#     # 1. Ghép cặp và trích xuất luôn ID dạng số (integer) để dễ kiểm tra tính liên tục
-#     pairs_with_idx: List[Tuple[int, PairInfo]] = []
-#     for slide_id, faces_path in sorted(face_map.items()):
-#         landmarks_path = lmk_map.get(slide_id)
-#         if landmarks_path is not None:
-#             # Lấy con số từ chuỗi "slide_05" -> 5
-#             idx_match = re.search(r'\d+', slide_id)
-#             idx = int(idx_match.group()) if idx_match else -1
-#             pairs_with_idx.append((idx, PairInfo(slide_id=slide_id, faces_path=faces_path, landmarks_path=landmarks_path)))
-
-#     if not pairs_with_idx:
-#         return []
-
-#     # Sắp xếp lại cho chắc chắn theo thứ tự tăng dần của ID
-#     pairs_with_idx.sort(key=lambda x: x[0])
-
-#     # 2. Thuật toán tìm chuỗi liên tục dài nhất
-#     longest_seq: List[PairInfo] = []
-#     current_seq: List[PairInfo] = [pairs_with_idx[0][1]]
-#     last_idx = pairs_with_idx[0][0]
-
-#     for i in range(1, len(pairs_with_idx)):
-#         curr_idx, pair_info = pairs_with_idx[i]
-        
-#         if curr_idx == last_idx + 1:
-#             # Slide liên tục -> Thêm vào chuỗi hiện tại
-#             current_seq.append(pair_info)
-#         else:
-#             # Bị đứt gãy -> Kiểm tra và lưu lại chuỗi dài nhất, sau đó reset
-#             if len(current_seq) > len(longest_seq):
-#                 longest_seq = current_seq
-#             current_seq = [pair_info]
-            
-#         last_idx = curr_idx
-
-#     # Kiểm tra lần cuối khi kết thúc vòng lặp
-#     if len(current_seq) > len(longest_seq):
-#         longest_seq = current_seq
-
-#     return longest_seq
 
 # hàm trích cắt âm thanh tương ứng với video miệng đã cắt
 def crop_audio_to_match_video(chunk_dir: Path, longest_seq: List[PairInfo], audio_name: str = 'audio.wav', sync_audio_name: str = 'sync_audio.wav') -> bool:
@@ -135,6 +62,18 @@ def crop_audio_to_match_video(chunk_dir: Path, longest_seq: List[PairInfo], audi
 
     with open(meta_path, 'r', encoding='utf-8') as f:
         meta = json.load(f)
+
+    # FILTER MỚI THÊM: NẾU CHUNK KHÔNG MẤT SLIDE NÀO -> COPY LUÔN THÀHH FILE ASYNC_AUDIO
+    slides_meta = meta.get('slides', [])
+    if slides_meta and len(longest_seq) == len(slides_meta):
+        out_path = chunk_dir / sync_audio_name
+        try:
+            shutil.copyfile(audio_path, out_path)
+            return True
+        except Exception as e:
+            print(f"Lỗi khi copy audio tại {chunk_dir}: {e}")
+            return False
+        
 
     # 1. Lấy mốc thời gian gốc của Chunk
     chunk_start_sec = meta.get('start_sec', 0.0)
@@ -266,38 +205,6 @@ def load_landmark_batch(path: Path, num_frames: int) -> np.ndarray:
 def finite_mask(lm: np.ndarray) -> np.ndarray:
     return np.all(np.isfinite(lm[:, :2]), axis=1)
 
-
-# def infer_bbox_from_landmarks(lm: np.ndarray) -> np.ndarray:
-#     valid = finite_mask(lm)
-#     if not np.any(valid):
-#         raise ValueError('Không có landmarks hợp lệ để suy bbox')
-#     pts = lm[valid, :2]
-#     x1, y1 = np.min(pts, axis=0)
-#     x2, y2 = np.max(pts, axis=0)
-#     return np.array([x1, y1, x2, y2], dtype=np.float32)
-
-# Lấy margin thừa thải, vì module 1 đã làm rồi
-# def expand_bbox_xyxy(bbox_xyxy: np.ndarray, margin_ratio: float) -> np.ndarray:
-#     x1, y1, x2, y2 = [float(v) for v in bbox_xyxy.tolist()]
-#     w = max(x2 - x1, 1e-6)
-#     h = max(y2 - y1, 1e-6)
-#     mx = w * margin_ratio
-#     my = h * margin_ratio
-#     return np.array([x1 - mx, y1 - my, x2 + mx, y2 + my], dtype=np.float32)
-
-# Vì module 1, đã chuyển toạ độ ảnh gốc sang toạ độ ảnh crop_face tương ứng rồi nên không cần phải làm lại. Dễ dẫn đến bug
-# def map_landmarks_orig_to_face_crop(lm_orig: np.ndarray, face_w: int, face_h: int, margin_ratio: float) -> np.ndarray:
-#     bbox = infer_bbox_from_landmarks(lm_orig)
-#     crop_bbox = expand_bbox_xyxy(bbox, margin_ratio=margin_ratio)
-#     x1, y1, x2, y2 = [float(v) for v in crop_bbox.tolist()]
-#     crop_w = max(x2 - x1, 1e-6)
-#     crop_h = max(y2 - y1, 1e-6)
-
-#     lm_face = np.full_like(lm_orig, np.nan, dtype=np.float32)
-#     valid = finite_mask(lm_orig)
-#     lm_face[valid, 0] = (lm_orig[valid, 0] - x1) * float(face_w) / crop_w
-#     lm_face[valid, 1] = (lm_orig[valid, 1] - y1) * float(face_h) / crop_h
-#     return lm_face
 
 
 def point(lm: np.ndarray, idx: int) -> Optional[np.ndarray]:
@@ -611,9 +518,9 @@ class ChunkMouthExporter:
                 'fps': fps,
             }
 
-        # ========== KIỂM TRA ĐIỀU KIỆN LỚN HƠN 2 GIÂY ==========
+        # ========== KIỂM TRA ĐIỀU KIỆN LỚN HƠN 1.5 GIÂY ==========
         duration_sec = len(crops) / fps
-        if duration_sec <= 2.0:
+        if duration_sec <= 1.5:
             return {
                 'chunk_dir': str(chunk_dir),
                 'output_path': str(output_path),

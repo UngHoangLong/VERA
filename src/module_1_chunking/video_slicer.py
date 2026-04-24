@@ -2,7 +2,7 @@ import sys
 import os
 import json
 from pathlib import Path
-
+import shutil
 import cv2
 import numpy as np
 from moviepy import VideoFileClip
@@ -97,6 +97,17 @@ class VideoSlicer:
                 )
 
             self._create_slides(video_file, chunk_dir / "slides", fps)
+
+            # FILTER: KIỂM TRA SỐ LƯỢNG SLIDE VÀ XÓA NẾU <= 3
+            slides_dir = chunk_dir / "slides"
+            valid_slides_count = len(list(slides_dir.glob("*_faces.npy")))
+
+            if valid_slides_count <= 3:
+                print(f"  ⏭️ Bỏ qua và xóa {chunk_id}: Chỉ có {valid_slides_count} slide có mặt (<= 3).")
+                shutil.rmtree(chunk_dir) # Xóa sạch thư mục chunk vừa tạo
+                start_t += self.stride   # Vẫn tiến thời gian tới
+                chunk_idx += 1           # VẪN TĂNG ID CHUNK NHƯ BÌNH THƯỜNG
+                continue
 
             start_t += self.stride
             chunk_idx += 1

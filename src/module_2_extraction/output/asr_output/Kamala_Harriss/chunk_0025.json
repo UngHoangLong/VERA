@@ -1,0 +1,19 @@
+{
+  "video_id": "Kamala_Harriss",
+  "chunk": "chunk_0025",
+  "chunk_dir": "data/interim/Kamala_Harriss/chunk_0025",
+  "input_audio": "data/interim/Kamala_Harriss/chunk_0025/sync_audio.wav",
+  "input_found": true,
+  "output_json": "src/module_2_extraction/output/asr_output/Kamala_Harriss/chunk_0025.json",
+  "ok": true,
+  "text": "Palestinian people can realize their right.",
+  "chunks": [],
+  "reason": "success",
+  "elapsed_sec": 0.811,
+  "sampling_rate": 16000,
+  "num_samples": 56000,
+  "duration_sec": 3.5,
+  "worker_gpu_local": 1,
+  "worker_gpu_physical": "6",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

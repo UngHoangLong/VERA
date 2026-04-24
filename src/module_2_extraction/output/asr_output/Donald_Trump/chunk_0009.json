@@ -1,0 +1,19 @@
+{
+  "video_id": "Donald_Trump",
+  "chunk": "chunk_0009",
+  "chunk_dir": "data/interim/Donald_Trump/chunk_0009",
+  "input_audio": "data/interim/Donald_Trump/chunk_0009/sync_audio.wav",
+  "input_found": false,
+  "output_json": "src/module_2_extraction/output/asr_output/Donald_Trump/chunk_0009.json",
+  "ok": false,
+  "text": "",
+  "chunks": [],
+  "reason": "input_audio_not_found",
+  "elapsed_sec": 0.0,
+  "sampling_rate": 0,
+  "num_samples": 0,
+  "duration_sec": 0.0,
+  "worker_gpu_local": -1,
+  "worker_gpu_physical": "",
+  "worker_gpu_name": ""
+}

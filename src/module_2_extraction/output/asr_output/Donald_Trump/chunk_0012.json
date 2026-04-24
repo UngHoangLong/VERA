@@ -1,0 +1,19 @@
+{
+  "video_id": "Donald_Trump",
+  "chunk": "chunk_0012",
+  "chunk_dir": "data/interim/Donald_Trump/chunk_0012",
+  "input_audio": "data/interim/Donald_Trump/chunk_0012/sync_audio.wav",
+  "input_found": true,
+  "output_json": "src/module_2_extraction/output/asr_output/Donald_Trump/chunk_0012.json",
+  "ok": true,
+  "text": "and I am always beautiful.",
+  "chunks": [],
+  "reason": "success",
+  "elapsed_sec": 1.589,
+  "sampling_rate": 16000,
+  "num_samples": 48000,
+  "duration_sec": 3.0,
+  "worker_gpu_local": 1,
+  "worker_gpu_physical": "6",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}

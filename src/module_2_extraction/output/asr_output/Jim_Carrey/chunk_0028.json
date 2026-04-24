@@ -1,0 +1,19 @@
+{
+  "video_id": "Jim_Carrey",
+  "chunk": "chunk_0028",
+  "chunk_dir": "data/interim/Jim_Carrey/chunk_0028",
+  "input_audio": "data/interim/Jim_Carrey/chunk_0028/sync_audio.wav",
+  "input_found": true,
+  "output_json": "src/module_2_extraction/output/asr_output/Jim_Carrey/chunk_0028.json",
+  "ok": true,
+  "text": "dealing.",
+  "chunks": [],
+  "reason": "success",
+  "elapsed_sec": 1.896,
+  "sampling_rate": 16000,
+  "num_samples": 40000,
+  "duration_sec": 2.5,
+  "worker_gpu_local": 1,
+  "worker_gpu_physical": "6",
+  "worker_gpu_name": "NVIDIA GeForce RTX 2080 Ti"
+}
