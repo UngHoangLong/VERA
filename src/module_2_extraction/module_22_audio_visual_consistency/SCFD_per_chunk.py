@@ -105,7 +105,7 @@ def load_audio_mono_16k(path: str) -> Tuple[np.ndarray, int]:
 
     return np.nan_to_num(audio, nan=0.0, posinf=0.0, neginf=0.0), int(sr)
 
-
+# Yêu cầu video phải có độ phân giải 25fps
 def stack_audio_feats(feats: np.ndarray, stack_order: int = 4) -> np.ndarray:
     feat_dim = feats.shape[1]
     if len(feats) % stack_order != 0:
@@ -159,7 +159,7 @@ def load_video_as_is(path: str) -> np.ndarray:
 
     return np.stack(frames, axis=0)
 
-
+# Kiểm tra số bước thời gian giữa video và audio (Chốt chặn kiểm soát chất lượng)
 def assert_same_num_steps(video_frames: np.ndarray, audio_feats: np.ndarray) -> None:
     num_video_steps = int(video_frames.shape[0])
     num_audio_steps = int(audio_feats.shape[0])

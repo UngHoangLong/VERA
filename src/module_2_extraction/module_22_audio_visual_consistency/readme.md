@@ -113,7 +113,7 @@ pip install "omegaconf==2.0.6" "hydra-core==1.0.7" "numpy==1.23.5"
 CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/SCFD_per_chunk.py \
   --input-root ./data/interim \
   --input-video-name vsr_input.mp4 \
-  --input-audio-name audio.wav \
+  --input-audio-name sync_audio.wav \
   --avhubert-root ../av_hubert \
   --model-path ./pretrained_model/base_vox_iter5.pt \
   --output-root ./src/module_2_extraction/output/scfd_output \

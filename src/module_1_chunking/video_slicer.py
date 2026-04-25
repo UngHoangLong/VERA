@@ -54,6 +54,8 @@ class VideoSlicer:
         duration, fps = clip.duration, clip.fps
         width, height = clip.size
 
+        # ÉP FPS VỀ ĐÚNG 25.0 CHO TOÀN BỘ PIPELINE
+        target_fps = 25.0
         print(f"--- Processing: {video_id} ({duration:.2f}s, {fps} FPS) ---")
 
         chunk_idx = 0
@@ -74,7 +76,7 @@ class VideoSlicer:
                 chunk_id=chunk_id,
                 start_t=start_t,
                 end_t=end_t,
-                fps=fps,
+                fps=target_fps,
                 width=width,
                 height=height
             )
