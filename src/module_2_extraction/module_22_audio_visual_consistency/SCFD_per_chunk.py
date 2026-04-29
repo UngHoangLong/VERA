@@ -27,7 +27,7 @@ try:
 except Exception:
     wavfile = None
 
-
+# Lấy danh sách GPU đang nhìn thấy được.
 def parse_visible_gpu_ids() -> List[str]:
     visible = os.environ.get("CUDA_VISIBLE_DEVICES", "").strip()
     if visible:
@@ -36,7 +36,7 @@ def parse_visible_gpu_ids() -> List[str]:
         return [str(i) for i in range(torch.cuda.device_count())]
     return []
 
-
+# Nạp repo AV-HuBERT và fairseq để dùng model.
 def import_avhubert(avhubert_root: Path):
     avhubert_root = Path(avhubert_root).resolve()
     fairseq_root = avhubert_root / "fairseq"
@@ -58,7 +58,7 @@ def import_avhubert(avhubert_root: Path):
 
     return checkpoint_utils
 
-
+# Load checkpoint AV-HuBERT và đưa model lên device.
 def load_avhubert_model(avhubert_root: Path, model_path: Path, device: torch.device):
     checkpoint_utils = import_avhubert(avhubert_root)
 
@@ -79,7 +79,7 @@ def load_avhubert_model(avhubert_root: Path, model_path: Path, device: torch.dev
     model.to(device)
     return model
 
-
+# Đọc audio, đưa về mono nếu cần, kiểm tra đúng 16kHz.
 def load_audio_mono_16k(path: str) -> Tuple[np.ndarray, int]:
     p = Path(path)
     if not p.exists():
@@ -106,6 +106,7 @@ def load_audio_mono_16k(path: str) -> Tuple[np.ndarray, int]:
     return np.nan_to_num(audio, nan=0.0, posinf=0.0, neginf=0.0), int(sr)
 
 # Yêu cầu video phải có độ phân giải 25fps
+# Gộp các frame đặc trưng audio theo cụm 4 bước.
 def stack_audio_feats(feats: np.ndarray, stack_order: int = 4) -> np.ndarray:
     feat_dim = feats.shape[1]
     if len(feats) % stack_order != 0:
@@ -114,7 +115,7 @@ def stack_audio_feats(feats: np.ndarray, stack_order: int = 4) -> np.ndarray:
         feats = np.concatenate([feats, pad], axis=0)
     return feats.reshape((-1, stack_order, feat_dim)).reshape(-1, stack_order * feat_dim)
 
-
+# Trích xuất đặc trưng logfbank cho audio.
 def compute_audio_logfbank(path: str, stack_order_audio: int = 4) -> np.ndarray:
     if logfbank is None:
         raise RuntimeError("Không tìm thấy python_speech_features. Hãy cài gói này trước khi chạy.")
@@ -123,7 +124,7 @@ def compute_audio_logfbank(path: str, stack_order_audio: int = 4) -> np.ndarray:
     feats = stack_audio_feats(feats, stack_order=stack_order_audio)
     return feats
 
-
+# Đọc video nguyên trạng, chỉ chuẩn hóa pixel về [0,1], không crop, không resize thêm.
 def load_video_as_is(path: str) -> np.ndarray:
     p = Path(path)
     if not p.exists():
@@ -159,7 +160,7 @@ def load_video_as_is(path: str) -> np.ndarray:
 
     return np.stack(frames, axis=0)
 
-# Kiểm tra số bước thời gian giữa video và audio (Chốt chặn kiểm soát chất lượng)
+# Kiểm tra số bước thời gian của video và audio có bằng nhau không; lệch là báo lỗi.
 def assert_same_num_steps(video_frames: np.ndarray, audio_feats: np.ndarray) -> None:
     num_video_steps = int(video_frames.shape[0])
     num_audio_steps = int(audio_feats.shape[0])
@@ -171,14 +172,14 @@ def assert_same_num_steps(video_frames: np.ndarray, audio_feats: np.ndarray) -> 
         )
 
 
-
+# Đổi video sang tensor đúng format đầu vào của AV-HuBERT.
 def build_video_tensor(video_frames: np.ndarray) -> torch.Tensor:
     if video_frames.ndim != 4:
         raise ValueError(f"Video phải có shape [T, H, W, C], nhưng nhận {video_frames.shape}")
     return torch.from_numpy(video_frames).permute(3, 0, 1, 2).unsqueeze(0)
 
-
 @torch.inference_mode()
+# Lấy semantic embedding cho audio và video bằng AV-HuBERT, đồng thời kiểm tra số bước trước và sau model.
 def extract_semantic_embeddings(
     model,
     video_path: str,
@@ -224,8 +225,7 @@ def extract_semantic_embeddings(
     }
     return audio_emb, video_emb, meta
 
-
-
+# Tính cosine similarity theo từng bước thời gian giữa hai embedding.
 def cosine_similarity_per_step(audio_emb: np.ndarray, video_emb: np.ndarray) -> np.ndarray:
     if len(audio_emb) == 0 or len(video_emb) == 0:
         raise ValueError("Không có bước thời gian hợp lệ để tính cosine similarity.")
@@ -239,8 +239,7 @@ def cosine_similarity_per_step(audio_emb: np.ndarray, video_emb: np.ndarray) -> 
     v = video_emb / (np.linalg.norm(video_emb, axis=1, keepdims=True) + 1e-8)
     return np.sum(a * v, axis=1)
 
-
-
+# Xử lý trọn một cặp video + audio, trả ra điểm nhất quán ngữ nghĩa theo từng bước và thống kê tóm tắt.
 def process_pair(
     model,
     video_path: str,
@@ -276,8 +275,7 @@ def process_pair(
         **meta,
     }
 
-
-
+# Quét thư mục để tìm các cặp video/audio đúng tên.
 def discover_pairs(input_root: Path, video_name: str, audio_name: str) -> List[Tuple[Path, Path]]:
     pairs: List[Tuple[Path, Path]] = []
     for video_path in input_root.rglob(video_name):
@@ -287,8 +285,7 @@ def discover_pairs(input_root: Path, video_name: str, audio_name: str) -> List[T
     pairs.sort(key=lambda x: str(x[0]))
     return pairs
 
-
-
+# Nhận tham số dòng lệnh, load model, chạy cho 1 cặp hoặc nhiều cặp, rồi lưu JSON kết quả.
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
