@@ -52,60 +52,97 @@ def natural_chunk_key(path: Path) -> Tuple[int, str]:
 
 
 # hàm trích cắt âm thanh tương ứng với video miệng đã cắt
-def crop_audio_to_match_video(chunk_dir: Path, longest_seq: List[PairInfo], audio_name: str = 'audio.wav', sync_audio_name: str = 'sync_audio.wav') -> bool:
-    audio_path = chunk_dir / audio_name
-    meta_path = chunk_dir / 'metadata.json'
+# def crop_audio_to_match_video(chunk_dir: Path, longest_seq: List[PairInfo], audio_name: str = 'audio.wav', sync_audio_name: str = 'sync_audio.wav') -> bool:
+#     audio_path = chunk_dir / audio_name
+#     meta_path = chunk_dir / 'metadata.json'
 
-    # Nếu không có audio hoặc metadata thì bỏ qua
-    if not audio_path.exists() or not meta_path.exists():
-        return False
+#     # Nếu không có audio hoặc metadata thì bỏ qua
+#     if not audio_path.exists() or not meta_path.exists():
+#         return False
 
-    with open(meta_path, 'r', encoding='utf-8') as f:
-        meta = json.load(f)
+#     with open(meta_path, 'r', encoding='utf-8') as f:
+#         meta = json.load(f)
 
-    # FILTER MỚI THÊM: NẾU CHUNK KHÔNG MẤT SLIDE NÀO -> COPY LUÔN THÀHH FILE ASYNC_AUDIO
-    slides_meta = meta.get('slides', [])
-    if slides_meta and len(longest_seq) == len(slides_meta):
-        out_path = chunk_dir / sync_audio_name
-        try:
-            shutil.copyfile(audio_path, out_path)
-            return True
-        except Exception as e:
-            print(f"Lỗi khi copy audio tại {chunk_dir}: {e}")
-            return False
+#     # FILTER MỚI THÊM: NẾU CHUNK KHÔNG MẤT SLIDE NÀO -> COPY LUÔN THÀHH FILE ASYNC_AUDIO
+#     slides_meta = meta.get('slides', [])
+#     print("Debug: slides_meta =", len(slides_meta), "longestSeq =", len(longest_seq))
+#     if slides_meta and len(longest_seq) == len(slides_meta):
+#         out_path = chunk_dir / sync_audio_name
+#         try:
+#             shutil.copyfile(audio_path, out_path)
+#             return True
+#         except Exception as e:
+#             print(f"Lỗi khi copy audio tại {chunk_dir}: {e}")
+#             return False
         
 
-    # 1. Lấy mốc thời gian gốc của Chunk
-    chunk_start_sec = meta.get('start_sec', 0.0)
+#     # 1. Lấy mốc thời gian gốc của Chunk
+#     chunk_start_sec = meta.get('start_sec', 0.0)
 
-    # 2. Tìm slide đầu và slide cuối trong chuỗi (VD: "slide_05")
-    first_slide_id = longest_seq[0].slide_id
-    last_slide_id = longest_seq[-1].slide_id
+#     # 2. Tìm slide đầu và slide cuối trong chuỗi (VD: "slide_05")
+#     first_slide_id = longest_seq[0].slide_id
+#     last_slide_id = longest_seq[-1].slide_id
 
-    def extract_num(s_id: str) -> int:
-        nums = re.findall(r'\d+', s_id)
-        return int(nums[-1]) if nums else -1
+#     def extract_num(s_id: str) -> int:
+#         nums = re.findall(r'\d+', s_id)
+#         return int(nums[-1]) if nums else -1
 
-    first_num = extract_num(first_slide_id)
-    last_num = extract_num(last_slide_id)
+#     first_num = extract_num(first_slide_id)
+#     last_num = extract_num(last_slide_id)
 
-    # 3. Lục tìm timestamp khớp con số thay vì khớp chữ
-    first_meta = next((s for s in meta.get('slides', []) if extract_num(s['slide_id']) == first_num), None)
-    last_meta = next((s for s in meta.get('slides', []) if extract_num(s['slide_id']) == last_num), None)
-    # -------------------------------------------------------------
+#     # 3. Lục tìm timestamp khớp con số thay vì khớp chữ
+#     first_meta = next((s for s in meta.get('slides', []) if extract_num(s['slide_id']) == first_num), None)
+#     last_meta = next((s for s in meta.get('slides', []) if extract_num(s['slide_id']) == last_num), None)
+#     # -------------------------------------------------------------
 
-    if not first_meta or not last_meta:
+#     if not first_meta or not last_meta:
+#         return False
+
+#     # 4. Tính toán thời gian tương đối
+#     rel_start_sec = first_meta['start_sec'] - chunk_start_sec
+#     rel_end_sec = last_meta['end_sec'] - chunk_start_sec
+
+#     # 5. Cắt và lưu file audio mới
+#     try:
+#         data, samplerate = sf.read(str(audio_path))
+#         start_sample = int(rel_start_sec * samplerate)
+#         end_sample = int(rel_end_sec * samplerate)
+        
+#         cropped_data = data[start_sample:end_sample]
+        
+#         out_path = chunk_dir / sync_audio_name
+#         sf.write(str(out_path), cropped_data, samplerate)
+#         return True
+#     except Exception as e:
+#         print(f"Lỗi khi cắt audio tại {chunk_dir}: {e}")
+#         return False
+
+def crop_audio_to_match_video(chunk_dir: Path, longest_seq: List[PairInfo], frames_written: int, fps: float, audio_name: str = 'audio.wav', sync_audio_name: str = 'sync_audio.wav') -> bool:
+    audio_path = chunk_dir / audio_name
+    if not audio_path.exists():
         return False
 
-    # 4. Tính toán thời gian tương đối
-    rel_start_sec = first_meta['start_sec'] - chunk_start_sec
-    rel_end_sec = last_meta['end_sec'] - chunk_start_sec
+    # 1. Tính Start Time tương đối so với đầu chunk (Logic mốc 0.5s)
+    first_slide_name = longest_seq[0].slide_id
+    match = re.search(r'\d+', first_slide_name)
+    start_slide_idx = int(match.group()) if match else 0
+    
+    slide_duration = 0.5 
+    rel_start_sec = start_slide_idx * slide_duration
+    
+    # 2. Tính End Time tương đối dựa trên TỔNG SỐ FRAME thực tế đã ghi
+    duration_sec = frames_written / fps
+    rel_end_sec = rel_start_sec + duration_sec
 
-    # 5. Cắt và lưu file audio mới
+    # 3. Tiến hành cắt audio
     try:
         data, samplerate = sf.read(str(audio_path))
         start_sample = int(rel_start_sec * samplerate)
         end_sample = int(rel_end_sec * samplerate)
+        
+        # Đảm bảo không văng lỗi out of bounds
+        start_sample = max(0, start_sample)
+        end_sample = min(len(data), end_sample)
         
         cropped_data = data[start_sample:end_sample]
         
@@ -532,7 +569,8 @@ class ChunkMouthExporter:
             }
 
         write_mp4(crops, output_path, fps=fps)
-        crop_audio_to_match_video(chunk_dir, pairs) # "pairs" lúc này chính là longest_seq do ta đã sửa hàm
+        #crop_audio_to_match_video(chunk_dir, pairs) # "pairs" lúc này chính là longest_seq do ta đã sửa hàm
+        crop_audio_to_match_video(chunk_dir, pairs, frames_written=len(crops), fps=fps)
         return {
             'chunk_dir': str(chunk_dir),
             'output_path': str(output_path),
@@ -604,3 +642,5 @@ def main():
 if __name__ == '__main__':
     main()
 # python src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_asr_input_from_slides.py --input-root ./data/interim --overwrite
+
+# find data/interim -type f \( -name "sync_audio.wav" -o -name "vsr_input.mp4" \) -delete

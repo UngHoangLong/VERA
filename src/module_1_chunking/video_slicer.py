@@ -105,7 +105,7 @@ class VideoSlicer:
             valid_slides_count = len(list(slides_dir.glob("*_faces.npy")))
 
             if valid_slides_count <= 3:
-                print(f"  ⏭️ Bỏ qua và xóa {chunk_id}: Chỉ có {valid_slides_count} slide có mặt (<= 3).")
+                print(f" Bỏ qua và xóa {chunk_id}: Chỉ có {valid_slides_count} slide có mặt (<= 3).")
                 shutil.rmtree(chunk_dir) # Xóa sạch thư mục chunk vừa tạo
                 start_t += self.stride   # Vẫn tiến thời gian tới
                 chunk_idx += 1           # VẪN TĂNG ID CHUNK NHƯ BÌNH THƯỜNG
