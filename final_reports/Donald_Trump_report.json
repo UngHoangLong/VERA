@@ -1,0 +1,492 @@
+{
+    "video_metadata": {
+        "video_id": "Donald_Trump",
+        "status": "audio_artifacts_completed"
+    },
+    "chunks": {
+        "chunk_0000": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.09336172320120975,
+                    "max_blending_flicker": 0.014269073966220153,
+                    "blending_variance": 1.1313792314870114e-05
+                },
+                "blur": {
+                    "mean_sharpness": 10.363126116188047,
+                    "max_blur_flicker": 1.3155179192679647,
+                    "blur_flicker_variance": 0.10531563019107949
+                },
+                "texture": {
+                    "mean_contrast": 23.218842323137157,
+                    "max_texture_flicker": 5.748156758639745,
+                    "asymmetry_max": 26.41987002740596
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.0055897352285683155,
+                    "max_kinematic_flicker": 0.017513195052742958,
+                    "max_rigid_violation": 0.017646461725234985,
+                    "blinking_variance": 0.0007234203374998741,
+                    "mouth_movement_variance": 0.0003157211902657136
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.8475645964521097
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.7451917393036956
+                }
+            },
+            "frames_analyzed": 40,
+            "time_metadata": {
+                "start_sec": 2.5,
+                "end_sec": 4.1,
+                "duration": 1.6,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05262029981062823,
+                "vocal_shimmer_relative": 0.1611376404762268
+            }
+        },
+        "chunk_0001": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.0892590277280156,
+                    "max_blending_flicker": 0.012863258740465802,
+                    "blending_variance": 8.332941039382787e-06
+                },
+                "blur": {
+                    "mean_sharpness": 9.978537810104315,
+                    "max_blur_flicker": 1.2927851974406508,
+                    "blur_flicker_variance": 0.09194621070680803
+                },
+                "texture": {
+                    "mean_contrast": 24.614894043077452,
+                    "max_texture_flicker": 4.64281063266445,
+                    "asymmetry_max": 24.169483696813263
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.005136413965374231,
+                    "max_kinematic_flicker": 0.016376184299588203,
+                    "max_rigid_violation": 0.01649107038974762,
+                    "blinking_variance": 0.0005506443769589877,
+                    "mouth_movement_variance": 0.00039907560790805824
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.8255063118985406
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.6946282149756398
+                }
+            },
+            "frames_analyzed": 60,
+            "time_metadata": {
+                "start_sec": 2.5,
+                "end_sec": 4.9,
+                "duration": 2.4,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.03865922673420912,
+                "vocal_shimmer_relative": 0.16815626621246338
+            }
+        },
+        "chunk_0003": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06958706515820266,
+                    "max_blending_flicker": 0.021253881987577647,
+                    "blending_variance": 1.6956486889407957e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.92630257239984,
+                    "max_blur_flicker": 1.2729723167070475,
+                    "blur_flicker_variance": 0.08062165193824275
+                },
+                "texture": {
+                    "mean_contrast": 24.426316795538103,
+                    "max_texture_flicker": 6.370949951048523,
+                    "asymmetry_max": 33.63085226249811
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.004921930376440287,
+                    "max_kinematic_flicker": 0.01338113471865654,
+                    "max_rigid_violation": 0.010181158781051636,
+                    "blinking_variance": 0.000340826035919324,
+                    "mouth_movement_variance": 0.0005091260838255587
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.5907870630319905
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.5388547968155261
+                }
+            },
+            "frames_analyzed": 72,
+            "time_metadata": {
+                "start_sec": 7.0,
+                "end_sec": 9.88,
+                "duration": 2.88,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.01562560095637371,
+                "vocal_shimmer_relative": 0.17104271054267883
+            }
+        },
+        "chunk_0004": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06493065898536199,
+                    "max_blending_flicker": 0.01319875776397516,
+                    "blending_variance": 9.846249156462103e-06
+                },
+                "blur": {
+                    "mean_sharpness": 7.442193103011644,
+                    "max_blur_flicker": 0.8806188605767087,
+                    "blur_flicker_variance": 0.05763698142067006
+                },
+                "texture": {
+                    "mean_contrast": 24.679737958442686,
+                    "max_texture_flicker": 5.845455919424317,
+                    "asymmetry_max": 34.10407906350353
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.004735935013741255,
+                    "max_kinematic_flicker": 0.012935791164636612,
+                    "max_rigid_violation": 0.011685043573379517,
+                    "blinking_variance": 0.00014222063818467286,
+                    "mouth_movement_variance": 0.0004525020786650062
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.7452073865464023
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.35297250603134017
+                }
+            },
+            "frames_analyzed": 48,
+            "time_metadata": {
+                "start_sec": 8.0,
+                "end_sec": 9.92,
+                "duration": 1.92,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.01259869564753253,
+                "vocal_shimmer_relative": 0.14902541041374207
+            }
+        },
+        "chunk_0005": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06377657275815318,
+                    "max_blending_flicker": 0.022127329192546577,
+                    "blending_variance": 1.7848127279217028e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.675769630175818,
+                    "max_blur_flicker": 1.168544879299028,
+                    "blur_flicker_variance": 0.09989632726530724
+                },
+                "texture": {
+                    "mean_contrast": 25.88383400635482,
+                    "max_texture_flicker": 39.656099993032065,
+                    "asymmetry_max": 68.45892875441241
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.004929590038955212,
+                    "max_kinematic_flicker": 0.018733426928520203,
+                    "max_rigid_violation": 0.013290822505950928,
+                    "blinking_variance": 0.00036047285532929586,
+                    "mouth_movement_variance": 0.0003392175661580992
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.9126146955056481
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.610654084009574
+                }
+            },
+            "frames_analyzed": 88,
+            "time_metadata": {
+                "start_sec": 10.5,
+                "end_sec": 14.02,
+                "duration": 3.52,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.04950281974043532,
+                "vocal_shimmer_relative": 0.12538392841815948
+            }
+        },
+        "chunk_0006": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06316084829626101,
+                    "max_blending_flicker": 0.016110248447204968,
+                    "blending_variance": 1.17059924974048e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.291818748975588,
+                    "max_blur_flicker": 9.604133660866943,
+                    "blur_flicker_variance": 0.9451786205514731
+                },
+                "texture": {
+                    "mean_contrast": 26.141735734699168,
+                    "max_texture_flicker": 32.99386348360245,
+                    "asymmetry_max": 88.64100236087833
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.00545046292245388,
+                    "max_kinematic_flicker": 0.019208716228604317,
+                    "max_rigid_violation": 0.010681778192520142,
+                    "blinking_variance": 0.0007513204189280868,
+                    "mouth_movement_variance": 0.00042831970986753414
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.3607840522866569
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.9958076515779084
+                }
+            },
+            "frames_analyzed": 100,
+            "time_metadata": {
+                "start_sec": 12.0,
+                "end_sec": 16.0,
+                "duration": 4.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05735400191659422,
+                "vocal_shimmer_relative": 0.14540737867355347
+            }
+        },
+        "chunk_0007": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06268525442163,
+                    "max_blending_flicker": 0.017274844720496896,
+                    "blending_variance": 1.3850948459638695e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.007027378497776,
+                    "max_blur_flicker": 1.2761884685726743,
+                    "blur_flicker_variance": 0.05665817117785062
+                },
+                "texture": {
+                    "mean_contrast": 24.322262421301232,
+                    "max_texture_flicker": 61.89942555973573,
+                    "asymmetry_max": 86.16231718924139
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.005512627772986889,
+                    "max_kinematic_flicker": 0.02802126295864582,
+                    "max_rigid_violation": 0.01018109917640686,
+                    "blinking_variance": 0.0006687663454991953,
+                    "mouth_movement_variance": 0.00042434237441216346
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.37144082174163523
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.980657158868935
+                }
+            },
+            "frames_analyzed": 100,
+            "time_metadata": {
+                "start_sec": 14.0,
+                "end_sec": 18.0,
+                "duration": 4.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.0556329059177362,
+                "vocal_shimmer_relative": 0.14610835909843445
+            }
+        },
+        "chunk_0008": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.0687010689741649,
+                    "max_blending_flicker": 0.019686532831415804,
+                    "blending_variance": 1.8472798346095495e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.645654446774059,
+                    "max_blur_flicker": 1.788910517627885,
+                    "blur_flicker_variance": 0.11043014299677105
+                },
+                "texture": {
+                    "mean_contrast": 22.986924387114083,
+                    "max_texture_flicker": 5.318277860448482,
+                    "asymmetry_max": 30.50183052987715
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.005363549571484327,
+                    "max_kinematic_flicker": 0.01086590625345707,
+                    "max_rigid_violation": 0.011072486639022827,
+                    "blinking_variance": 0.00045513839824567516,
+                    "mouth_movement_variance": 0.0007321048387463266
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.5047980818289162
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.4605758834090472
+                }
+            },
+            "frames_analyzed": 84,
+            "time_metadata": {
+                "start_sec": 16.0,
+                "end_sec": 19.36,
+                "duration": 3.36,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.030102529303923334,
+                "vocal_shimmer_relative": 0.11325787752866745
+            }
+        },
+        "chunk_0010": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06823746053786939,
+                    "max_blending_flicker": 0.017167300626664786,
+                    "blending_variance": 1.9056653222460168e-05
+                },
+                "blur": {
+                    "mean_sharpness": 9.02495386035739,
+                    "max_blur_flicker": 6.650782831588963,
+                    "blur_flicker_variance": 0.7786196234997986
+                },
+                "texture": {
+                    "mean_contrast": 21.13991540837532,
+                    "max_texture_flicker": 8.227518891037597,
+                    "asymmetry_max": 43.25144561686767
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.004982009530067444,
+                    "max_kinematic_flicker": 0.01413414441049099,
+                    "max_rigid_violation": 0.011229783296585083,
+                    "blinking_variance": 0.00048493672846122585,
+                    "mouth_movement_variance": 0.0002495262159740493
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.4911758136399355
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.0354298967103472
+                }
+            },
+            "frames_analyzed": 76,
+            "time_metadata": {
+                "start_sec": 21.0,
+                "end_sec": 24.04,
+                "duration": 3.04,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.03996870473218192,
+                "vocal_shimmer_relative": 0.1952456384897232
+            }
+        },
+        "chunk_0011": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06716200062810908,
+                    "max_blending_flicker": 0.017080745341614904,
+                    "blending_variance": 1.3467040975472225e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.8711513414610215,
+                    "max_blur_flicker": 4.477890053393642,
+                    "blur_flicker_variance": 0.5887870045849026
+                },
+                "texture": {
+                    "mean_contrast": 17.4081244810938,
+                    "max_texture_flicker": 5.236257694665682,
+                    "asymmetry_max": 18.454394217132673
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.005585817154496908,
+                    "max_kinematic_flicker": 0.016729317605495453,
+                    "max_rigid_violation": 0.011648118495941162,
+                    "blinking_variance": 0.0011948397458705511,
+                    "mouth_movement_variance": 0.0005607468203650278
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.20953816941495562
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.8271136249423889
+                }
+            },
+            "frames_analyzed": 100,
+            "time_metadata": {
+                "start_sec": 22.0,
+                "end_sec": 26.0,
+                "duration": 4.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.023484566097805522,
+                "vocal_shimmer_relative": 0.17361795902252197
+            }
+        },
+        "chunk_0012": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.05906696117763158,
+                    "max_blending_flicker": 0.018439440993788823,
+                    "blending_variance": 2.1196176074708512e-05
+                },
+                "blur": {
+                    "mean_sharpness": 6.663359380948901,
+                    "max_blur_flicker": 2.7464255345471855,
+                    "blur_flicker_variance": 0.13017037489078243
+                },
+                "texture": {
+                    "mean_contrast": 15.460030999022523,
+                    "max_texture_flicker": 4.884380521878455,
+                    "asymmetry_max": 15.011955129170818
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.006865722592920065,
+                    "max_kinematic_flicker": 0.03220627084374428,
+                    "max_rigid_violation": 0.019147932529449463,
+                    "blinking_variance": 0.00042789546440406574,
+                    "mouth_movement_variance": 0.0004794266345885254
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.22240348767727908
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.5940342947890342
+                }
+            },
+            "frames_analyzed": 72,
+            "time_metadata": {
+                "start_sec": 24.0,
+                "end_sec": 26.88,
+                "duration": 2.88,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {},
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.01969929005808536,
+                "vocal_shimmer_relative": 0.11634107679128647
+            }
+        }
+    }
+}

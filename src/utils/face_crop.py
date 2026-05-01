@@ -11,7 +11,7 @@ class AdvancedFaceCropper:
             self.mp_face_mesh = mp.solutions.face_mesh
             self.face_mesh = self.mp_face_mesh.FaceMesh(
                 static_image_mode=False, 
-                max_num_faces=2,         # 🚨 BẬT LÊN 2 để làm "radar" quét người lạ
+                max_num_faces=2,         # BẬT LÊN 2 để làm "radar" quét người lạ
                 min_detection_confidence=min_confidence
             )
         except ImportError:
@@ -48,19 +48,19 @@ class AdvancedFaceCropper:
         results = self.face_mesh.process(rgb_frame)
         
         is_real_detect = False
-        is_fatal = False # 🚨 Cờ báo hiệu lỗi CHÍ MẠNG
+        is_fatal = False # Cờ báo hiệu lỗi CHÍ MẠNG
         best_bbox = None
         raw_landmarks = None
 
         if results.multi_face_landmarks:
-            # 💀 ĐIỀU KIỆN 1: Phát hiện từ 2 mặt trở lên -> GIẾT
+            # ĐIỀU KIỆN 1: Phát hiện từ 2 mặt trở lên -> GIẾT
             if len(results.multi_face_landmarks) >= 2:
                 is_fatal = True
                 return None, None, None, False, is_fatal
                 
             face_landmarks = results.multi_face_landmarks[0]
             
-            # 💀 ĐIỀU KIỆN 2: Quay ngang 90 độ (Mất môi/mắt) -> GIẾT
+            # ĐIỀU KIỆN 2: Quay ngang 90 độ (Mất môi/mắt) -> GIẾT
             if not self._is_valid_face(face_landmarks.landmark, w):
                 is_fatal = True
                 return None, None, None, False, is_fatal
@@ -101,7 +101,7 @@ class AdvancedFaceCropper:
             return None, None, None, False, is_fatal
 
         # =========================================================
-        # 🔧 CHUẨN HÓA LẠI TỌA ĐỘ LANDMARK
+        # CHUẨN HÓA LẠI TỌA ĐỘ LANDMARK
         # =========================================================
         aligned_landmarks = None
         if raw_landmarks is not None:
@@ -134,7 +134,7 @@ class AdvancedFaceCropper:
         for f in frames:
             face_img, bbox, landmarks, is_real, is_fatal = self.process_frame(f, fallback_bbox=last_bbox)
             
-            # 🧨 ÁN TỬ HÌNH THỰC THI NGAY LẬP TỨC
+            # ÁN TỬ HÌNH THỰC THI NGAY LẬP TỨC
             if is_fatal:
                 return None, None
                 

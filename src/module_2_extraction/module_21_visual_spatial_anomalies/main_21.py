@@ -1,12 +1,16 @@
 import json
 import numpy as np
 from pathlib import Path
+import re
 
 # Đảm bảo 4 file này nằm cùng thư mục với main_visual.py
 from blending import BlendingFeature
 from blur import BlurFeature
 from glcm import GLCMFeature
 from landmark_kinematics import KinematicsFeature
+from iris_jitter import IrisJitterFeature
+from gaze_pose import GazePoseFeature
+
 
 # Import hàm tìm chuỗi từ thư mục utils (Sử dụng đường dẫn tuyệt đối từ src)
 import sys
@@ -76,12 +80,14 @@ class VisualOrchestrator:
                 "blending": BlendingFeature.extract_blending_fluctuation(all_face_frames, all_processed_landmarks),
                 "blur": BlurFeature.extract_blur_flickering(all_face_frames, all_processed_landmarks),
                 "texture": GLCMFeature.extract_texture_fluctuation(all_face_frames, all_processed_landmarks),
-                "kinematics": KinematicsFeature.extract_kinematics_anomalies(all_processed_landmarks)
+                "kinematics": KinematicsFeature.extract_kinematics_anomalies(all_processed_landmarks),
+                "eye_gaze": GazePoseFeature.extract_gaze_pose_sync(all_face_frames), # ta chỉ truyền faceframe vì trong eye_gaze ta sẽ dùng mediapipe để tính lại toạ độ landmark. Bởi vì ở module 1 ưu tiên bắt được mặt nên ta chưa lấy toạ đọ tròng mắt
+                "iris_jitter": IrisJitterFeature.extract_iris_jitter(all_face_frames)
             }
         }
         return chunk_report
 
-    def process_dataset(self, output_json="visual_features_final.json", fps=25.0):
+    def process_dataset(self, fps=25.0):
         """Quét toàn bộ dataset và đóng gói JSON."""
         if not self.interim_root.exists():
             print(f"Không tìm thấy thư mục {self.interim_root}")
@@ -94,7 +100,7 @@ class VisualOrchestrator:
         for video_dir in video_dirs:
             video_id = video_dir.name
             final_db[video_id] = {}
-            print(f"🚀 Đang xử lý Video: {video_id}")
+            print(f"Đang xử lý Video: {video_id}")
             
             # Quét từng Chunk (4s)
             chunk_dirs = sorted(video_dir.glob("chunk_*"))
@@ -111,29 +117,87 @@ class VisualOrchestrator:
                 frames_in_seq = sum([len(self._load_npy(p.faces_path) or []) for p in longest_seq])
                 duration = frames_in_seq / fps
                 
-                if duration <= 2.0: 
+                if duration < 1.5: 
                     final_db[video_id][chunk_id] = {"status": f"duration_too_short_({duration:.2f}s)"}
-                    print(f"  ⏭️ Bỏ qua {chunk_id}: Quá ngắn ({duration:.2f}s)")
+                    print(f"Bỏ qua {chunk_id}: Quá ngắn ({duration:.2f}s)")
                     continue
-                    
-                print(f"  ⚙️ Trích xuất {chunk_id} (Chuỗi {len(longest_seq)} slide, ~{duration:.2f}s)")
                 
-                # Gọi hàm xử lý nguyên chuỗi
                 chunk_report = self.process_chunk_sequence(longest_seq)
                 
-                # Cấu trúc JSON mới: Gắn thẳng kết quả vào Chunk, không chia nhỏ Slide nữa
+                if chunk_report.get("status") != "success":
+                    final_db[video_id][chunk_id] = chunk_report
+                    continue
+
+                metadata_path = chunk_dir / "metadata.json"
+                chunk_start_time = 0.0
+                if metadata_path.exists():
+                    with open(metadata_path, "r", encoding="utf-8") as f:
+                        meta_data = json.load(f)
+                        chunk_start_time = meta_data.get("start_sec", 0.0)
+
+                # 2. Bóc tách chỉ số slide bắt đầu (VD: 'slide_00_faces.npy' -> 0)
+                first_slide_name = longest_seq[0].faces_path.name
+                match = re.search(r'slide_(\d+)', first_slide_name)
+                start_slide_idx = int(match.group(1)) if match else 0
+                
+                # 3. Tính Offset dựa trên slide_duration (mặc định 0.5s từ video_slicer.py)
+                slide_duration = 0.5 
+                actual_start_sec = chunk_start_time + (start_slide_idx * slide_duration)
+                
+                # 4. Tính thời lượng thực tế dựa trên TỔNG SỐ FRAME (Xử lý được slide cuối ngắn)
+                frames_in_seq = sum([len(self._load_npy(p.faces_path) or []) for p in longest_seq])
+                duration = frames_in_seq / fps
+                actual_end_sec = actual_start_sec + duration
+                
+                # Lưu vào báo cáo
+                chunk_report["time_metadata"] = {
+                    "start_sec": round(actual_start_sec, 3),
+                    "end_sec": round(actual_end_sec, 3),
+                    "duration": round(duration, 3),
+                    "source": "module_2.1_refined_by_frames"
+                }
                 final_db[video_id][chunk_id] = chunk_report
                     
-        # Lưu ra JSON
-        out_path = Path(output_json)
-        out_path.parent.mkdir(parents=True, exist_ok=True) 
+        # --- LƯU RA THƯ MỤC FINAL_REPORTS ---
+        # Tự động tìm thư mục root của project (lùi 3 cấp từ file main_visual.py)
+        project_root = Path(__file__).resolve().parents[3]
+        final_report_root = project_root / "final_reports"
+        final_report_root.mkdir(parents=True, exist_ok=True)
         
-        with open(out_path, "w", encoding="utf-8") as f:
-            json.dump(final_db, f, ensure_ascii=False, indent=2)
+        # Duyệt qua từng video trong final_db đã xử lý
+        for video_id, chunks_data in final_db.items():
+            report_path = final_report_root / f"{video_id}_report.json"
             
-        print(f"\n✨ [THÀNH CÔNG] Đã trích xuất xong đặc trưng Thị giác!")
-        print(f"📊 Kết quả lưu tại: {out_path.absolute()}")
+            # 1. Dựng "khung xương" báo cáo
+            skeleton_report = {
+                "video_metadata": {
+                    "video_id": video_id,
+                    "status": "visual_spatial_completed",
+                },
+                "chunks": {}
+            }
+            
+            # 2. Đổ dữ liệu của Module 2.1 vào khung
+            for chunk_id, chunk_content in chunks_data.items():
+                # Bỏ qua những chunk bị lỗi hoặc quá ngắn
+                if chunk_content.get("status") != "success":
+                    continue
+                    
+                skeleton_report["chunks"][chunk_id] = {
+                    "visual_spatial": chunk_content.get("features", {}),
+                    "frames_analyzed": chunk_content.get("frames_analyzed", 0),
+                    "time_metadata": chunk_content.get("time_metadata", {}),
+                    "audio_visual_consistency": {} 
+                }
+                
+            # 3. Ghi file báo cáo riêng cho từng video
+            with open(report_path, "w", encoding="utf-8") as f:
+                json.dump(skeleton_report, f, indent=4, ensure_ascii=False)
+                
+        print(f"[THÀNH CÔNG] Đã trích xuất xong đặc trưng Thị giác và dựng khung báo cáo!")
+        print(f"Kết quả lưu tại thư mục: {final_report_root.absolute()}")
+
     
 if __name__ == "__main__":
     orchestrator = VisualOrchestrator(interim_root="data/interim")
-    orchestrator.process_dataset(output_json="data/processed/visual_features_final.json")
+    orchestrator.process_dataset(fps=25.0)

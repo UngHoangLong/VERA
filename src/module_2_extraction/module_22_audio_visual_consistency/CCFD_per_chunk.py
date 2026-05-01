@@ -7,6 +7,7 @@ import re
 import statistics
 from pathlib import Path
 from typing import Dict, List, Tuple
+from num2words import num2words
 
 
 _CHUNK_JSON_RE = re.compile(r"chunk_(\d+)\.json$")
@@ -17,12 +18,64 @@ def chunk_sort_key(path: Path) -> Tuple[int, str]:
     idx = int(m.group(1)) if m else 10**9
     return idx, path.name
 
+# Chuyển đổi số thành chữ. Vì với model ASR nó đủ tốt để chuyển thành số, nhưng với VSR thường nó sẽ ghi full chữ.
+def replace_numbers_with_words(text: str) -> str:
+    """Tìm các con số trong chuỗi và đổi thành chữ tiếng Anh (VD: 100 -> one hundred)"""
+    def _replace(match):
+        try:
+            # Loại bỏ dấu gạch ngang do num2words sinh ra (VD: twenty-one -> twenty one)
+            return num2words(int(match.group())).replace("-", " ")
+        except:
+            return match.group()
+    return re.sub(r'\b\d+\b', _replace, text)
+
+# Khai báo bộ từ điển chuẩn hóa toàn diện (đặt ở ngoài cùng của file để load 1 lần)
+CONTRACTIONS = {
+    "it's": "it is", "don't": "do not", "doesn't": "does not", "can't": "cannot",
+    "i'm": "i am", "that's": "that is", "i've": "i have", "you've": "you have",
+    "we've": "we have", "they've": "they have", "you're": "you are", "we're": "we are",
+    "they're": "they are", "isn't": "is not", "aren't": "are not", "wasn't": "was not",
+    "weren't": "were not", "won't": "will not", "wouldn't": "would not",
+    "couldn't": "could not", "shouldn't": "should not", "hasn't": "has not",
+    "haven't": "have not", "hadn't": "had not", "i'll": "i will", "you'll": "you will",
+    "he'll": "he will", "she'll": "she will", "we'll": "we will", "they'll": "they will",
+    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would",
+    "he's": "he is", "she's": "she is", "there's": "there is", "let's": "let us", 
+    "what's": "what is", "who's": "who is", "where's": "where is", "how's": "how is",
+    "y'all": "you all"
+}
+
+# Biên dịch sẵn Regex pattern để chạy cực nhanh cho hàng nghìn chunk
+CONTRACTION_RE = re.compile(r'\b(' + '|'.join(CONTRACTIONS.keys()) + r')\b')
+
+def expand_contractions(text: str) -> str:
+    def replace(match):
+        return CONTRACTIONS[match.group(1)]
+    return CONTRACTION_RE.sub(replace, text)
+
 # Chuẩn hóa văn bản trước khi so sánh.
 def normalize_text(text: str) -> str:
     text = (text or "").lower()
-    text = re.sub(r"[^a-z0-9\s']", " ", text)
-    text = " ".join(text.split())
-    return text
+
+    # Đồng bộ dấu nháy cong (sinh ra từ Whisper) thành dấu nháy thẳng
+    text = text.replace("’", "'")
+
+    # Mở rộng từ viết tắt cơ bản bằng Dictionary (Nhanh & Chính xác)
+    text = expand_contractions(text)
+
+    # Quy đổi toàn bộ số đếm thành chữ viết (Dùng num2words như đã bàn)
+    text = replace_numbers_with_words(text)
+
+    # Lọc BỎ hoàn toàn số và dấu câu, CHỈ GIỮ LẠI CHỮ CÁI (a-z)
+    text = re.sub(r"[^a-z\s]", " ", text)
+
+    # Cắt thành mảng từ và loại bỏ các từ đệm (fillers)
+    words = text.split()
+    fillers = {"um", "uh", "ah", "er", "hmm", "mhmm", "huh"}
+    words = [w for w in words if w not in fillers]
+    
+    # Ghép lại thành chuỗi sạch
+    return " ".join(words)
 
 # Tính số phép chỉnh sửa khác nhau giữa 2 câu ở mức từ.
 def levenshtein_words(ref_words: List[str], hyp_words: List[str]) -> int:
