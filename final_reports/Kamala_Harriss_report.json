@@ -1,0 +1,1072 @@
+{
+    "video_metadata": {
+        "video_id": "Kamala_Harriss",
+        "status": "fully_analyzed"
+    },
+    "chunks": {
+        "chunk_0000": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.10451867287242986,
+                    "max_blending_flicker": 0.022852763292441056,
+                    "blending_variance": 1.7904192547143902e-05
+                },
+                "blur": {
+                    "mean_sharpness": 87.36304412414408,
+                    "max_blur_flicker": 56.48459529260822,
+                    "blur_flicker_variance": 76.73828219618751
+                },
+                "texture": {
+                    "mean_contrast": 94.39335816037557,
+                    "max_texture_flicker": 23.107822389445545,
+                    "asymmetry_max": 138.0643584204269
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.00760969053953886,
+                    "max_kinematic_flicker": 0.049843911081552505,
+                    "max_rigid_violation": 0.024669617414474487,
+                    "blinking_variance": 0.000750086088687466,
+                    "mouth_movement_variance": 0.0012540528825431784
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.8486483142436448
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.8028848620480435
+                }
+            },
+            "frames_analyzed": 120,
+            "time_metadata": {
+                "start_sec": 0.0,
+                "end_sec": 4.8,
+                "duration": 4.8,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "and every day in the courtroom",
+                    "vsr_text_lips": "and every day in the courtroom",
+                    "wer_score": 0.0
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.6578094363212585,
+                    "min_sync_score": 0.41852104663848877,
+                    "variance": 0.02970069233400907
+                }
+            }
+        },
+        "chunk_0001": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.07188077428468392,
+                    "max_blending_flicker": 0.023373288548841367,
+                    "blending_variance": 2.6568474840692476e-05
+                },
+                "blur": {
+                    "mean_sharpness": 62.72425221587015,
+                    "max_blur_flicker": 32.545972544151006,
+                    "blur_flicker_variance": 35.351432735686316
+                },
+                "texture": {
+                    "mean_contrast": 56.65570546066252,
+                    "max_texture_flicker": 101.38772293194532,
+                    "asymmetry_max": 114.29988547705143
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.01124123577028513,
+                    "max_kinematic_flicker": 0.08196844160556793,
+                    "max_rigid_violation": 0.018676728010177612,
+                    "blinking_variance": 0.0007122905658846801,
+                    "mouth_movement_variance": 0.0011349672103727905
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.7253154678149977
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.617821098301956
+                }
+            },
+            "frames_analyzed": 60,
+            "time_metadata": {
+                "start_sec": 3.0,
+                "end_sec": 5.4,
+                "duration": 2.4,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "",
+                    "vsr_text_lips": "",
+                    "wer_score": null
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5875758528709412,
+                    "min_sync_score": 0.37725916504859924,
+                    "variance": 0.03275227066166142
+                }
+            }
+        },
+        "chunk_0002": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.10316538048913448,
+                    "max_blending_flicker": 0.019116241895640262,
+                    "blending_variance": 1.532903755040625e-05
+                },
+                "blur": {
+                    "mean_sharpness": 122.85883282783433,
+                    "max_blur_flicker": 63.64041563555439,
+                    "blur_flicker_variance": 168.07598584171072
+                },
+                "texture": {
+                    "mean_contrast": 134.06745038125422,
+                    "max_texture_flicker": 31.569289723686097,
+                    "asymmetry_max": 144.79604047806356
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.009125110693275928,
+                    "max_kinematic_flicker": 0.04030155763030052,
+                    "max_rigid_violation": 0.016329094767570496,
+                    "blinking_variance": 0.0004947456834630223,
+                    "mouth_movement_variance": 0.0005868992728808361
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.6973237008770207
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.6160931627921402
+                }
+            },
+            "frames_analyzed": 75,
+            "time_metadata": {
+                "start_sec": 5.5,
+                "end_sec": 8.5,
+                "duration": 3.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "before a judge and i said",
+                    "vsr_text_lips": "before a judge and he said",
+                    "wer_score": 0.166667
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.6098955869674683,
+                    "min_sync_score": 0.40382111072540283,
+                    "variance": 0.03994629160610352
+                }
+            }
+        },
+        "chunk_0003": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.10815221736025736,
+                    "max_blending_flicker": 0.023168618375710978,
+                    "blending_variance": 2.2142680146843752e-05
+                },
+                "blur": {
+                    "mean_sharpness": 90.33402713561603,
+                    "max_blur_flicker": 26.30843623873521,
+                    "blur_flicker_variance": 38.78881773075481
+                },
+                "texture": {
+                    "mean_contrast": 107.3625270412086,
+                    "max_texture_flicker": 33.82146337676414,
+                    "asymmetry_max": 145.6862821337307
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.008155038580298424,
+                    "max_kinematic_flicker": 0.03480641543865204,
+                    "max_rigid_violation": 0.01488909125328064,
+                    "blinking_variance": 0.000550192286046691,
+                    "mouth_movement_variance": 0.0005874799819789347
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.6214334596462819
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 2.057502760405635
+                }
+            },
+            "frames_analyzed": 105,
+            "time_metadata": {
+                "start_sec": 6.5,
+                "end_sec": 10.7,
+                "duration": 4.2,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "",
+                    "vsr_text_lips": "",
+                    "wer_score": null
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.6879136562347412,
+                    "min_sync_score": 0.403138130903244,
+                    "variance": 0.047786216224336764
+                }
+            }
+        },
+        "chunk_0004": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.11224567684719158,
+                    "max_blending_flicker": 0.02394193484746862,
+                    "blending_variance": 2.4816742112571333e-05
+                },
+                "blur": {
+                    "mean_sharpness": 86.76344155988951,
+                    "max_blur_flicker": 22.30329441880241,
+                    "blur_flicker_variance": 27.454132489365403
+                },
+                "texture": {
+                    "mean_contrast": 78.70949112560162,
+                    "max_texture_flicker": 31.002321417456272,
+                    "asymmetry_max": 140.7610933951939
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.006867703516036272,
+                    "max_kinematic_flicker": 0.03577857464551926,
+                    "max_rigid_violation": 0.014576375484466553,
+                    "blinking_variance": 0.0006006096215503955,
+                    "mouth_movement_variance": 0.0006134414857036387
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.26758147815801725
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 2.72419523522903
+                }
+            },
+            "frames_analyzed": 60,
+            "time_metadata": {
+                "start_sec": 8.0,
+                "end_sec": 10.4,
+                "duration": 2.4,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "five words",
+                    "vsr_text_lips": "of words i",
+                    "wer_score": 1.0
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.7144342064857483,
+                    "min_sync_score": 0.40542131662368774,
+                    "variance": 0.048643919741850006
+                }
+            }
+        },
+        "chunk_0005": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.0946952746104202,
+                    "max_blending_flicker": 0.014791404083001378,
+                    "blending_variance": 1.8809290144441898e-05
+                },
+                "blur": {
+                    "mean_sharpness": 84.30557146017756,
+                    "max_blur_flicker": 39.66320441319311,
+                    "blur_flicker_variance": 65.7936880807322
+                },
+                "texture": {
+                    "mean_contrast": 91.20204755056596,
+                    "max_texture_flicker": 49.45064891071971,
+                    "asymmetry_max": 175.16804844504514
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.010810013860464096,
+                    "max_kinematic_flicker": 0.025376275181770325,
+                    "max_rigid_violation": 0.013295337557792664,
+                    "blinking_variance": 0.00020956630100651185,
+                    "mouth_movement_variance": 0.001980563319172612
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.7702870215415355
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 2.1044879515284354
+                }
+            },
+            "frames_analyzed": 45,
+            "time_metadata": {
+                "start_sec": 12.5,
+                "end_sec": 14.3,
+                "duration": 1.8,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "",
+                    "vsr_text_lips": "",
+                    "wer_score": null
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5333661437034607,
+                    "min_sync_score": 0.4455501437187195,
+                    "variance": 0.0035114557063034013
+                }
+            }
+        },
+        "chunk_0006": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.09013847489512325,
+                    "max_blending_flicker": 0.09972557012193835,
+                    "blending_variance": 0.00017998382067753948
+                },
+                "blur": {
+                    "mean_sharpness": 88.44550245267871,
+                    "max_blur_flicker": 60.7448666449951,
+                    "blur_flicker_variance": 113.5156164307124
+                },
+                "texture": {
+                    "mean_contrast": 81.63996889082964,
+                    "max_texture_flicker": 292.89132131061365,
+                    "asymmetry_max": 409.78211867334824
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.010845339857041836,
+                    "max_kinematic_flicker": 0.05096352472901344,
+                    "max_rigid_violation": 0.047574833035469055,
+                    "blinking_variance": 0.00035566981198135517,
+                    "mouth_movement_variance": 0.0016923791576678934
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.4759170019490851
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 3.611968487188338
+                }
+            },
+            "frames_analyzed": 120,
+            "time_metadata": {
+                "start_sec": 12.0,
+                "end_sec": 16.8,
+                "duration": 4.8,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "i accept your nomination to be president",
+                    "vsr_text_lips": "accept your nomination to be president",
+                    "wer_score": 0.142857
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5757468938827515,
+                    "min_sync_score": 0.41824573278427124,
+                    "variance": 0.007810403067603
+                }
+            }
+        },
+        "chunk_0007": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.09666587655839826,
+                    "max_blending_flicker": 0.08645252655517652,
+                    "blending_variance": 0.00012810391464856196
+                },
+                "blur": {
+                    "mean_sharpness": 104.28535049431328,
+                    "max_blur_flicker": 57.38645955800891,
+                    "blur_flicker_variance": 123.21819067630435
+                },
+                "texture": {
+                    "mean_contrast": 115.74986763556372,
+                    "max_texture_flicker": 264.53082457612913,
+                    "asymmetry_max": 380.6929346049262
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.010226313956081867,
+                    "max_kinematic_flicker": 0.16450363397598267,
+                    "max_rigid_violation": 0.03352661430835724,
+                    "blinking_variance": 0.00034490880567804457,
+                    "mouth_movement_variance": 0.0013715634881432944
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.28166889860179345
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 2.20539054143475
+                }
+            },
+            "frames_analyzed": 105,
+            "time_metadata": {
+                "start_sec": 14.5,
+                "end_sec": 18.7,
+                "duration": 4.2,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "",
+                    "vsr_text_lips": "",
+                    "wer_score": null
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.6451743245124817,
+                    "min_sync_score": 0.5377490520477295,
+                    "variance": 0.002024423191799088
+                }
+            }
+        },
+        "chunk_0008": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.09935561381066221,
+                    "max_blending_flicker": 0.014170067790054197,
+                    "blending_variance": 1.1839201397854422e-05
+                },
+                "blur": {
+                    "mean_sharpness": 106.75150284121742,
+                    "max_blur_flicker": 54.6140223908576,
+                    "blur_flicker_variance": 96.96635390679333
+                },
+                "texture": {
+                    "mean_contrast": 126.94680976343594,
+                    "max_texture_flicker": 38.187172117106456,
+                    "asymmetry_max": 145.52581097059382
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.009574024938046932,
+                    "max_kinematic_flicker": 0.029089858755469322,
+                    "max_rigid_violation": 0.021946191787719727,
+                    "blinking_variance": 0.000515333298939012,
+                    "mouth_movement_variance": 0.0017161953380859915
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.2550589691257881
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.1969499647529938
+                }
+            },
+            "frames_analyzed": 75,
+            "time_metadata": {
+                "start_sec": 16.0,
+                "end_sec": 19.0,
+                "duration": 3.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "of the united states of america",
+                    "vsr_text_lips": "it of the united states of america",
+                    "wer_score": 0.166667
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.6377765536308289,
+                    "min_sync_score": 0.5467920899391174,
+                    "variance": 0.002081335825269162
+                }
+            }
+        },
+        "chunk_0011": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.10384462166628079,
+                    "max_blending_flicker": 0.021269561014473845,
+                    "blending_variance": 1.9253581366896024e-05
+                },
+                "blur": {
+                    "mean_sharpness": 105.10081878450136,
+                    "max_blur_flicker": 45.905824525855934,
+                    "blur_flicker_variance": 109.20112715060138
+                },
+                "texture": {
+                    "mean_contrast": 62.86831475822143,
+                    "max_texture_flicker": 22.59313329268838,
+                    "asymmetry_max": 117.7620197986334
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.00884243380278349,
+                    "max_kinematic_flicker": 0.024482619017362595,
+                    "max_rigid_violation": 0.01776738464832306,
+                    "blinking_variance": 0.0015505152381092432,
+                    "mouth_movement_variance": 0.000774023076196076
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.1599587695358716
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 3.808032567998228
+                }
+            },
+            "frames_analyzed": 60,
+            "time_metadata": {
+                "start_sec": 22.0,
+                "end_sec": 24.4,
+                "duration": 2.4,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "",
+                    "vsr_text_lips": "",
+                    "wer_score": null
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5140806436538696,
+                    "min_sync_score": 0.36088448762893677,
+                    "variance": 0.0188031839902989
+                }
+            }
+        },
+        "chunk_0013": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.09680581348606891,
+                    "max_blending_flicker": 0.05417530497267021,
+                    "blending_variance": 5.3445909258745256e-05
+                },
+                "blur": {
+                    "mean_sharpness": 90.94696687454869,
+                    "max_blur_flicker": 57.53451766327686,
+                    "blur_flicker_variance": 136.28243514328108
+                },
+                "texture": {
+                    "mean_contrast": 95.71177605950417,
+                    "max_texture_flicker": 104.49422462955091,
+                    "asymmetry_max": 168.09200159907883
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.01797357015311718,
+                    "max_kinematic_flicker": 0.1390809714794159,
+                    "max_rigid_violation": 0.030773505568504333,
+                    "blinking_variance": 0.000748492524709767,
+                    "mouth_movement_variance": 0.0012782473119691768
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.04687216236728591
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 3.183920623368147
+                }
+            },
+            "frames_analyzed": 105,
+            "time_metadata": {
+                "start_sec": 26.5,
+                "end_sec": 30.7,
+                "duration": 4.2,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "putting donald trump back in the white house",
+                    "vsr_text_lips": "putting donald trump back in the white house on his",
+                    "wer_score": 0.25
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.53293377161026,
+                    "min_sync_score": 0.3880329728126526,
+                    "variance": 0.025749251215885005
+                }
+            }
+        },
+        "chunk_0014": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.10013596972592477,
+                    "max_blending_flicker": 0.028971177016113597,
+                    "blending_variance": 3.9917516763849225e-05
+                },
+                "blur": {
+                    "mean_sharpness": 91.62076144216995,
+                    "max_blur_flicker": 55.69757123335836,
+                    "blur_flicker_variance": 121.88431107014361
+                },
+                "texture": {
+                    "mean_contrast": 103.60520246412095,
+                    "max_texture_flicker": 82.28782549482301,
+                    "asymmetry_max": 227.4584906064158
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.018541933968663216,
+                    "max_kinematic_flicker": 0.055143583565950394,
+                    "max_rigid_violation": 0.032066404819488525,
+                    "blinking_variance": 0.0008221396470582061,
+                    "mouth_movement_variance": 0.0011781265221105191
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.4353487379369401
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 2.907037370138248
+                }
+            },
+            "frames_analyzed": 90,
+            "time_metadata": {
+                "start_sec": 28.0,
+                "end_sec": 31.6,
+                "duration": 3.6,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "",
+                    "vsr_text_lips": "",
+                    "wer_score": null
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5144856572151184,
+                    "min_sync_score": 0.3856995701789856,
+                    "variance": 0.013699514629706755
+                }
+            }
+        },
+        "chunk_0019": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.10118554687082225,
+                    "max_blending_flicker": 0.028258344430581644,
+                    "blending_variance": 2.652133273941807e-05
+                },
+                "blur": {
+                    "mean_sharpness": 109.56491666072735,
+                    "max_blur_flicker": 41.38991882096896,
+                    "blur_flicker_variance": 95.05076041409714
+                },
+                "texture": {
+                    "mean_contrast": 73.90162496079314,
+                    "max_texture_flicker": 39.72621799865216,
+                    "asymmetry_max": 176.86416255341558
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.011010642163455486,
+                    "max_kinematic_flicker": 0.056858129799366,
+                    "max_rigid_violation": 0.020098447799682617,
+                    "blinking_variance": 0.00025909320375497053,
+                    "mouth_movement_variance": 0.0004141180988813843
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.964966627220614
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.6371088141423572
+                }
+            },
+            "frames_analyzed": 75,
+            "time_metadata": {
+                "start_sec": 39.5,
+                "end_sec": 42.5,
+                "duration": 3.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "president biden and i are working to end this",
+                    "vsr_text_lips": "i sit back and i want to take the",
+                    "wer_score": 0.777778
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.4747259020805359,
+                    "min_sync_score": 0.3983822762966156,
+                    "variance": 0.0012000268506445894
+                }
+            }
+        },
+        "chunk_0020": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.10267327876740269,
+                    "max_blending_flicker": 0.024054132317712446,
+                    "blending_variance": 2.408324866854373e-05
+                },
+                "blur": {
+                    "mean_sharpness": 109.16775638429984,
+                    "max_blur_flicker": 38.481351835236666,
+                    "blur_flicker_variance": 85.55438149945493
+                },
+                "texture": {
+                    "mean_contrast": 66.9806849782628,
+                    "max_texture_flicker": 40.974853562801044,
+                    "asymmetry_max": 167.28559667177308
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.008883585222065449,
+                    "max_kinematic_flicker": 0.047667428851127625,
+                    "max_rigid_violation": 0.015978485345840454,
+                    "blinking_variance": 0.00021391544654817852,
+                    "mouth_movement_variance": 0.0004629102712640098
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.2556476170429712
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.9119819774380173
+                }
+            },
+            "frames_analyzed": 120,
+            "time_metadata": {
+                "start_sec": 40.0,
+                "end_sec": 44.8,
+                "duration": 4.8,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "",
+                    "vsr_text_lips": "",
+                    "wer_score": null
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5314832329750061,
+                    "min_sync_score": 0.414975643157959,
+                    "variance": 0.018600838079413373
+                }
+            }
+        },
+        "chunk_0021": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.10039172252071958,
+                    "max_blending_flicker": 0.02220653651042853,
+                    "blending_variance": 1.9645542359874496e-05
+                },
+                "blur": {
+                    "mean_sharpness": 106.89427699795307,
+                    "max_blur_flicker": 49.1077130364683,
+                    "blur_flicker_variance": 82.42187877971158
+                },
+                "texture": {
+                    "mean_contrast": 95.91575782947235,
+                    "max_texture_flicker": 41.23111408282162,
+                    "asymmetry_max": 172.1706584633316
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.007391712628304958,
+                    "max_kinematic_flicker": 0.02691907063126564,
+                    "max_rigid_violation": 0.021300897002220154,
+                    "blinking_variance": 0.00018724892538301148,
+                    "mouth_movement_variance": 0.0005566076317968565
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.6494946797535449
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 2.284714957514845
+                }
+            },
+            "frames_analyzed": 120,
+            "time_metadata": {
+                "start_sec": 42.0,
+                "end_sec": 46.8,
+                "duration": 4.8,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "war such that israel is secure the",
+                    "vsr_text_lips": "war such that israel can secure the",
+                    "wer_score": 0.142857
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5440167188644409,
+                    "min_sync_score": 0.42245662212371826,
+                    "variance": 0.017329478557948086
+                }
+            }
+        },
+        "chunk_0023": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.12211281253300094,
+                    "max_blending_flicker": 0.019604037267080737,
+                    "blending_variance": 1.2828707518665687e-05
+                },
+                "blur": {
+                    "mean_sharpness": 142.91908546065497,
+                    "max_blur_flicker": 48.61476629760156,
+                    "blur_flicker_variance": 94.52038441072274
+                },
+                "texture": {
+                    "mean_contrast": 81.41410277637348,
+                    "max_texture_flicker": 55.07245914854954,
+                    "asymmetry_max": 176.56779192214492
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.006484030745923519,
+                    "max_kinematic_flicker": 0.017914166674017906,
+                    "max_rigid_violation": 0.01524043083190918,
+                    "blinking_variance": 0.0001338281394489003,
+                    "mouth_movement_variance": 0.0008544824884070106
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.283157923462886
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.3666696660659344
+                }
+            },
+            "frames_analyzed": 60,
+            "time_metadata": {
+                "start_sec": 48.0,
+                "end_sec": 50.4,
+                "duration": 2.4,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "",
+                    "vsr_text_lips": "",
+                    "wer_score": null
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.48593077063560486,
+                    "min_sync_score": 0.4252616763114929,
+                    "variance": 0.0009078524164380132
+                }
+            }
+        },
+        "chunk_0024": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.12101621322168823,
+                    "max_blending_flicker": 0.024501719866005467,
+                    "blending_variance": 2.2077753292908213e-05
+                },
+                "blur": {
+                    "mean_sharpness": 136.93641431171687,
+                    "max_blur_flicker": 51.12238286236209,
+                    "blur_flicker_variance": 92.74943904764042
+                },
+                "texture": {
+                    "mean_contrast": 87.91962481939585,
+                    "max_texture_flicker": 49.80698185270262,
+                    "asymmetry_max": 180.97657053604308
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.007596428506076336,
+                    "max_kinematic_flicker": 0.024266421794891357,
+                    "max_rigid_violation": 0.019173532724380493,
+                    "blinking_variance": 0.00021784304120770723,
+                    "mouth_movement_variance": 0.0015912110563392958
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.3698681058261335
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.2923633617693635
+                }
+            },
+            "frames_analyzed": 120,
+            "time_metadata": {
+                "start_sec": 48.0,
+                "end_sec": 52.8,
+                "duration": 4.8,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "suffering in gaza ends and the palestinian people",
+                    "vsr_text_lips": "the free guzzling hands and the palestinian people",
+                    "wer_score": 0.5
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.48055025935173035,
+                    "min_sync_score": 0.36001843214035034,
+                    "variance": 0.001418824969598012
+                }
+            }
+        },
+        "chunk_0025": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.11014251421759146,
+                    "max_blending_flicker": 0.015565504343724668,
+                    "blending_variance": 1.3181150701253076e-05
+                },
+                "blur": {
+                    "mean_sharpness": 122.28016290511307,
+                    "max_blur_flicker": 44.77655078786644,
+                    "blur_flicker_variance": 96.37400711852742
+                },
+                "texture": {
+                    "mean_contrast": 80.86428499766086,
+                    "max_texture_flicker": 54.745217330917086,
+                    "asymmetry_max": 195.00149072602795
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.008602439425885677,
+                    "max_kinematic_flicker": 0.023453671485185623,
+                    "max_rigid_violation": 0.019331350922584534,
+                    "blinking_variance": 0.00030594802649846125,
+                    "mouth_movement_variance": 0.001794854949834504
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.8581887161676731
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 2.8454864509620434
+                }
+            },
+            "frames_analyzed": 105,
+            "time_metadata": {
+                "start_sec": 50.5,
+                "end_sec": 54.7,
+                "duration": 4.2,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "",
+                    "vsr_text_lips": "",
+                    "wer_score": null
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5043752789497375,
+                    "min_sync_score": 0.4184216558933258,
+                    "variance": 0.004822720694901472
+                }
+            }
+        },
+        "chunk_0026": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.10730927816449984,
+                    "max_blending_flicker": 0.020410168674451792,
+                    "blending_variance": 1.468494888588572e-05
+                },
+                "blur": {
+                    "mean_sharpness": 114.71394935564587,
+                    "max_blur_flicker": 50.557233558840764,
+                    "blur_flicker_variance": 153.4800445385814
+                },
+                "texture": {
+                    "mean_contrast": 69.9260787173339,
+                    "max_texture_flicker": 37.943689059444196,
+                    "asymmetry_max": 158.7680519195904
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.010261193849146366,
+                    "max_kinematic_flicker": 0.038208384066820145,
+                    "max_rigid_violation": 0.019469350576400757,
+                    "blinking_variance": 0.0003318635059461423,
+                    "mouth_movement_variance": 0.0012789616588607272
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.7424324315099399
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 3.38593222926318
+                }
+            },
+            "frames_analyzed": 75,
+            "time_metadata": {
+                "start_sec": 52.0,
+                "end_sec": 55.0,
+                "duration": 3.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "can realize their right to dignity",
+                    "vsr_text_lips": "can realise their right to",
+                    "wer_score": 0.333333
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": null,
+                    "min_cosine_similarity": null,
+                    "percentile_3rd_cosine": null
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5084009170532227,
+                    "min_sync_score": 0.43295204639434814,
+                    "variance": 0.004547735982684209
+                }
+            }
+        }
+    }
+}

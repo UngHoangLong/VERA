@@ -5,6 +5,7 @@ import argparse
 import json
 import multiprocessing as mp
 import os
+import queue as queue_module
 import re
 import time
 from pathlib import Path
@@ -230,8 +231,8 @@ def build_generate_kwargs(
     return generate_kwargs
 
 
-def make_asr_pipeline(model_dir: Path, local_idx: int, dtype, batch_size: int):
-    # Khoi tao Whisper pipeline tren mot GPU local.
+def make_asr_pipeline_single_gpu(model_dir: Path, local_idx: int, dtype, batch_size: int):
+    # Khoi tao Whisper pipeline tren dung mot GPU local.
     from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
     model = AutoModelForSpeechSeq2Seq.from_pretrained(
@@ -255,6 +256,37 @@ def make_asr_pipeline(model_dir: Path, local_idx: int, dtype, batch_size: int):
         feature_extractor=processor.feature_extractor,
         dtype=dtype,
         device=local_idx,
+        batch_size=batch_size,
+    )
+    return pipe
+
+
+def make_asr_pipeline_model_parallel(model_dir: Path, dtype, batch_size: int, device_map: str):
+    # Khoi tao Whisper theo model parallel. Mot process dung cac GPU visible.
+    # Can transformers/accelerate ho tro device_map.
+    from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+
+    model = AutoModelForSpeechSeq2Seq.from_pretrained(
+        str(model_dir),
+        dtype=dtype,
+        low_cpu_mem_usage=True,
+        use_safetensors=True,
+        local_files_only=True,
+        device_map=device_map,
+    )
+
+    processor = AutoProcessor.from_pretrained(
+        str(model_dir),
+        local_files_only=True,
+    )
+
+    # Khi model da co device_map, khong truyen tham so device vao pipeline.
+    pipe = pipeline(
+        "automatic-speech-recognition",
+        model=model,
+        tokenizer=processor.tokenizer,
+        feature_extractor=processor.feature_extractor,
+        dtype=dtype,
         batch_size=batch_size,
     )
     return pipe
@@ -289,6 +321,7 @@ def make_base_record(task: Dict, output_root: Path, worker_info: Dict | None = N
         "worker_gpu_local": worker_info.get("local_idx", -1),
         "worker_gpu_physical": worker_info.get("physical_id", ""),
         "worker_gpu_name": worker_info.get("name", ""),
+        "execution_mode": worker_info.get("mode", "single_gpu_worker"),
     }
     return record, out_json
 
@@ -304,12 +337,47 @@ def write_missing_input_record(task: Dict, output_root: Path, overwrite: bool) -
     record, out_json = make_base_record(task=task, output_root=output_root)
     if out_json.exists() and not overwrite:
         try:
-            return json.loads(out_json.read_text(encoding="utf-8"))
+            cached = json.loads(out_json.read_text(encoding="utf-8"))
+            cached_reason = str(cached.get("reason", ""))
+
+            # Reuse only successful outputs and permanent non-model failures.
+            # Do not reuse previous transient failures such as OutOfMemoryError; rerun them.
+            if bool(cached.get("ok")) or cached_reason in {"input_audio_not_found", "empty_audio_input"}:
+                return cached
         except Exception:
             pass
 
     record["reason"] = "input_audio_not_found"
     return write_record(out_json, record)
+
+
+def build_pipe_kwargs(
+    language: str,
+    return_timestamps: bool,
+    chunk_length_s: float,
+    condition_on_prev_tokens: bool,
+    is_english_only: bool,
+    num_beams: int,
+    repetition_penalty: float,
+    no_repeat_ngram_size: int,
+) -> Dict:
+    pipe_kwargs: Dict = {}
+    if return_timestamps:
+        pipe_kwargs["return_timestamps"] = True
+    if chunk_length_s > 0:
+        pipe_kwargs["chunk_length_s"] = float(chunk_length_s)
+
+    generate_kwargs = build_generate_kwargs(
+        language=language,
+        condition_on_prev_tokens=condition_on_prev_tokens,
+        is_english_only=is_english_only,
+        num_beams=num_beams,
+        repetition_penalty=repetition_penalty,
+        no_repeat_ngram_size=no_repeat_ngram_size,
+    )
+    if generate_kwargs:
+        pipe_kwargs["generate_kwargs"] = generate_kwargs
+    return pipe_kwargs
 
 
 def run_one_chunk(
@@ -329,13 +397,20 @@ def run_one_chunk(
     retry_num_beams: int,
     retry_repetition_penalty: float,
     retry_no_repeat_ngram_size: int,
+    empty_cache_each_chunk: bool,
 ) -> Dict:
     # Chay ASR cho mot chunk va dam bao output khong de null.
     record, out_json = make_base_record(task=task, output_root=output_root, worker_info=worker_info)
 
     if out_json.exists() and not overwrite:
         try:
-            return json.loads(out_json.read_text(encoding="utf-8"))
+            cached = json.loads(out_json.read_text(encoding="utf-8"))
+            cached_reason = str(cached.get("reason", ""))
+            # Reuse only valid cached outputs.
+            # Do not reuse transient inference failures such as OOM; rerun them.
+            if bool(cached.get("ok")) or cached_reason in {"input_audio_not_found", "empty_audio_input"}:
+                cached["cache_status"] = "reused_success_or_permanent_failure"
+                return cached
         except Exception:
             pass
 
@@ -360,14 +435,10 @@ def run_one_chunk(
             "sampling_rate": sr,
         }
 
-        pipe_kwargs = {}
-        if return_timestamps:
-            pipe_kwargs["return_timestamps"] = True
-        if chunk_length_s > 0:
-            pipe_kwargs["chunk_length_s"] = chunk_length_s
-
-        generate_kwargs = build_generate_kwargs(
+        pipe_kwargs = build_pipe_kwargs(
             language=language,
+            return_timestamps=return_timestamps,
+            chunk_length_s=chunk_length_s,
             condition_on_prev_tokens=condition_on_prev_tokens,
             is_english_only=is_english_only,
             num_beams=num_beams,
@@ -375,10 +446,9 @@ def run_one_chunk(
             no_repeat_ngram_size=no_repeat_ngram_size,
         )
 
-        if generate_kwargs:
-            pipe_kwargs["generate_kwargs"] = generate_kwargs
+        with torch.inference_mode():
+            result = pipe(model_input, **pipe_kwargs)
 
-        result = pipe(model_input, **pipe_kwargs)
         initial_text = normalize_transcript_text(result.get("text") or "")
         final_text, repeated_detected = collapse_pathological_repetition(initial_text)
         final_result = result
@@ -396,7 +466,9 @@ def run_one_chunk(
 
             retry_pipe_kwargs = dict(pipe_kwargs)
             retry_pipe_kwargs["generate_kwargs"] = retry_kwargs
-            retry_result = pipe(model_input, **retry_pipe_kwargs)
+            with torch.inference_mode():
+                retry_result = pipe(model_input, **retry_pipe_kwargs)
+
             retry_text = normalize_transcript_text(retry_result.get("text") or "")
             retry_text_collapsed, retry_still_repeated = collapse_pathological_repetition(retry_text)
 
@@ -420,10 +492,16 @@ def run_one_chunk(
         if return_timestamps:
             record["chunks"] = final_result.get("chunks") or []
         record["reason"] = "success" if not postprocess_note else f"success_{postprocess_note}"
+    except torch.cuda.OutOfMemoryError as e:
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        record["reason"] = f"OutOfMemoryError: {e}"
     except Exception as e:
         record["reason"] = f"{type(e).__name__}: {e}"
     finally:
         record["elapsed_sec"] = round(time.time() - t0, 3)
+        if empty_cache_each_chunk and torch.cuda.is_available():
+            torch.cuda.empty_cache()
 
     return write_record(out_json, record)
 
@@ -446,6 +524,7 @@ def worker_main(
     retry_num_beams: int,
     retry_repetition_penalty: float,
     retry_no_repeat_ngram_size: int,
+    empty_cache_each_chunk: bool,
     queue: mp.Queue,
 ) -> None:
     # Chay mot worker ASR tren mot GPU local.
@@ -453,7 +532,7 @@ def worker_main(
     torch.cuda.set_device(local_idx)
 
     dtype = torch.float16
-    pipe = make_asr_pipeline(
+    pipe = make_asr_pipeline_single_gpu(
         model_dir=Path(model_dir),
         local_idx=local_idx,
         dtype=dtype,
@@ -491,6 +570,7 @@ def worker_main(
             retry_num_beams=retry_num_beams,
             retry_repetition_penalty=retry_repetition_penalty,
             retry_no_repeat_ngram_size=retry_no_repeat_ngram_size,
+            empty_cache_each_chunk=empty_cache_each_chunk,
         )
         results.append(rec)
 
@@ -508,6 +588,101 @@ def worker_main(
             "num_tasks": len(tasks),
             "results": results,
         }
+    )
+
+
+def run_model_parallel(
+    runnable_tasks: List[Dict],
+    input_root: Path,
+    model_path: Path,
+    model_dir: Path,
+    output_root: Path,
+    args,
+    is_english_only: bool,
+) -> Path:
+    # Mot process duy nhat load mot model Whisper theo device_map va xu ly tat ca chunk tuan tu.
+    dtype = torch.float16
+    pipe = make_asr_pipeline_model_parallel(
+        model_dir=model_dir,
+        dtype=dtype,
+        batch_size=int(args.batch_size),
+        device_map=str(args.device_map),
+    )
+
+    visible = os.environ.get("CUDA_VISIBLE_DEVICES", "")
+    device_map_info = getattr(getattr(pipe, "model", None), "hf_device_map", None)
+    worker_info = {
+        "local_idx": -1,
+        "physical_id": visible,
+        "name": f"model_parallel_device_map={args.device_map}",
+        "mode": "model_parallel",
+    }
+
+    print(
+        json.dumps(
+            {
+                "mode": "model_parallel",
+                "CUDA_VISIBLE_DEVICES": visible,
+                "device_map": args.device_map,
+                "hf_device_map": device_map_info,
+                "num_tasks": len(runnable_tasks),
+                "num_beams": args.num_beams,
+                "chunk_length_s": args.chunk_length_s,
+            },
+            ensure_ascii=False,
+            indent=2,
+            default=str,
+        ),
+        flush=True,
+    )
+
+    results: List[Dict] = []
+    for idx, task in enumerate(runnable_tasks, start=1):
+        print(
+            f"[MODEL_PARALLEL GPUs={visible}] START {idx}/{len(runnable_tasks)} | "
+            f"{task['video_id']}/{task['chunk']}",
+            flush=True,
+        )
+
+        rec = run_one_chunk(
+            pipe=pipe,
+            task=task,
+            output_root=output_root,
+            overwrite=bool(args.overwrite),
+            worker_info=worker_info,
+            language=str(args.language),
+            return_timestamps=bool(args.return_timestamps),
+            chunk_length_s=float(args.chunk_length_s),
+            condition_on_prev_tokens=bool(args.condition_on_prev_tokens),
+            is_english_only=bool(is_english_only),
+            num_beams=int(args.num_beams),
+            repetition_penalty=float(args.repetition_penalty),
+            no_repeat_ngram_size=int(args.no_repeat_ngram_size),
+            retry_num_beams=int(args.retry_num_beams),
+            retry_repetition_penalty=float(args.retry_repetition_penalty),
+            retry_no_repeat_ngram_size=int(args.retry_no_repeat_ngram_size),
+            empty_cache_each_chunk=bool(args.empty_cache_each_chunk),
+        )
+        results.append(rec)
+
+        status = "DONE" if rec["ok"] else "FAIL"
+        tail = rec["text"] if rec["ok"] else rec["reason"]
+        print(
+            f"[MODEL_PARALLEL GPUs={visible}] {status} {task['video_id']}/{task['chunk']} | "
+            f"time={rec['elapsed_sec']}s | {tail}",
+            flush=True,
+        )
+
+    return write_manifest(
+        output_root=output_root,
+        input_root=input_root,
+        model_path=model_path,
+        model_dir=model_dir,
+        args=args,
+        worker_payloads=[{"worker": worker_info, "num_tasks": len(runnable_tasks), "results": results}],
+        active_workers=1,
+        is_english_only=is_english_only,
+        note="model_parallel",
     )
 
 
@@ -542,12 +717,17 @@ def write_manifest(
         "retry_num_beams": args.retry_num_beams,
         "retry_repetition_penalty": args.retry_repetition_penalty,
         "retry_no_repeat_ngram_size": args.retry_no_repeat_ngram_size,
+        "model_parallel": args.model_parallel,
+        "device_map": args.device_map,
+        "max_workers": args.max_workers,
+        "empty_cache_each_chunk": args.empty_cache_each_chunk,
         "num_workers": active_workers,
         "workers": [
             {
                 "local_idx": payload["worker"]["local_idx"],
                 "physical_id": payload["worker"]["physical_id"],
                 "name": payload["worker"]["name"],
+                "mode": payload["worker"].get("mode", "single_gpu_worker"),
                 "num_tasks": payload["num_tasks"],
             }
             for payload in sorted(worker_payloads, key=lambda x: x["worker"]["local_idx"])
@@ -561,34 +741,42 @@ def write_manifest(
         "results": all_results,
     }
     manifest_path = output_root / "manifest.json"
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     return manifest_path
 
 
-def main() -> None:
-    # Diem vao chinh: parse args, tach chunk thieu input, roi moi goi GPU neu can.
+def parse_args():
     parser = argparse.ArgumentParser(
-        description="Run chunk-level ASR inference with local Whisper on all GPUs listed in CUDA_VISIBLE_DEVICES."
+        description="Run chunk-level ASR inference with local Whisper. Supports single-GPU workers and model-parallel mode."
     )
     parser.add_argument("--input-root", type=str, default="./data/interim", help="Root dir containing <video_id> folders")
     parser.add_argument("--input-audio-name", type=str, default="sync_audio.wav", help="Chunk-level wav file name")
     parser.add_argument("--model-path", type=str, default="./pretrained_model/whisper-medium-en/model.safetensors", help="Path to model.safetensors")
     parser.add_argument("--output-root", type=str, default="./src/module_2_extraction/asr_output", help="Directory to save per-chunk outputs")
-    parser.add_argument("--language", type=str, default="english", help='Language hint for multilingual Whisper. Ignored for English-only models.')
+    parser.add_argument("--language", type=str, default="english", help="Language hint for multilingual Whisper. Ignored for English-only models.")
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--chunk-length-s", type=float, default=0.0, help="0 disables long-form chunking; >0 enables pipeline chunking")
     parser.add_argument("--return-timestamps", action="store_true")
     parser.add_argument("--condition-on-prev-tokens", action="store_true")
     parser.add_argument("--english-only", action="store_true", help="Force English-only behavior: do not pass task/language to generate")
-    parser.add_argument("--num-beams", type=int, default=40, help="Beam size cho lan decode dau tien. Giam tu 40 xuong 5 de tranh lap transcript.")
-    parser.add_argument("--repetition-penalty", type=float, default=1.15, help="Phat transcript lap o lan decode dau tien.")
-    parser.add_argument("--no-repeat-ngram-size", type=int, default=4, help="Cam lap lai n-gram o lan decode dau tien.")
-    parser.add_argument("--retry-num-beams", type=int, default=1, help="Beam size cho lan decode lai khi phat hien lap transcript.")
-    parser.add_argument("--retry-repetition-penalty", type=float, default=1.25, help="Phat lap manh hon cho lan decode lai.")
-    parser.add_argument("--retry-no-repeat-ngram-size", type=int, default=4, help="Cam lap n-gram cho lan decode lai.")
+    parser.add_argument("--num-beams", type=int, default=40, help="Beam size for first decode. Use 1 for lowest VRAM; 5 for better quality if memory allows.")
+    parser.add_argument("--repetition-penalty", type=float, default=1.15, help="Penalty to reduce repeated transcript in first decode.")
+    parser.add_argument("--no-repeat-ngram-size", type=int, default=4, help="Block repeated n-grams in first decode.")
+    parser.add_argument("--retry-num-beams", type=int, default=1, help="Beam size for retry decode when repetition is detected.")
+    parser.add_argument("--retry-repetition-penalty", type=float, default=1.25, help="Stronger repetition penalty for retry decode.")
+    parser.add_argument("--retry-no-repeat-ngram-size", type=int, default=4, help="Block repeated n-grams for retry decode.")
     parser.add_argument("--max-chunks", type=int, default=0, help="0 = all chunks, otherwise only first N chunks")
     parser.add_argument("--overwrite", action="store_true")
-    args = parser.parse_args()
+    parser.add_argument("--max-workers", type=int, default=0, help="0 = use all visible GPUs in worker mode; otherwise limit workers")
+    parser.add_argument("--model-parallel", action="store_true", help="Use one process and load one Whisper model across visible GPUs with device_map")
+    parser.add_argument("--device-map", type=str, default="balanced_low_0", help="Device map for model-parallel mode: balanced_low_0, balanced, auto, sequential")
+    parser.add_argument("--empty-cache-each-chunk", action="store_true", help="Call torch.cuda.empty_cache() after each chunk")
+    return parser.parse_args()
+
+
+def main() -> None:
+    # Diem vao chinh: parse args, tach chunk thieu input, roi moi goi GPU neu can.
+    args = parse_args()
 
     input_root = Path(args.input_root)
     model_path = Path(args.model_path)
@@ -598,7 +786,6 @@ def main() -> None:
     if not input_root.exists():
         raise FileNotFoundError(f"Khong ton tai input_root: {input_root}")
 
-    # Auto-detect English-only from model dir name/path unless user overrides explicitly.
     auto_english_only = model_dir.name.endswith("-en") or "-en" in str(model_dir).lower()
     is_english_only = bool(args.english_only or auto_english_only)
 
@@ -688,21 +875,58 @@ def main() -> None:
     visible_ids = parse_visible_gpu_ids()
     if not visible_ids:
         raise RuntimeError(
-            "Khong co GPU CUDA kha dung. Hay set CUDA_VISIBLE_DEVICES truoc khi chay, "
-            "vi script nay se tu dong dung tat ca GPU dang visible."
+            "Khong co GPU CUDA kha dung. Hay set CUDA_VISIBLE_DEVICES truoc khi chay."
         )
     if not torch.cuda.is_available():
         raise RuntimeError("torch.cuda.is_available() = False")
 
+    if args.model_parallel:
+        manifest_path = run_model_parallel(
+            runnable_tasks=runnable_tasks,
+            input_root=input_root,
+            model_path=model_path,
+            model_dir=model_dir,
+            output_root=output_root,
+            args=args,
+            is_english_only=is_english_only,
+        )
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        print(
+            json.dumps(
+                {
+                    "output_root": str(output_root),
+                    "manifest": str(manifest_path),
+                    "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
+                    "mode": "model_parallel",
+                    "num_workers": 1,
+                    "num_chunks": manifest["num_chunks"],
+                    "num_ok": manifest["num_ok"],
+                    "num_failed": manifest["num_failed"],
+                    "num_missing_input": manifest["num_missing_input"],
+                    "num_empty_audio": manifest["num_empty_audio"],
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            flush=True,
+        )
+        return
+
     num_visible = torch.cuda.device_count()
+    if args.max_workers > 0:
+        num_workers = min(num_visible, int(args.max_workers))
+    else:
+        num_workers = num_visible
+
     workers = []
-    for local_idx in range(num_visible):
+    for local_idx in range(num_workers):
         physical_id = visible_ids[local_idx] if local_idx < len(visible_ids) else str(local_idx)
         workers.append(
             {
                 "local_idx": local_idx,
                 "physical_id": physical_id,
                 "name": torch.cuda.get_device_name(local_idx),
+                "mode": "single_gpu_worker",
             }
         )
 
@@ -711,6 +935,7 @@ def main() -> None:
     print(
         json.dumps(
             {
+                "mode": "single_gpu_worker",
                 "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
                 "workers": workers,
                 "num_tasks": len(tasks),
@@ -720,12 +945,15 @@ def main() -> None:
                 "model_dir": str(model_dir),
                 "model_path": str(model_path),
                 "is_english_only": is_english_only,
+                "batch_size": args.batch_size,
+                "chunk_length_s": args.chunk_length_s,
                 "num_beams": args.num_beams,
                 "repetition_penalty": args.repetition_penalty,
                 "no_repeat_ngram_size": args.no_repeat_ngram_size,
                 "retry_num_beams": args.retry_num_beams,
                 "retry_repetition_penalty": args.retry_repetition_penalty,
                 "retry_no_repeat_ngram_size": args.retry_no_repeat_ngram_size,
+                "empty_cache_each_chunk": args.empty_cache_each_chunk,
             },
             ensure_ascii=False,
             indent=2,
@@ -762,6 +990,7 @@ def main() -> None:
                 int(args.retry_num_beams),
                 float(args.retry_repetition_penalty),
                 int(args.retry_no_repeat_ngram_size),
+                bool(args.empty_cache_each_chunk),
                 queue,
             ),
         )
@@ -769,12 +998,25 @@ def main() -> None:
         procs.append(p)
         active_workers += 1
 
-    worker_payloads = [queue.get() for _ in range(active_workers)]
+    worker_payloads: List[Dict] = []
+    while len(worker_payloads) < active_workers:
+        try:
+            worker_payloads.append(queue.get(timeout=5))
+        except queue_module.Empty:
+            failed = [p.exitcode for p in procs if p.exitcode not in (None, 0)]
+            if failed:
+                break
 
     for p in procs:
         p.join()
         if p.exitcode != 0:
             raise RuntimeError(f"Worker process failed with exit code {p.exitcode}")
+
+    if len(worker_payloads) != active_workers:
+        raise RuntimeError(
+            f"Expected {active_workers} worker payloads, received {len(worker_payloads)}. "
+            "A worker may have crashed before returning results."
+        )
 
     manifest_path = write_manifest(
         output_root=output_root,
@@ -795,6 +1037,7 @@ def main() -> None:
                 "output_root": str(output_root),
                 "manifest": str(manifest_path),
                 "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
+                "mode": "single_gpu_worker",
                 "num_workers": active_workers,
                 "num_chunks": manifest["num_chunks"],
                 "num_ok": manifest["num_ok"],

@@ -19,7 +19,6 @@ from torchaudio.functional import resample as ta_resample
 from torchaudio.transforms import MelScale
 from tqdm import tqdm
 
-# Tóm gọn luồng chính là: đọc chunk → xử lý audio/video → cắt window đồng bộ → model chấm điểm → ghi JSON.
 
 @dataclass(frozen=True)
 class TCFDHParams:
@@ -72,7 +71,7 @@ class ChunkResult:
     chunk_start_sec: Optional[float] = None
     chunk_end_sec: Optional[float] = None
 
-# Nạp class SyncTransformer từ repo MTDVocaLiST theo tên module model.
+
 def load_sync_transformer_class(mtdvocalist_root: Path, module_name: str):
     if not mtdvocalist_root.exists():
         raise FileNotFoundError(f"Không tìm thấy repo MTDVocaLiST: {mtdvocalist_root}")
@@ -86,7 +85,7 @@ def load_sync_transformer_class(mtdvocalist_root: Path, module_name: str):
         raise AttributeError(f"models.{module_name} không có class SyncTransformer")
     return getattr(module, "SyncTransformer")
 
-# Đọc biến môi trường CUDA_VISIBLE_DEVICES.
+
 def parse_cuda_visible_devices_env() -> Optional[List[str]]:
     raw = os.environ.get("CUDA_VISIBLE_DEVICES")
     if raw is None:
@@ -96,7 +95,7 @@ def parse_cuda_visible_devices_env() -> Optional[List[str]]:
         return []
     return [x.strip() for x in raw.split(",") if x.strip()]
 
-# Xác định chạy CPU hay GPU, kiểm tra CUDA hợp lệ và chọn thiết bị chạy thực tế.
+
 def resolve_runtime_device(requested_device: str) -> Tuple[torch.device, int, Optional[List[str]]]:
     requested = str(requested_device).lower().strip()
     visible_env = parse_cuda_visible_devices_env()
@@ -125,7 +124,6 @@ def resolve_runtime_device(requested_device: str) -> Tuple[torch.device, int, Op
 
 
 class TCFDInferencer:
-    # Khởi tạo model, chọn device, load checkpoint, bật DataParallel nếu có nhiều GPU.
     def __init__(
         self,
         checkpoint_path: Path,
@@ -146,7 +144,6 @@ class TCFDInferencer:
         if self.device.type == "cuda":
             torch.backends.cudnn.benchmark = True
 
-    # Nạp trọng số pretrained vào model.
     def _load_checkpoint(self, checkpoint_path: Path) -> None:
         checkpoint = torch.load(str(checkpoint_path), map_location="cpu")
         if isinstance(checkpoint, dict) and "state_dict" in checkpoint:
@@ -160,7 +157,6 @@ class TCFDInferencer:
         self.model.eval()
 
     @torch.no_grad()
-    # Chạy model trên từng batch cửa sổ audio-video và trả về score cho từng window.
     def score_windows(self, frame_windows: torch.Tensor, mel_windows: torch.Tensor) -> np.ndarray:
         scores: List[np.ndarray] = []
         total = frame_windows.shape[0]
@@ -176,7 +172,7 @@ class TCFDInferencer:
             scores.append(probs.astype(np.float32, copy=False))
         return np.concatenate(scores, axis=0) if scores else np.empty((0,), dtype=np.float32)
 
-# Đọc audio, chuyển về mono nếu cần và resample về 16 kHz.
+
 def read_audio_mono_16k(audio_path: Path) -> np.ndarray:
     wav, sr = sf.read(str(audio_path))
     if wav.ndim == 2:
@@ -187,7 +183,7 @@ def read_audio_mono_16k(audio_path: Path) -> np.ndarray:
         wav = ta_resample(wav_t, orig_freq=sr, new_freq=HP.sample_rate).cpu().numpy().astype(np.float32, copy=False)
     return wav
 
-# Biến waveform thành mel-spectrogram đã chuẩn hóa để đưa vào model.
+
 def compute_normalized_mel(wav: np.ndarray) -> torch.Tensor:
     aud_tensor = torch.from_numpy(wav.astype(np.float32, copy=False))
     spec = torch.stft(
@@ -207,7 +203,7 @@ def compute_normalized_mel(wav: np.ndarray) -> torch.Tensor:
     )
     return normalized_mel.unsqueeze(0)
 
-# Đọc toàn bộ frame từ video và đổi BGR sang RGB.
+
 def read_video_rgb(path: Path) -> Tuple[List[np.ndarray], float]:
     cap = cv2.VideoCapture(str(path))
     if not cap.isOpened():
@@ -226,7 +222,7 @@ def read_video_rgb(path: Path) -> Tuple[List[np.ndarray], float]:
     cap.release()
     return frames, float(fps)
 
-# Đổi nhịp frame của video về FPS mục tiêu.
+
 def temporal_resample_frames(frames: Sequence[np.ndarray], source_fps: float, target_fps: int) -> List[np.ndarray]:
     if not frames:
         return []
@@ -237,7 +233,7 @@ def temporal_resample_frames(frames: Sequence[np.ndarray], source_fps: float, ta
     indices = np.clip(np.round(np.arange(n_target) * source_fps / target_fps).astype(np.int64), 0, len(frames) - 1)
     return [frames[i] for i in indices]
 
-# Resize/cắt khung hình về đúng layout đầu vào mà model cần, rồi chuyển sang tensor.
+
 def preprocess_video_frames_to_model_tensor(frames: Sequence[np.ndarray], video_layout: str) -> torch.Tensor:
     processed: List[np.ndarray] = []
     for frame in frames:
@@ -254,7 +250,7 @@ def preprocess_video_frames_to_model_tensor(frames: Sequence[np.ndarray], video_
     arr = arr.transpose(0, 3, 1, 2)
     return torch.from_numpy(arr)
 
-# Cắt dữ liệu thành các cặp cửa sổ đồng bộ gồm đoạn frame và đoạn mel để model chấm điểm.
+
 def build_windows(face_lips: torch.Tensor, mel: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
     total_frames = int(face_lips.shape[0])
     min_length = min(total_frames, math.floor((mel.shape[-1] * HP.hop_size) / 640))
@@ -283,7 +279,7 @@ def build_windows(face_lips: torch.Tensor, mel: torch.Tensor) -> Tuple[torch.Ten
     mel_batch = torch.stack(mel_windows, dim=0).float()
     return frame_batch, mel_batch
 
-# Đọc metadata.json để lấy thời gian bắt đầu/kết thúc của chunk.
+
 def find_chunk_time_span(metadata_path: Path) -> Tuple[Optional[float], Optional[float]]:
     if not metadata_path.exists():
         return None, None
@@ -316,7 +312,7 @@ def find_chunk_time_span(metadata_path: Path) -> Tuple[Optional[float], Optional
 
     return None, None
 
-# Quét toàn bộ thư mục input để lấy danh sách các chunk_* cần xử lý.
+
 def collect_chunk_dirs(input_root: Path) -> List[Tuple[str, Path]]:
     results: List[Tuple[str, Path]] = []
     for video_dir in sorted(p for p in input_root.iterdir() if p.is_dir()):
@@ -329,7 +325,7 @@ def collect_chunk_dirs(input_root: Path) -> List[Tuple[str, Path]]:
             results.append((video_dir.name, chunk_dir))
     return results
 
-# Hàm chính xử lý một chunk: kiểm tra file, đọc audio/video, tiền xử lý, tạo windows, chạy model, rồi trả về kết quả hoặc lỗi.
+
 def process_chunk(
     inferencer: TCFDInferencer,
     video_id: str,
@@ -435,7 +431,7 @@ def process_chunk(
             chunk_end_sec=chunk_end_sec,
         )
 
-# Gom kết quả theo từng video_id.
+
 def group_results(results: Sequence[ChunkResult]) -> Dict[str, Any]:
     videos: Dict[str, List[Dict[str, Any]]] = {}
     for item in results:
@@ -461,7 +457,7 @@ def group_results(results: Sequence[ChunkResult]) -> Dict[str, Any]:
         ]
     }
 
-# Tạo thống kê tổng quát như số chunk ok/skipped/error và trung bình điểm TCFD.
+
 def build_summary(results: Sequence[ChunkResult]) -> Dict[str, Any]:
     ok_scores = [r.tcfd_score for r in results if r.status == "ok" and r.tcfd_score is not None]
     return {
@@ -473,14 +469,14 @@ def build_summary(results: Sequence[ChunkResult]) -> Dict[str, Any]:
         "tcfd_score_std": float(np.std(ok_scores)) if ok_scores else None,
     }
 
-# Khai báo các tham số dòng lệnh của script.
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run TCFD inference per chunk using MTDVocaLiST")
     parser.add_argument("--input-root", type=Path, required=True, help="Root folder that contains <video_id>/chunk_* or <video_id>/cache/chunk_*")
     parser.add_argument("--checkpoint-path", type=Path, required=True, help="Path to pretrained pure_MTDVocaLiST.pth checkpoint")
     parser.add_argument("--output-json", type=Path, default=Path("data/interim/tcfd_interim.json"), help="Output JSON path")
     parser.add_argument("--input-video-name", type=str, default="vsr_input.mp4", help="Input video name inside each chunk")
-    parser.add_argument("--audio-name", type=str, default="audio.wav", help="Audio file name inside each chunk")
+    parser.add_argument("--audio-name", type=str, default="sync_audio.wav", help="Audio file name inside each chunk")
     parser.add_argument("--video-layout", type=str, default="mouth96", choices=["mouth96", "face96"], help="mouth96 for mouth-centered 96x96 crops, face96 for full face 96x96 crops")
     parser.add_argument("--allow-video-fallback", action="store_true", help="Allow fallback to another clip if input_video_name is missing")
     parser.add_argument("--fallback-video-name", type=str, default="video.mp4", help="Fallback video name inside each chunk")
@@ -491,7 +487,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=64)
     return parser.parse_args()
 
-# Điều phối toàn bộ pipeline: đọc args, load model, duyệt các chunk, chạy suy luận và lưu JSON đầu ra.
+
 def main() -> None:
     args = parse_args()
     if not args.input_root.exists():

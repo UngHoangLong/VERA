@@ -1,141 +1,292 @@
 import json
 import os
 import subprocess
+import sys
+from functools import lru_cache
 from pathlib import Path
 
-# --- CẤU HÌNH ĐƯỜNG DẪN TỔNG QUÁT ---
-# Lùi 4 cấp để ra tới thư mục gốc của project (từ src/module_2_extraction/module_22_audio_visual_consistency/)
-PROJECT_ROOT = Path(__file__).resolve().parents[4]
+# ==========================================
+# CẤU HÌNH ĐƯỜNG DẪN TỔNG QUÁT
+# ==========================================
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 INTERIM_DIR = PROJECT_ROOT / "data" / "interim"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 FINAL_REPORTS_DIR = PROJECT_ROOT / "final_reports"
 
-def run_command(command_list, step_name):
-    """Hàm chạy các script độc lập bằng Subprocess để giải phóng VRAM sau mỗi bước."""
-    print(f"\n Đang chạy: {step_name}...")
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
+
+# ==========================================
+# CẤU HÌNH ĐƯỜNG DẪN SCRIPT & MODEL
+# ==========================================
+MODULE_DIR = "src/module_2_extraction/module_22_audio_visual_consistency"
+SCRIPT_BUILD_INPUT = f"{MODULE_DIR}/build_vsr_asr_input_from_slides.py"
+SCRIPT_ASR = f"{MODULE_DIR}/run_asr_inference_per_chunk.py"
+SCRIPT_VSR = f"{MODULE_DIR}/run_vsr_inference_per_chunk.py"
+SCRIPT_CCFD = f"{MODULE_DIR}/CCFD_per_chunk.py"
+SCRIPT_SCFD = f"{MODULE_DIR}/SCFD_per_chunk.py"
+SCRIPT_TCFD = f"{MODULE_DIR}/TCFD_per_chunk.py"
+
+# Sửa đúng theo máy của bạn nếu các đường dẫn này khác.
+TCFD_CHECKPOINT = Path("./pretrained_model/pure_MTDVocaLiST.pth")
+TCFD_MTDVOCALIST_ROOT = Path(os.environ.get("TCFD_MTDVOCALIST_ROOT", str(PROJECT_ROOT.parent / "MTDVocaLiST")))
+
+# SCFD_per_chunk.py yêu cầu bắt buộc 2 tham số này. Có thể set bằng biến môi trường
+# để vẫn giữ được lệnh chạy main_22.py ngắn gọn.
+SCFD_AVHUBERT_ROOT = Path(os.environ.get(
+    "SCFD_AVHUBERT_ROOT",
+    "/mmlab_students/storageStudents/nguyenvd/truongdtd/av_hubert"
+))
+
+SCFD_MODEL_PATH = Path(os.environ.get(
+    "SCFD_MODEL_PATH",
+    "/mmlab_students/storageStudents/nguyenvd/truongdtd/av_hubert/base_lrs3_iter4.pt"
+))
+
+# ==========================================
+# CẤU HÌNH ASR/WHISPER
+# ==========================================
+ASR_BATCH_SIZE = "1"
+ASR_NUM_BEAMS = "1"
+ASR_RETRY_NUM_BEAMS = "1"
+ASR_CHUNK_LENGTH_S = "30"
+ASR_DEVICE_MAP = "balanced_low_0"
+ASR_USE_MODEL_PARALLEL = True
+ASR_OVERWRITE = False
+ASR_EMPTY_CACHE_EACH_CHUNK = True
+
+# ==========================================
+# CẤU HÌNH OUTPUT SCFD/TCFD
+# ==========================================
+SCFD_OUTPUT_ROOT = PROCESSED_DIR / "scfd_output"
+TCFD_OUTPUT_JSON = PROCESSED_DIR / "tcfd_output" / "tcfd_interim.json"
+
+# TCFD/MTDVocaLiST dễ crash khi tự bật torch.nn.DataParallel.
+# Vì vậy chỉ cho riêng bước TCFD nhìn thấy 1 GPU.
+TCFD_SINGLE_GPU = os.environ.get("TCFD_SINGLE_GPU", "").strip()
+TCFD_BATCH_SIZE = os.environ.get("TCFD_BATCH_SIZE", "8").strip()
+
+
+def run_command(command_list, step_name, env=None):
+    print(f"\nĐang chạy: {step_name}...")
     try:
-        subprocess.run(command_list, check=True)
+        subprocess.run(command_list, check=True, cwd=str(PROJECT_ROOT), env=env)
         print(f"Hoàn thành: {step_name}")
+        return True
     except subprocess.CalledProcessError as e:
         print(f"LỖI tại bước {step_name}. Mã lỗi: {e.returncode}")
         return False
-    return True
+
 
 def safe_read_json(filepath):
-    """Hàm đọc file JSON an toàn, trả về dict rỗng nếu file không tồn tại."""
     path = Path(filepath)
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
 
+
+def read_scfd_data(video_id: str, chunk_id: str) -> dict:
+    """SCFD_per_chunk.py lưu: scfd_output/<video_id>/<chunk_id>/vsr_input_semantic.json"""
+    path = SCFD_OUTPUT_ROOT / video_id / chunk_id / "vsr_input_semantic.json"
+    data = safe_read_json(path)
+    if not data or not data.get("ok"):
+        return {}
+    summary = data.get("summary", {}) or {}
+    return {
+        "mean_cosine_similarity": summary.get("mean_cosine"),
+        "min_cosine_similarity": summary.get("min_cosine"),
+        "percentile_3rd_cosine": summary.get("third_percentile"),
+    }
+
+
+@lru_cache(maxsize=1)
+def build_tcfd_index() -> dict:
+    """TCFD_per_chunk.py lưu một file tổng: tcfd_output/tcfd_interim.json."""
+    data = safe_read_json(TCFD_OUTPUT_JSON)
+    index = {}
+    for video in data.get("videos", []) or []:
+        video_id = video.get("video_id")
+        for chunk in video.get("chunks", []) or []:
+            chunk_id = chunk.get("chunk_id")
+            if video_id and chunk_id:
+                index[(video_id, chunk_id)] = chunk
+    return index
+
+
+def read_tcfd_data(video_id: str, chunk_id: str) -> dict:
+    chunk = build_tcfd_index().get((video_id, chunk_id), {})
+    if not chunk or chunk.get("status") != "ok":
+        return {}
+    std = chunk.get("window_score_std")
+    variance = None
+    if std is not None:
+        try:
+            variance = float(std) ** 2
+        except Exception:
+            variance = None
+    return {
+        "sync_score": chunk.get("tcfd_score"),
+        "min_sync_score": chunk.get("window_score_min"),
+        "variance": variance,
+    }
+
+
 def update_final_report(video_id, chunk_id):
-    """Tổng hợp kết quả từ data/processed vào báo cáo đã có ở final_reports."""
-    
     report_path = FINAL_REPORTS_DIR / f"{video_id}_report.json"
     if not report_path.exists():
         print(f"Bỏ qua {chunk_id}: Không tìm thấy khung báo cáo từ Module 2.1.")
         return
 
-    # 1. Thu thập dữ liệu từ các chuyên gia trong data/processed
-    # Dữ liệu VSR/ASR thô (để lấy text thô nếu cần)
-    vsr_data = safe_read_json(PROCESSED_DIR / "vsr_output" / video_id / f"{chunk_id}.json")
-    # Dữ liệu phân tích chuyên sâu
     ccfd_data = safe_read_json(PROCESSED_DIR / "ccfd_output" / video_id / f"{chunk_id}.json")
-    scfd_data = safe_read_json(PROCESSED_DIR / "scfd_output" / video_id / f"{chunk_id}.json")
-    tcfd_data = safe_read_json(PROCESSED_DIR / "tcfd_output" / video_id / f"{chunk_id}.json")
-
-    # Nếu không có dữ liệu CCFD (mô hình so sánh text), nghĩa là chunk này bị lỗi ở bước VSR/ASR
     if not ccfd_data:
-        print(f"Bỏ qua {chunk_id}: Dữ liệu CCFD không tồn tại.")
         return
 
-    # 2. Rút trích các đặc trưng tinh hoa
-    # Lấy text đã qua xử lý chuẩn hóa (normalize) từ CCFD
-    asr_text_clean = ccfd_data.get("reference_text_norm", "")
-    vsr_text_clean = ccfd_data.get("hypothesis_text_norm", "")
+    scfd_payload = read_scfd_data(video_id, chunk_id)
+    tcfd_payload = read_tcfd_data(video_id, chunk_id)
 
     audio_visual_payload = {
         "transcripts": {
-            "asr_text_audio": asr_text_clean,
-            "vsr_text_lips": vsr_text_clean,
-            "wer_score": ccfd_data.get("wer", None)
+            "asr_text_audio": ccfd_data.get("reference_text_norm", ""),
+            "vsr_text_lips": ccfd_data.get("hypothesis_text_norm", ""),
+            "wer_score": ccfd_data.get("wer", None),
         },
         "semantic_consistency": {
-            "mean_cosine_similarity": scfd_data.get("mean", None),
-            "min_cosine_similarity": scfd_data.get("min", None),
-            "percentile_3rd_cosine": scfd_data.get("third_percentile", None)
+            "mean_cosine_similarity": scfd_payload.get("mean_cosine_similarity"),
+            "min_cosine_similarity": scfd_payload.get("min_cosine_similarity"),
+            "percentile_3rd_cosine": scfd_payload.get("percentile_3rd_cosine"),
         },
         "temporal_sync": {
-            "sync_score": tcfd_data.get("mean_score", None),
-            "min_sync_score": tcfd_data.get("min_score", None),
-            "variance": tcfd_data.get("variance", None)
-        }
+            "sync_score": tcfd_payload.get("sync_score"),
+            "min_sync_score": tcfd_payload.get("min_sync_score"),
+            "variance": tcfd_payload.get("variance"),
+        },
     }
 
-    # 3. Ghi đè cập nhật vào Final Report
     with open(report_path, "r", encoding="utf-8") as f:
         report = json.load(f)
 
     if chunk_id in report.get("chunks", {}):
-        # Chỉ cập nhật phần audio_visual_consistency, KHÔNG ghi đè time_metadata của 2.1
         report["chunks"][chunk_id]["audio_visual_consistency"] = audio_visual_payload
-        
-        # Cập nhật trạng thái video
         report["video_metadata"]["status"] = "fully_analyzed"
-
         with open(report_path, "w", encoding="utf-8") as f:
             json.dump(report, f, indent=4, ensure_ascii=False)
-        print(f"Đã cập nhật kết quả Đồng bộ (Module 2.2) cho {chunk_id}")
+        print(f"Đã cập nhật Report: {video_id} - {chunk_id}")
 
-def process_single_video(video_id):
-    print(f"\n" + "="*50)
-    print(f"BẮT ĐẦU CHẠY MODULE 2.2: {video_id}")
-    print("="*50)
 
-    video_interim_dir = INTERIM_DIR / video_id
-    if not video_interim_dir.exists(): return
+def ensure_scfd_paths():
+    if not SCFD_AVHUBERT_ROOT.exists():
+        raise FileNotFoundError(
+            f"Không tìm thấy SCFD_AVHUBERT_ROOT: {SCFD_AVHUBERT_ROOT}\n"
+            "Hãy sửa biến SCFD_AVHUBERT_ROOT trong main_22.py hoặc export SCFD_AVHUBERT_ROOT=/path/to/AV-HuBERT"
+        )
+    if not SCFD_MODEL_PATH.exists():
+        raise FileNotFoundError(
+            f"Không tìm thấy SCFD_MODEL_PATH: {SCFD_MODEL_PATH}\n"
+            "Hãy sửa biến SCFD_MODEL_PATH trong main_22.py hoặc export SCFD_MODEL_PATH=/path/to/checkpoint.pt"
+        )
 
-    # Quét các chunk thực tế đang có trong data/interim
-    chunk_dirs = sorted([d.name for d in video_interim_dir.glob("chunk_*") if d.is_dir()])
 
-    for chunk_id in chunk_dirs:
-        print(f"\n--- Đang xử lý: {chunk_id} ---")
-        
-        # --- BƯỚC 1: CHẠY CÁC MÔ HÌNH (Sử dụng Subprocess để giải phóng VRAM GPU sau mỗi lượt) ---
-        
-        # 1. Tạo dữ liệu đầu vào cho VSR/ASR (Face crop & Audio extraction)
-        if not run_command(["python", "src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_asr_input_from_slides.py", 
-                            "--video-id", video_id, "--chunk-id", chunk_id], "Build Input"): continue
+def run_pipeline():
+    print("\n" + "=" * 60)
+    print("BẮT ĐẦU CHẠY TOÀN BỘ PIPELINE MODULE 2.2 (BATCH MODE)")
+    print("=" * 60)
 
-        # 2. Chạy ASR (Whisper)
-        run_command(["python", "src/module_2_extraction/module_22_audio_visual_consistency/run_asr_inference_per_chunk.py", 
-                     "--video-id", video_id, "--chunk-id", chunk_id], "ASR (Whisper)")
+    python_bin = sys.executable
 
-        # 3. Chạy VSR (Auto-AVSR)
-        run_command(["python", "src/module_2_extraction/module_22_audio_visual_consistency/run_vsr_inference_per_chunk.py", 
-                     "--video-id", video_id, "--chunk-id", chunk_id], "VSR (Auto-AVSR)")
+    if not run_command([python_bin, SCRIPT_BUILD_INPUT, "--input-root", str(INTERIM_DIR)], "Build Input"):
+        return False
 
-        # 4. Chạy CCFD (So sánh văn bản) - Truyền tham số root để script tự tìm video/chunk
-        # Lưu ý: Sửa lại tham số nếu CCFD của cậu yêu cầu --asr-root thay vì --video-id
-        run_command(["python", "src/module_2_extraction/module_22_audio_visual_consistency/CCFD_per_chunk.py", 
-                     "--asr-root", str(PROCESSED_DIR/"asr_output"), "--vsr-root", str(PROCESSED_DIR/"vsr_output"), 
-                     "--output-root", str(PROCESSED_DIR/"ccfd_output")], "CCFD (Text)")
+    asr_cmd = [
+        python_bin, SCRIPT_ASR,
+        "--input-root", str(INTERIM_DIR),
+        "--output-root", str(PROCESSED_DIR / "asr_output"),
+        "--batch-size", ASR_BATCH_SIZE,
+        "--num-beams", ASR_NUM_BEAMS,
+        "--retry-num-beams", ASR_RETRY_NUM_BEAMS,
+        "--chunk-length-s", ASR_CHUNK_LENGTH_S,
+    ]
+    if ASR_USE_MODEL_PARALLEL:
+        asr_cmd += ["--model-parallel", "--device-map", ASR_DEVICE_MAP]
+    if ASR_OVERWRITE:
+        asr_cmd += ["--overwrite"]
+    if ASR_EMPTY_CACHE_EACH_CHUNK:
+        asr_cmd += ["--empty-cache-each-chunk"]
+    if not run_command(asr_cmd, "ASR (Whisper - Model Parallel)"):
+        return False
 
-        # 5. Chạy SCFD (Đồng bộ ngữ nghĩa)
-        run_command(["python", "src/module_2_extraction/module_22_audio_visual_consistency/SCFD_per_chunk.py", 
-                     "--video-id", video_id, "--chunk-id", chunk_id], "SCFD (Semantic)")
+    if not run_command([python_bin, SCRIPT_VSR, "--input-root", str(INTERIM_DIR), "--output-root", str(PROCESSED_DIR / "vsr_output")], "VSR (Auto-AVSR)"):
+        return False
 
-        # 6. Chạy TCFD (Đồng bộ nhịp điệu)
-        run_command(["python", "src/module_2_extraction/module_22_audio_visual_consistency/TCFD_per_chunk.py", 
-                     "--video-id", video_id, "--chunk-id", chunk_id], "TCFD (Temporal)")
+    if not run_command([
+        python_bin, SCRIPT_CCFD,
+        "--asr-root", str(PROCESSED_DIR / "asr_output"),
+        "--vsr-root", str(PROCESSED_DIR / "vsr_output"),
+        "--output-root", str(PROCESSED_DIR / "ccfd_output"),
+    ], "CCFD (Text)"):
+        return False
 
-        # --- BƯỚC 2: TỔNG HỢP VÀO REPORT ---
-        update_final_report(video_id, chunk_id)
+    ensure_scfd_paths()
+    if not run_command([
+        python_bin, SCRIPT_SCFD,
+        "--input-root", str(INTERIM_DIR),
+        "--output-root", str(SCFD_OUTPUT_ROOT),
+        "--avhubert-root", str(SCFD_AVHUBERT_ROOT),
+        "--model-path", str(SCFD_MODEL_PATH),
+        "--input-video-name", "vsr_input.mp4",
+        "--input-audio-name", "sync_audio.wav",
+        "--device", "cuda:0",
+    ], "SCFD (Semantic)"):
+        return False
 
-if __name__ == "__main__":
-    # Tự động quét các thư mục video đã được Module 1 cắt ra
+    # TCFD được chạy trong subprocess riêng và chỉ expose 1 GPU để tránh
+    # torch.nn.DataParallel trong TCFD_per_chunk.py gây segmentation fault (-11).
+    tcfd_env = os.environ.copy()
+    visible = tcfd_env.get("CUDA_VISIBLE_DEVICES", "").strip()
+    if TCFD_SINGLE_GPU:
+        tcfd_env["CUDA_VISIBLE_DEVICES"] = TCFD_SINGLE_GPU
+    elif visible:
+        tcfd_env["CUDA_VISIBLE_DEVICES"] = visible.split(",")[0].strip()
+    else:
+        tcfd_env["CUDA_VISIBLE_DEVICES"] = "0"
+
+    if not run_command([
+        python_bin, SCRIPT_TCFD,
+        "--input-root", str(INTERIM_DIR),
+        "--checkpoint-path", str(TCFD_CHECKPOINT),
+        "--output-json", str(TCFD_OUTPUT_JSON),
+        "--mtdvocalist-root", str(TCFD_MTDVOCALIST_ROOT),
+        "--input-video-name", "vsr_input.mp4",
+        "--audio-name", "sync_audio.wav",
+        "--device", "cuda",
+        "--batch-size", TCFD_BATCH_SIZE,
+    ], "TCFD (Temporal - Single GPU)", env=tcfd_env):
+        return False
+
+    return True
+
+
+def synthesize_reports():
+    print("\n" + "=" * 60)
+    print("BẮT ĐẦU TỔNG HỢP FINAL REPORT")
+    print("=" * 60)
+    build_tcfd_index.cache_clear()
+
+    if not INTERIM_DIR.exists():
+        print("Không tìm thấy thư mục interim!")
+        return
+
     videos = sorted([d.name for d in INTERIM_DIR.iterdir() if d.is_dir()])
     for vid in videos:
-        process_single_video(vid)
-    print("\n HOÀN THÀNH TOÀN BỘ PIPELINE MODULE 2.2!")
+        video_interim_dir = INTERIM_DIR / vid
+        chunk_dirs = sorted([d.name for d in video_interim_dir.glob("chunk_*") if d.is_dir()])
+        for chunk_id in chunk_dirs:
+            update_final_report(vid, chunk_id)
+
+
+if __name__ == "__main__":
+    ok = run_pipeline()
+    if ok:
+        synthesize_reports()
+        print("\nHOÀN THÀNH TOÀN BỘ PIPELINE MODULE 2.2!")
+    else:
+        print("\nPIPELINE DỪNG DO CÓ LỖI Ở MỘT BƯỚC TRƯỚC ĐÓ.")
