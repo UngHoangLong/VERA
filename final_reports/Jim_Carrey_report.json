@@ -1,7 +1,7 @@
 {
     "video_metadata": {
         "video_id": "Jim_Carrey",
-        "status": "fully_analyzed"
+        "status": "audio_artifacts_completed"
     },
     "chunks": {
         "chunk_0000": {
@@ -58,6 +58,10 @@
                     "min_sync_score": 0.30315685272216797,
                     "variance": 0.023670731610494267
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.029132059640174998,
+                "vocal_shimmer_relative": 0.19175119698047638
             }
         },
         "chunk_0001": {
@@ -114,6 +118,10 @@
                     "min_sync_score": 0.30396994948387146,
                     "variance": 0.03490584945452313
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05571727744346936,
+                "vocal_shimmer_relative": 0.2154219001531601
             }
         },
         "chunk_0002": {
@@ -170,6 +178,10 @@
                     "min_sync_score": 0.3627829849720001,
                     "variance": 0.03072434944622615
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.0416393137800109,
+                "vocal_shimmer_relative": 0.17192372679710388
             }
         },
         "chunk_0003": {
@@ -226,6 +238,10 @@
                     "min_sync_score": 0.34122568368911743,
                     "variance": 0.03671239101779933
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.050271031279384835,
+                "vocal_shimmer_relative": 0.1519264131784439
             }
         },
         "chunk_0004": {
@@ -282,6 +298,10 @@
                     "min_sync_score": 0.37054717540740967,
                     "variance": 0.03124490463776297
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.08203565367578589,
+                "vocal_shimmer_relative": 0.23095716536045074
             }
         },
         "chunk_0005": {
@@ -338,6 +358,10 @@
                     "min_sync_score": 0.36786210536956787,
                     "variance": 0.03459234320433624
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.08650740086167258,
+                "vocal_shimmer_relative": 0.18375647068023682
             }
         },
         "chunk_0006": {
@@ -394,6 +418,10 @@
                     "min_sync_score": 0.3166050910949707,
                     "variance": 0.046350981805368896
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.025972213734945737,
+                "vocal_shimmer_relative": 0.16523100435733795
             }
         },
         "chunk_0007": {
@@ -450,6 +478,10 @@
                     "min_sync_score": 0.31956350803375244,
                     "variance": 0.061043577327034804
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.050943807757215395,
+                "vocal_shimmer_relative": 0.17201365530490875
             }
         },
         "chunk_0017": {
@@ -506,6 +538,10 @@
                     "min_sync_score": 0.3543933928012848,
                     "variance": 0.009455246849797483
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.034640974949438304,
+                "vocal_shimmer_relative": 0.1845916509628296
             }
         },
         "chunk_0019": {
@@ -562,6 +598,10 @@
                     "min_sync_score": 0.32576608657836914,
                     "variance": 0.024061927854251985
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.043947647005556194,
+                "vocal_shimmer_relative": 0.15011551976203918
             }
         },
         "chunk_0020": {
@@ -618,6 +658,10 @@
                     "min_sync_score": 0.31969985365867615,
                     "variance": 0.026015330898534694
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.040300522263878716,
+                "vocal_shimmer_relative": 0.13344264030456543
             }
         },
         "chunk_0021": {
@@ -674,6 +718,10 @@
                     "min_sync_score": 0.3175981342792511,
                     "variance": 0.016051107539292397
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.03172859465341866,
+                "vocal_shimmer_relative": 0.12250454723834991
             }
         },
         "chunk_0022": {
@@ -730,6 +778,10 @@
                     "min_sync_score": 0.3614167273044586,
                     "variance": 0.022519299948634774
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.021335630775274107,
+                "vocal_shimmer_relative": 0.11516546458005905
             }
         },
         "chunk_0024": {
@@ -786,6 +838,10 @@
                     "min_sync_score": 0.3125201463699341,
                     "variance": 0.014966703993926578
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.020046261016419743,
+                "vocal_shimmer_relative": 0.13108114898204803
             }
         },
         "chunk_0027": {
@@ -842,6 +898,10 @@
                     "min_sync_score": 0.3652055561542511,
                     "variance": 0.02337454462195887
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.04877247565989491,
+                "vocal_shimmer_relative": 0.17759482562541962
             }
         },
         "chunk_0028": {
@@ -898,6 +958,10 @@
                     "min_sync_score": 0.3875984251499176,
                     "variance": 0.0206776487054805
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.030353389106893967,
+                "vocal_shimmer_relative": 0.15392854809761047
             }
         },
         "chunk_0030": {
@@ -954,6 +1018,10 @@
                     "min_sync_score": 0.32581889629364014,
                     "variance": 0.056982066240829576
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.07305191390317661,
+                "vocal_shimmer_relative": 0.2556127905845642
             }
         },
         "chunk_0031": {
@@ -1010,6 +1078,10 @@
                     "min_sync_score": 0.3329199552536011,
                     "variance": 0.05654154871785466
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.029451631183631612,
+                "vocal_shimmer_relative": 0.23198269307613373
             }
         },
         "chunk_0036": {
@@ -1066,6 +1138,10 @@
                     "min_sync_score": 0.3305717408657074,
                     "variance": 0.02991604243938184
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05266286420215868,
+                "vocal_shimmer_relative": 0.16984769701957703
             }
         },
         "chunk_0037": {
@@ -1122,6 +1198,10 @@
                     "min_sync_score": 0.34179094433784485,
                     "variance": 0.01746816225643344
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.03428961939983458,
+                "vocal_shimmer_relative": 0.14542287588119507
             }
         },
         "chunk_0038": {
@@ -1178,6 +1258,10 @@
                     "min_sync_score": 0.31543442606925964,
                     "variance": 0.0254625305512457
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.026619337464415155,
+                "vocal_shimmer_relative": 0.15440553426742554
             }
         },
         "chunk_0039": {
@@ -1234,6 +1318,10 @@
                     "min_sync_score": 0.317833811044693,
                     "variance": 0.04707131744215354
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.038222089842157754,
+                "vocal_shimmer_relative": 0.12743251025676727
             }
         },
         "chunk_0040": {
@@ -1290,6 +1378,10 @@
                     "min_sync_score": 0.352844774723053,
                     "variance": 0.040515845043742615
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.04557322254570562,
+                "vocal_shimmer_relative": 0.17681509256362915
             }
         },
         "chunk_0041": {
@@ -1346,6 +1438,10 @@
                     "min_sync_score": 0.3250029385089874,
                     "variance": 0.04824280384108648
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05901316275365421,
+                "vocal_shimmer_relative": 0.17483125627040863
             }
         },
         "chunk_0042": {
@@ -1402,6 +1498,10 @@
                     "min_sync_score": 0.3205215036869049,
                     "variance": 0.05114170222553782
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05240270341435792,
+                "vocal_shimmer_relative": 0.1845010668039322
             }
         }
     }

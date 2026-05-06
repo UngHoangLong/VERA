@@ -1,7 +1,7 @@
 {
     "video_metadata": {
         "video_id": "Donald_Trump",
-        "status": "fully_analyzed"
+        "status": "audio_artifacts_completed"
     },
     "chunks": {
         "chunk_0000": {
@@ -58,6 +58,10 @@
                     "min_sync_score": 0.5132778882980347,
                     "variance": 0.024312774684219995
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05262029981062823,
+                "vocal_shimmer_relative": 0.1611376404762268
             }
         },
         "chunk_0001": {
@@ -114,6 +118,10 @@
                     "min_sync_score": 0.4688565135002136,
                     "variance": 0.021604273187708856
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.03865922673420912,
+                "vocal_shimmer_relative": 0.16815626621246338
             }
         },
         "chunk_0003": {
@@ -170,6 +178,10 @@
                     "min_sync_score": 0.5024491548538208,
                     "variance": 0.0023834506121817173
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.01259869564753253,
+                "vocal_shimmer_relative": 0.1490643322467804
             }
         },
         "chunk_0004": {
@@ -226,6 +238,10 @@
                     "min_sync_score": 0.5031187534332275,
                     "variance": 0.0023745087841576945
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.01259869564753253,
+                "vocal_shimmer_relative": 0.14902541041374207
             }
         },
         "chunk_0005": {
@@ -282,6 +298,10 @@
                     "min_sync_score": 0.44092559814453125,
                     "variance": 0.01946286706996503
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.04950281974043532,
+                "vocal_shimmer_relative": 0.12538392841815948
             }
         },
         "chunk_0006": {
@@ -338,6 +358,10 @@
                     "min_sync_score": 0.4126362204551697,
                     "variance": 0.02115383309982044
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05735400191659422,
+                "vocal_shimmer_relative": 0.14540737867355347
             }
         },
         "chunk_0007": {
@@ -394,6 +418,10 @@
                     "min_sync_score": 0.45423629879951477,
                     "variance": 0.005281821985244017
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.0556329059177362,
+                "vocal_shimmer_relative": 0.14610835909843445
             }
         },
         "chunk_0008": {
@@ -450,6 +478,10 @@
                     "min_sync_score": 0.4616728723049164,
                     "variance": 0.0017785492078168375
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.02301877106182927,
+                "vocal_shimmer_relative": 0.11075633764266968
             }
         },
         "chunk_0010": {
@@ -506,6 +538,10 @@
                     "min_sync_score": 0.47014620900154114,
                     "variance": 0.0028811179604698034
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.03996870473218192,
+                "vocal_shimmer_relative": 0.1952456384897232
             }
         },
         "chunk_0011": {
@@ -562,6 +598,10 @@
                     "min_sync_score": 0.4789200723171234,
                     "variance": 0.0032583935537202624
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.02001369159409665,
+                "vocal_shimmer_relative": 0.16918765008449554
             }
         },
         "chunk_0012": {
@@ -618,6 +658,10 @@
                     "min_sync_score": 0.4886365830898285,
                     "variance": 0.010034105303251606
                 }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.01969929005808536,
+                "vocal_shimmer_relative": 0.11634107679128647
             }
         }
     }
