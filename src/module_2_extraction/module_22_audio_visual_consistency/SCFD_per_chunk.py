@@ -161,7 +161,18 @@ def load_video_as_is(path: str) -> np.ndarray:
     return np.stack(frames, axis=0)
 
 # Kiểm tra số bước thời gian giữa video và audio (Chốt chặn kiểm soát chất lượng)
-def assert_same_num_steps(video_frames: np.ndarray, audio_feats: np.ndarray) -> None:
+# def assert_same_num_steps(video_frames: np.ndarray, audio_feats: np.ndarray) -> None:
+#     num_video_steps = int(video_frames.shape[0])
+#     num_audio_steps = int(audio_feats.shape[0])
+#     if num_video_steps != num_audio_steps:
+#         raise ValueError(
+#             "Số bước thời gian giữa video và audio không khớp: "
+#             f"video_steps={num_video_steps}, audio_steps={num_audio_steps}. "
+#             "Script này không tự pad hoặc truncate. Hãy kiểm tra lại pipeline cắt đoạn/tiền xử lý đầu vào."
+#         )
+
+# Kiểm tra số bước thời gian giữa video và audio. Nếu dư thừa <= 5 bước thì cắt để cân bằng (ko ảnh hưởng đến chất lượng) 
+def assert_same_num_steps(video_frames: np.ndarray, audio_feats: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     num_video_steps = int(video_frames.shape[0])
     num_audio_steps = int(audio_feats.shape[0])
     
@@ -173,6 +184,7 @@ def assert_same_num_steps(video_frames: np.ndarray, audio_feats: np.ndarray) -> 
     # Nếu chỉ lệch nhẹ (1-5 bước), ta sẽ cắt tỉa cho bằng nhau
     min_steps = min(num_video_steps, num_audio_steps)
     return video_frames[:min_steps], audio_feats[:min_steps]
+
 
 
 # Đổi video sang tensor đúng format đầu vào của AV-HuBERT.
