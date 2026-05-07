@@ -476,7 +476,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--checkpoint-path", type=Path, required=True, help="Path to pretrained pure_MTDVocaLiST.pth checkpoint")
     parser.add_argument("--output-json", type=Path, default=Path("data/interim/tcfd_interim.json"), help="Output JSON path")
     parser.add_argument("--input-video-name", type=str, default="vsr_input.mp4", help="Input video name inside each chunk")
-    parser.add_argument("--audio-name", type=str, default="audio.wav", help="Audio file name inside each chunk")
+    parser.add_argument("--audio-name", type=str, default="sync_audio.wav", help="Audio file name inside each chunk")
     parser.add_argument("--video-layout", type=str, default="mouth96", choices=["mouth96", "face96"], help="mouth96 for mouth-centered 96x96 crops, face96 for full face 96x96 crops")
     parser.add_argument("--allow-video-fallback", action="store_true", help="Allow fallback to another clip if input_video_name is missing")
     parser.add_argument("--fallback-video-name", type=str, default="video.mp4", help="Fallback video name inside each chunk")

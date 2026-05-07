@@ -324,7 +324,7 @@ def main() -> None:
 
     parser.add_argument("--audio-path", type=str, default=None, help="Đường dẫn audio đầu vào khi dùng --video-path")
     parser.add_argument("--input-video-name", type=str, default="vsr_input.mp4")
-    parser.add_argument("--input-audio-name", type=str, default="audio.wav")
+    parser.add_argument("--input-audio-name", type=str, default="sync_audio.wav")
     parser.add_argument("--output-json", type=str, default=None, help="JSON đầu ra khi xử lý một cặp video/audio")
     parser.add_argument("--output-root", type=str, default=None, help="Thư mục đầu ra khi quét nhiều cặp trong --input-root")
     args = parser.parse_args()
