@@ -124,7 +124,7 @@ def compute_audio_logfbank(path: str, stack_order_audio: int = 4) -> np.ndarray:
     feats = stack_audio_feats(feats, stack_order=stack_order_audio)
     return feats
 
-# Đọc video nguyên trạng, chỉ chuẩn hóa pixel về [0,1], không crop, không resize thêm.
+# Đọc video nguyên trạng, chỉ chuẩn hóa pixel về [0,1], không crop, không resize thêm, chuyển về ảnh trắng đen
 def load_video_as_is(path: str) -> np.ndarray:
     p = Path(path)
     if not p.exists():
@@ -143,11 +143,17 @@ def load_video_as_is(path: str) -> np.ndarray:
             if frame is None:
                 continue
 
-            if frame.ndim == 2:
+            # Chuyển đổi ảnh màu sang ảnh xám (Grayscale) cho AV-HuBERT
+            if frame.ndim == 3:
+                # Ảnh đang ở dạng BGR (mặc định của OpenCV), chuyển sang GRAY
+                gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                # Chuẩn hóa về [0, 1] và thêm chiều channel (H, W, 1)
+                arr = gray_frame.astype(np.float32) / 255.0
+                arr = arr[..., None]
+            elif frame.ndim == 2:
+                # Nếu video đã là ảnh xám sẵn thì chỉ cần chuẩn hóa
                 arr = frame.astype(np.float32) / 255.0
                 arr = arr[..., None]
-            elif frame.ndim == 3:
-                arr = frame.astype(np.float32) / 255.0
             else:
                 raise ValueError(f"Frame có số chiều không hỗ trợ: {frame.ndim}")
 
