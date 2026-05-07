@@ -1,7 +1,7 @@
 {
     "video_metadata": {
         "video_id": "Professor_Andrew_Goddard ",
-        "status": "audio_artifacts_completed"
+        "status": "fully_analyzed"
     },
     "chunks": {
         "chunk_0023": {
@@ -55,8 +55,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6123918890953064,
-                    "min_sync_score": 0.36848708987236023,
-                    "variance": 0.049283333044878086
+                    "min_sync_score": 0.3684871196746826,
+                    "variance": 0.04928333966094911
                 }
             },
             "audio_artifacts": {
@@ -175,7 +175,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.526141345500946,
-                    "min_sync_score": 0.33437588810920715,
+                    "min_sync_score": 0.33437591791152954,
                     "variance": 0.022888875857953517
                 }
             },
@@ -234,8 +234,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5410666465759277,
-                    "min_sync_score": 0.2827150821685791,
+                    "sync_score": 0.541066586971283,
+                    "min_sync_score": 0.28271499276161194,
                     "variance": 0.033097794962158256
                 }
             },
@@ -295,7 +295,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.618366539478302,
-                    "min_sync_score": 0.2828945517539978,
+                    "min_sync_score": 0.2828946113586426,
                     "variance": 0.055959908380232015
                 }
             },
@@ -354,9 +354,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5300895571708679,
-                    "min_sync_score": 0.3381926417350769,
-                    "variance": 0.04172618024561836
+                    "sync_score": 0.5300896167755127,
+                    "min_sync_score": 0.3381926715373993,
+                    "variance": 0.04172617415790203
                 }
             },
             "audio_artifacts": {
@@ -415,8 +415,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5110788345336914,
-                    "min_sync_score": 0.3376394212245941,
-                    "variance": 0.02774416265564761
+                    "min_sync_score": 0.33763939142227173,
+                    "variance": 0.027744167619695226
                 }
             },
             "audio_artifacts": {
@@ -475,7 +475,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5391398668289185,
-                    "min_sync_score": 0.3677420914173126,
+                    "min_sync_score": 0.36774206161499023,
                     "variance": 0.029863024235887714
                 }
             },
@@ -536,7 +536,7 @@
                 "temporal_sync": {
                     "sync_score": 0.6515082716941833,
                     "min_sync_score": 0.3772014081478119,
-                    "variance": 0.05642666353169923
+                    "variance": 0.05642667061103168
                 }
             },
             "audio_artifacts": {
@@ -595,7 +595,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6733025312423706,
-                    "min_sync_score": 0.3039771318435669,
+                    "min_sync_score": 0.3039771616458893,
                     "variance": 0.06620115285210204
                 }
             },
@@ -654,7 +654,7 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5451304316520691,
+                    "sync_score": 0.5451304912567139,
                     "min_sync_score": 0.30380669236183167,
                     "variance": 0.04838224607230135
                 }
@@ -715,7 +715,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5475715398788452,
-                    "min_sync_score": 0.26740971207618713,
+                    "min_sync_score": 0.26740965247154236,
                     "variance": 0.043113184446907704
                 }
             },
@@ -776,7 +776,7 @@
                 "temporal_sync": {
                     "sync_score": 0.5176272392272949,
                     "min_sync_score": 0.31004247069358826,
-                    "variance": 0.03561847911289129
+                    "variance": 0.035618490361992494
                 }
             },
             "audio_artifacts": {
@@ -835,7 +835,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.7426136136054993,
-                    "min_sync_score": 0.3235858976840973,
+                    "min_sync_score": 0.32358598709106445,
                     "variance": 0.06762471534572345
                 }
             },
@@ -894,8 +894,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.770160973072052,
-                    "min_sync_score": 0.33062663674354553,
+                    "sync_score": 0.7701610326766968,
+                    "min_sync_score": 0.3306267261505127,
                     "variance": 0.0533839852537179
                 }
             },
@@ -954,9 +954,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5356542468070984,
-                    "min_sync_score": 0.3308162987232208,
-                    "variance": 0.029719031037737986
+                    "sync_score": 0.5356543064117432,
+                    "min_sync_score": 0.3308163583278656,
+                    "variance": 0.02971903617542271
                 }
             },
             "audio_artifacts": {
@@ -1016,7 +1016,7 @@
                 "temporal_sync": {
                     "sync_score": 0.4944031834602356,
                     "min_sync_score": 0.31237512826919556,
-                    "variance": 0.016395024070575914
+                    "variance": 0.016395027886556557
                 }
             },
             "audio_artifacts": {
@@ -1075,8 +1075,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.46131062507629395,
-                    "min_sync_score": 0.28390082716941833,
-                    "variance": 0.008286846435688666
+                    "min_sync_score": 0.28390079736709595,
+                    "variance": 0.008286851861626587
                 }
             },
             "audio_artifacts": {
@@ -1135,8 +1135,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5572724342346191,
-                    "min_sync_score": 0.28374746441841125,
-                    "variance": 0.043615725507342384
+                    "min_sync_score": 0.28374743461608887,
+                    "variance": 0.04361573173137234
                 }
             },
             "audio_artifacts": {
@@ -1195,7 +1195,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6145496368408203,
-                    "min_sync_score": 0.3254067599773407,
+                    "min_sync_score": 0.3254067897796631,
                     "variance": 0.053988055954058645
                 }
             },
@@ -1255,7 +1255,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.550248384475708,
-                    "min_sync_score": 0.3250749707221985,
+                    "min_sync_score": 0.3250750005245209,
                     "variance": 0.04317185491330222
                 }
             },
@@ -1315,7 +1315,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5226836204528809,
-                    "min_sync_score": 0.3099192678928375,
+                    "min_sync_score": 0.30991917848587036,
                     "variance": 0.03381489637723534
                 }
             },
@@ -1375,7 +1375,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5827551484107971,
-                    "min_sync_score": 0.3350338041782379,
+                    "min_sync_score": 0.3350337743759155,
                     "variance": 0.04112920219277094
                 }
             },
@@ -1555,8 +1555,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5634661912918091,
-                    "min_sync_score": 0.25526300072669983,
-                    "variance": 0.047852051445600674
+                    "min_sync_score": 0.2552630305290222,
+                    "variance": 0.047852057964892225
                 }
             },
             "audio_artifacts": {
@@ -1615,7 +1615,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5465002655982971,
-                    "min_sync_score": 0.26573237776756287,
+                    "min_sync_score": 0.2657323181629181,
                     "variance": 0.04043379339480624
                 }
             },
@@ -1675,7 +1675,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6135178208351135,
-                    "min_sync_score": 0.3417419195175171,
+                    "min_sync_score": 0.34174197912216187,
                     "variance": 0.0543767769252137
                 }
             },
@@ -1735,8 +1735,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6666826009750366,
-                    "min_sync_score": 0.33948951959609985,
-                    "variance": 0.05911969582492049
+                    "min_sync_score": 0.3394894599914551,
+                    "variance": 0.05911970307121894
                 }
             },
             "audio_artifacts": {
@@ -1795,7 +1795,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6304388046264648,
-                    "min_sync_score": 0.26246461272239685,
+                    "min_sync_score": 0.262464702129364,
                     "variance": 0.05273629854031103
                 }
             },
@@ -1855,7 +1855,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5450839996337891,
-                    "min_sync_score": 0.2997458279132843,
+                    "min_sync_score": 0.2997458577156067,
                     "variance": 0.03604939461644108
                 }
             },
@@ -1915,8 +1915,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6217299103736877,
-                    "min_sync_score": 0.2667894959449768,
-                    "variance": 0.06648686392967207
+                    "min_sync_score": 0.2667895257472992,
+                    "variance": 0.06648687929875852
                 }
             },
             "audio_artifacts": {
@@ -1975,7 +1975,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6789920330047607,
-                    "min_sync_score": 0.26710307598114014,
+                    "min_sync_score": 0.26710301637649536,
                     "variance": 0.060715015481264345
                 }
             },
@@ -2035,7 +2035,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.7176270484924316,
-                    "min_sync_score": 0.29054757952690125,
+                    "min_sync_score": 0.29054760932922363,
                     "variance": 0.05151771551979678
                 }
             },
@@ -2096,7 +2096,7 @@
                 "temporal_sync": {
                     "sync_score": 0.6525818705558777,
                     "min_sync_score": 0.3402619957923889,
-                    "variance": 0.05189879939776021
+                    "variance": 0.051898806187119284
                 }
             },
             "audio_artifacts": {
@@ -2155,7 +2155,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5759932398796082,
-                    "min_sync_score": 0.34354209899902344,
+                    "min_sync_score": 0.34354206919670105,
                     "variance": 0.040508838777682854
                 }
             },
@@ -2215,8 +2215,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5383763313293457,
-                    "min_sync_score": 0.3626585602760315,
-                    "variance": 0.03950243487541716
+                    "min_sync_score": 0.3626585304737091,
+                    "variance": 0.0395024289521404
                 }
             },
             "audio_artifacts": {
@@ -2274,8 +2274,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5809320211410522,
-                    "min_sync_score": 0.27702078223228455,
+                    "sync_score": 0.580932080745697,
+                    "min_sync_score": 0.27702075242996216,
                     "variance": 0.057865734612454256
                 }
             },
@@ -2335,8 +2335,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6672413349151611,
-                    "min_sync_score": 0.27722176909446716,
-                    "variance": 0.0645758799041829
+                    "min_sync_score": 0.27722179889678955,
+                    "variance": 0.06457586475757982
                 }
             },
             "audio_artifacts": {
@@ -2396,7 +2396,7 @@
                 "temporal_sync": {
                     "sync_score": 0.7173354029655457,
                     "min_sync_score": 0.343312531709671,
-                    "variance": 0.058633213285413044
+                    "variance": 0.05863322050183584
                 }
             },
             "audio_artifacts": {
@@ -2455,7 +2455,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.7407324314117432,
-                    "min_sync_score": 0.33784219622612,
+                    "min_sync_score": 0.33784207701683044,
                     "variance": 0.05384066126613707
                 }
             },
@@ -2515,7 +2515,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6634616255760193,
-                    "min_sync_score": 0.337131530046463,
+                    "min_sync_score": 0.33713147044181824,
                     "variance": 0.053243146209771774
                 }
             },
@@ -2574,9 +2574,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.7855687737464905,
-                    "min_sync_score": 0.3412369191646576,
-                    "variance": 0.04917648854447365
+                    "sync_score": 0.7855687141418457,
+                    "min_sync_score": 0.34123703837394714,
+                    "variance": 0.04917647532668412
                 }
             },
             "audio_artifacts": {
@@ -2635,8 +2635,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6667653322219849,
-                    "min_sync_score": 0.2803359031677246,
-                    "variance": 0.0592802594778199
+                    "min_sync_score": 0.28033578395843506,
+                    "variance": 0.059280266733951814
                 }
             },
             "audio_artifacts": {
@@ -2695,7 +2695,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.46331217885017395,
-                    "min_sync_score": 0.2807963490486145,
+                    "min_sync_score": 0.2807962894439697,
                     "variance": 0.012960184867334912
                 }
             },
@@ -2755,7 +2755,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.4615328311920166,
-                    "min_sync_score": 0.3517695665359497,
+                    "min_sync_score": 0.3517695367336273,
                     "variance": 0.008897462570761627
                 }
             },
@@ -2875,7 +2875,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5977542400360107,
-                    "min_sync_score": 0.2613791823387146,
+                    "min_sync_score": 0.2613791525363922,
                     "variance": 0.05820463661587305
                 }
             },
@@ -2936,7 +2936,7 @@
                 "temporal_sync": {
                     "sync_score": 0.6263343691825867,
                     "min_sync_score": 0.3693998456001282,
-                    "variance": 0.054908027151041816
+                    "variance": 0.05490803413445988
                 }
             },
             "audio_artifacts": {
@@ -2996,7 +2996,7 @@
                 "temporal_sync": {
                     "sync_score": 0.46098169684410095,
                     "min_sync_score": 0.32692950963974,
-                    "variance": 0.007064800734264631
+                    "variance": 0.007064799481786788
                 }
             },
             "audio_artifacts": {
@@ -3115,7 +3115,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.44135287404060364,
-                    "min_sync_score": 0.264056921005249,
+                    "min_sync_score": 0.2640569806098938,
                     "variance": 0.007707466953182307
                 }
             },
@@ -3175,7 +3175,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.521888792514801,
-                    "min_sync_score": 0.29801249504089355,
+                    "min_sync_score": 0.2980124354362488,
                     "variance": 0.03483132818546952
                 }
             },
@@ -3234,9 +3234,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.7133293747901917,
+                    "sync_score": 0.7133294343948364,
                     "min_sync_score": 0.2984245717525482,
-                    "variance": 0.06240864458606499
+                    "variance": 0.06240863714093181
                 }
             },
             "audio_artifacts": {
@@ -3294,8 +3294,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6876114010810852,
-                    "min_sync_score": 0.30916905403137207,
+                    "sync_score": 0.68761146068573,
+                    "min_sync_score": 0.30916908383369446,
                     "variance": 0.0618741760245598
                 }
             },
@@ -3355,8 +3355,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.45733773708343506,
-                    "min_sync_score": 0.3096134066581726,
-                    "variance": 0.012835148436894317
+                    "min_sync_score": 0.3096134662628174,
+                    "variance": 0.012835151813268608
                 }
             },
             "audio_artifacts": {
@@ -3415,8 +3415,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.45954015851020813,
-                    "min_sync_score": 0.30916881561279297,
-                    "variance": 0.015373370270167774
+                    "min_sync_score": 0.3091687560081482,
+                    "variance": 0.015373372117753803
                 }
             },
             "audio_artifacts": {
@@ -3535,7 +3535,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.4936266839504242,
-                    "min_sync_score": 0.3048040270805359,
+                    "min_sync_score": 0.3048039972782135,
                     "variance": 0.021274913979809407
                 }
             },
@@ -3595,8 +3595,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5885539650917053,
-                    "min_sync_score": 0.36544275283813477,
-                    "variance": 0.05009345174227797
+                    "min_sync_score": 0.36544281244277954,
+                    "variance": 0.05009346508273205
                 }
             },
             "audio_artifacts": {
@@ -3655,8 +3655,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.672177255153656,
-                    "min_sync_score": 0.3171849548816681,
-                    "variance": 0.06151555801899722
+                    "min_sync_score": 0.3171849846839905,
+                    "variance": 0.061515550627327054
                 }
             },
             "audio_artifacts": {
@@ -3715,8 +3715,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5006402134895325,
-                    "min_sync_score": 0.3173726499080658,
-                    "variance": 0.03303003453226183
+                    "min_sync_score": 0.3173726797103882,
+                    "variance": 0.03303004536491039
                 }
             },
             "audio_artifacts": {
@@ -3775,8 +3775,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.423129141330719,
-                    "min_sync_score": 0.3222588300704956,
-                    "variance": 0.0018465174127336864
+                    "min_sync_score": 0.32225877046585083,
+                    "variance": 0.0018465180530533726
                 }
             },
             "audio_artifacts": {
@@ -3834,7 +3834,7 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5976656675338745,
+                    "sync_score": 0.5976656079292297,
                     "min_sync_score": 0.33211368322372437,
                     "variance": 0.057408746858990334
                 }
@@ -3955,8 +3955,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5810002088546753,
-                    "min_sync_score": 0.22033485770225525,
-                    "variance": 0.051792227283616654
+                    "min_sync_score": 0.22033487260341644,
+                    "variance": 0.051792220501232444
                 }
             },
             "audio_artifacts": {
@@ -4014,8 +4014,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5427451133728027,
-                    "min_sync_score": 0.3111684322357178,
+                    "sync_score": 0.5427449941635132,
+                    "min_sync_score": 0.3111684024333954,
                     "variance": 0.04133845749251486
                 }
             },
@@ -4075,8 +4075,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6257438659667969,
-                    "min_sync_score": 0.32151320576667786,
-                    "variance": 0.05924395535481608
+                    "min_sync_score": 0.32151323556900024,
+                    "variance": 0.059243962608725775
                 }
             },
             "audio_artifacts": {
@@ -4135,7 +4135,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6682944297790527,
-                    "min_sync_score": 0.26515722274780273,
+                    "min_sync_score": 0.26515716314315796,
                     "variance": 0.06399804794290365
                 }
             },
@@ -4195,8 +4195,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5702056288719177,
-                    "min_sync_score": 0.2649415135383606,
-                    "variance": 0.04944658724454687
+                    "min_sync_score": 0.2649414837360382,
+                    "variance": 0.04944658061752727
                 }
             },
             "audio_artifacts": {
@@ -4255,8 +4255,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.4682375490665436,
-                    "min_sync_score": 0.2794800102710724,
-                    "variance": 0.01604052587172422
+                    "min_sync_score": 0.27947998046875,
+                    "variance": 0.016040529646224266
                 }
             },
             "audio_artifacts": {
@@ -4375,7 +4375,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6063647270202637,
-                    "min_sync_score": 0.3268958032131195,
+                    "min_sync_score": 0.3268958330154419,
                     "variance": 0.05301306612040535
                 }
             },
@@ -4435,7 +4435,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5636674761772156,
-                    "min_sync_score": 0.3554913401603699,
+                    "min_sync_score": 0.35549142956733704,
                     "variance": 0.04292565517305946
                 }
             },
@@ -4495,7 +4495,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5265915989875793,
-                    "min_sync_score": 0.3491964042186737,
+                    "min_sync_score": 0.34919634461402893,
                     "variance": 0.03721771219320491
                 }
             },
@@ -4555,7 +4555,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5422226190567017,
-                    "min_sync_score": 0.3217260539531708,
+                    "min_sync_score": 0.3217260241508484,
                     "variance": 0.04085265949816752
                 }
             },
@@ -4616,7 +4616,7 @@
                 "temporal_sync": {
                     "sync_score": 0.551497220993042,
                     "min_sync_score": 0.32137078046798706,
-                    "variance": 0.04308199603275753
+                    "variance": 0.04308200221858827
                 }
             },
             "audio_artifacts": {
@@ -4675,7 +4675,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5520176887512207,
-                    "min_sync_score": 0.3281162977218628,
+                    "min_sync_score": 0.328116238117218,
                     "variance": 0.03977770542939485
                 }
             },
@@ -4735,7 +4735,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5449679493904114,
-                    "min_sync_score": 0.3402315676212311,
+                    "min_sync_score": 0.3402315378189087,
                     "variance": 0.04481652716899398
                 }
             },
@@ -4795,8 +4795,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5068894624710083,
-                    "min_sync_score": 0.2807959318161011,
-                    "variance": 0.03494612884269643
+                    "min_sync_score": 0.28079599142074585,
+                    "variance": 0.03494612327148516
                 }
             },
             "audio_artifacts": {
@@ -4855,8 +4855,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5639373660087585,
-                    "min_sync_score": 0.28078606724739075,
-                    "variance": 0.048128731280422166
+                    "min_sync_score": 0.2807861566543579,
+                    "variance": 0.048128724742311
                 }
             },
             "audio_artifacts": {
@@ -4915,7 +4915,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6946954131126404,
-                    "min_sync_score": 0.299909383058548,
+                    "min_sync_score": 0.2999093234539032,
                     "variance": 0.06649874476352213
                 }
             },
@@ -4976,7 +4976,7 @@
                 "temporal_sync": {
                     "sync_score": 0.645717203617096,
                     "min_sync_score": 0.27337464690208435,
-                    "variance": 0.06651440818317056
+                    "variance": 0.06651439281090266
                 }
             },
             "audio_artifacts": {
@@ -5096,7 +5096,7 @@
                 "temporal_sync": {
                     "sync_score": 0.6113877296447754,
                     "min_sync_score": 0.278347373008728,
-                    "variance": 0.05391708759589964
+                    "variance": 0.05391707375567023
                 }
             },
             "audio_artifacts": {
@@ -5275,7 +5275,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5795876383781433,
-                    "min_sync_score": 0.27126115560531616,
+                    "min_sync_score": 0.2712611258029938,
                     "variance": 0.05738623452464098
                 }
             },
@@ -5334,9 +5334,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5983046293258667,
-                    "min_sync_score": 0.3614501655101776,
-                    "variance": 0.057363719467291796
+                    "sync_score": 0.5983046889305115,
+                    "min_sync_score": 0.3614502251148224,
+                    "variance": 0.05736372660516409
                 }
             },
             "audio_artifacts": {
@@ -5395,8 +5395,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5135244131088257,
-                    "min_sync_score": 0.3294728994369507,
-                    "variance": 0.03674383848145113
+                    "min_sync_score": 0.32947292923927307,
+                    "variance": 0.03674384419416388
                 }
             },
             "audio_artifacts": {
@@ -5516,7 +5516,7 @@
                 "temporal_sync": {
                     "sync_score": 0.5071560740470886,
                     "min_sync_score": 0.29333293437957764,
-                    "variance": 0.03256231807610277
+                    "variance": 0.03256232345394161
                 }
             },
             "audio_artifacts": {
@@ -5636,7 +5636,7 @@
                 "temporal_sync": {
                     "sync_score": 0.6019750237464905,
                     "min_sync_score": 0.29570725560188293,
-                    "variance": 0.04664045119535687
+                    "variance": 0.04664044475912821
                 }
             },
             "audio_artifacts": {
@@ -5695,7 +5695,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6480439305305481,
-                    "min_sync_score": 0.3351348638534546,
+                    "min_sync_score": 0.3351348340511322,
                     "variance": 0.052905293752063765
                 }
             },
@@ -5755,8 +5755,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.52684086561203,
-                    "min_sync_score": 0.29475918412208557,
-                    "variance": 0.0412555161095165
+                    "min_sync_score": 0.2947593033313751,
+                    "variance": 0.04125551005623174
                 }
             },
             "audio_artifacts": {
@@ -5814,7 +5814,7 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.599514365196228,
+                    "sync_score": 0.5995144248008728,
                     "min_sync_score": 0.31471118330955505,
                     "variance": 0.06032873659201332
                 }
@@ -5875,7 +5875,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6732810735702515,
-                    "min_sync_score": 0.3236541748046875,
+                    "min_sync_score": 0.3236542344093323,
                     "variance": 0.05834148514258097
                 }
             },
@@ -5934,9 +5934,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5464394092559814,
-                    "min_sync_score": 0.2956363558769226,
-                    "variance": 0.03617507675903653
+                    "sync_score": 0.5464394688606262,
+                    "min_sync_score": 0.2956363260746002,
+                    "variance": 0.036175082427363
                 }
             },
             "audio_artifacts": {
@@ -5994,9 +5994,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5095255374908447,
-                    "min_sync_score": 0.2953073978424072,
-                    "variance": 0.02211075903233084
+                    "sync_score": 0.5095255970954895,
+                    "min_sync_score": 0.29530736804008484,
+                    "variance": 0.02211076789535582
                 }
             },
             "audio_artifacts": {
@@ -6055,8 +6055,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5719067454338074,
-                    "min_sync_score": 0.29780834913253784,
-                    "variance": 0.03819825336571747
+                    "min_sync_score": 0.29780831933021545,
+                    "variance": 0.03819825919039488
                 }
             },
             "audio_artifacts": {
@@ -6115,8 +6115,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5743488669395447,
-                    "min_sync_score": 0.29769110679626465,
-                    "variance": 0.046193686985845694
+                    "min_sync_score": 0.29769107699394226,
+                    "variance": 0.04619369339117463
                 }
             },
             "audio_artifacts": {
@@ -6175,7 +6175,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.630139946937561,
-                    "min_sync_score": 0.3165728449821472,
+                    "min_sync_score": 0.31657281517982483,
                     "variance": 0.052114741855846525
                 }
             },
@@ -6234,8 +6234,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6640596389770508,
-                    "min_sync_score": 0.3164355158805847,
+                    "sync_score": 0.664059579372406,
+                    "min_sync_score": 0.31643545627593994,
                     "variance": 0.052747776418776704
                 }
             },
@@ -6294,7 +6294,7 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5381840467453003,
+                    "sync_score": 0.5381841063499451,
                     "min_sync_score": 0.3249110281467438,
                     "variance": 0.03754902134567062
                 }
@@ -6354,9 +6354,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5249032378196716,
-                    "min_sync_score": 0.3250364065170288,
-                    "variance": 0.03972060525688903
+                    "sync_score": 0.5249032974243164,
+                    "min_sync_score": 0.3250363767147064,
+                    "variance": 0.03972059931727778
                 }
             },
             "audio_artifacts": {
@@ -6475,7 +6475,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5924995541572571,
-                    "min_sync_score": 0.3544447124004364,
+                    "min_sync_score": 0.3544446527957916,
                     "variance": 0.04488585971348957
                 }
             },
@@ -6714,8 +6714,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5774535536766052,
-                    "min_sync_score": 0.2632744610309601,
+                    "sync_score": 0.57745361328125,
+                    "min_sync_score": 0.2632744312286377,
                     "variance": 0.05973778175126654
                 }
             },
@@ -6774,9 +6774,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5782444477081299,
-                    "min_sync_score": 0.3226706385612488,
-                    "variance": 0.05039678453179963
+                    "sync_score": 0.5782445073127747,
+                    "min_sync_score": 0.32267069816589355,
+                    "variance": 0.050396791222191206
                 }
             },
             "audio_artifacts": {
@@ -6894,8 +6894,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5394243001937866,
-                    "min_sync_score": 0.2624424695968628,
+                    "sync_score": 0.5394243597984314,
+                    "min_sync_score": 0.2624424397945404,
                     "variance": 0.03788099234972031
                 }
             },
@@ -6955,8 +6955,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5011378526687622,
-                    "min_sync_score": 0.3163168430328369,
-                    "variance": 0.014979598923171855
+                    "min_sync_score": 0.3163168132305145,
+                    "variance": 0.014979602570713235
                 }
             },
             "audio_artifacts": {
@@ -7015,8 +7015,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.60372394323349,
-                    "min_sync_score": 0.33537498116493225,
-                    "variance": 0.06508711626299046
+                    "min_sync_score": 0.3353750705718994,
+                    "variance": 0.06508713146943368
                 }
             },
             "audio_artifacts": {
@@ -7074,7 +7074,7 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5095030069351196,
+                    "sync_score": 0.5095030665397644,
                     "min_sync_score": 0.307442307472229,
                     "variance": 0.0384567924575665
                 }
@@ -7134,9 +7134,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.4749043583869934,
-                    "min_sync_score": 0.3076835572719574,
-                    "variance": 0.014698540803355586
+                    "sync_score": 0.47490429878234863,
+                    "min_sync_score": 0.3076836168766022,
+                    "variance": 0.01469854260993575
                 }
             },
             "audio_artifacts": {
@@ -7194,8 +7194,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5029520988464355,
-                    "min_sync_score": 0.36467859148979187,
+                    "sync_score": 0.5029521584510803,
+                    "min_sync_score": 0.36467865109443665,
                     "variance": 0.02834285010955373
                 }
             },
@@ -7255,7 +7255,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5877291560173035,
-                    "min_sync_score": 0.3684620261192322,
+                    "min_sync_score": 0.3684619963169098,
                     "variance": 0.04364282291621979
                 }
             },
@@ -7315,8 +7315,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5568881630897522,
-                    "min_sync_score": 0.30335643887519836,
-                    "variance": 0.044331595441954086
+                    "min_sync_score": 0.3033563792705536,
+                    "variance": 0.04433160171685402
                 }
             },
             "audio_artifacts": {
@@ -7375,8 +7375,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.42366987466812134,
-                    "min_sync_score": 0.2934032380580902,
-                    "variance": 0.00733741276132438
+                    "min_sync_score": 0.2934032082557678,
+                    "variance": 0.00733741148491035
                 }
             },
             "audio_artifacts": {
@@ -7434,8 +7434,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5831570625305176,
-                    "min_sync_score": 0.29385998845100403,
+                    "sync_score": 0.5831571221351624,
+                    "min_sync_score": 0.29385989904403687,
                     "variance": 0.057847569697557555
                 }
             },
@@ -7495,7 +7495,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5727255344390869,
-                    "min_sync_score": 0.3003235459327698,
+                    "min_sync_score": 0.30032360553741455,
                     "variance": 0.0586319504182633
                 }
             },
@@ -7555,7 +7555,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.4547255337238312,
-                    "min_sync_score": 0.3007652163505554,
+                    "min_sync_score": 0.30076518654823303,
                     "variance": 0.014258467141534725
                 }
             },
@@ -7615,7 +7615,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5063382983207703,
-                    "min_sync_score": 0.3084338903427124,
+                    "min_sync_score": 0.30843386054039,
                     "variance": 0.0315699125770017
                 }
             },
@@ -7674,9 +7674,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5442840456962585,
-                    "min_sync_score": 0.316143274307251,
-                    "variance": 0.04675547307090988
+                    "sync_score": 0.5442841053009033,
+                    "min_sync_score": 0.3161432147026062,
+                    "variance": 0.04675547951507042
                 }
             },
             "audio_artifacts": {
@@ -7735,8 +7735,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6314371824264526,
-                    "min_sync_score": 0.26573994755744934,
-                    "variance": 0.06031312400117117
+                    "min_sync_score": 0.2657400369644165,
+                    "variance": 0.06031311668209938
                 }
             },
             "audio_artifacts": {
@@ -7795,7 +7795,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.7259239554405212,
-                    "min_sync_score": 0.26627638936042786,
+                    "min_sync_score": 0.26627641916275024,
                     "variance": 0.05953564502196773
                 }
             },
@@ -7855,7 +7855,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.8377562165260315,
-                    "min_sync_score": 0.3899182081222534,
+                    "min_sync_score": 0.38991814851760864,
                     "variance": 0.04527014081450975
                 }
             },

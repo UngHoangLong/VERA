@@ -1,7 +1,7 @@
 {
     "video_metadata": {
         "video_id": "Emma_Watson",
-        "status": "audio_artifacts_completed"
+        "status": "fully_analyzed"
     },
     "chunks": {
         "chunk_0007": {
@@ -54,9 +54,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5103311538696289,
+                    "sync_score": 0.5103312134742737,
                     "min_sync_score": 0.3991166353225708,
-                    "variance": 0.008116547587210476
+                    "variance": 0.008116544902263323
                 }
             },
             "audio_artifacts": {

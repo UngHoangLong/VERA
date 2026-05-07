@@ -1,7 +1,7 @@
 {
     "video_metadata": {
         "video_id": "Kamala_Harriss",
-        "status": "audio_artifacts_completed"
+        "status": "fully_analyzed"
     },
     "chunks": {
         "chunk_0000": {
@@ -56,7 +56,7 @@
                 "temporal_sync": {
                     "sync_score": 0.6578094363212585,
                     "min_sync_score": 0.41852104663848877,
-                    "variance": 0.02970069233400907
+                    "variance": 0.029700697470108395
                 }
             },
             "audio_artifacts": {
@@ -114,7 +114,7 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5875758528709412,
+                    "sync_score": 0.5875759720802307,
                     "min_sync_score": 0.37725916504859924,
                     "variance": 0.03275227066166142
                 }
@@ -175,8 +175,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6098955869674683,
-                    "min_sync_score": 0.40382111072540283,
-                    "variance": 0.03994629160610352
+                    "min_sync_score": 0.4038211703300476,
+                    "variance": 0.039946303519027504
                 }
             },
             "audio_artifacts": {
@@ -235,7 +235,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6879136562347412,
-                    "min_sync_score": 0.403138130903244,
+                    "min_sync_score": 0.4031381607055664,
                     "variance": 0.047786216224336764
                 }
             },
@@ -296,7 +296,7 @@
                 "temporal_sync": {
                     "sync_score": 0.7144342064857483,
                     "min_sync_score": 0.40542131662368774,
-                    "variance": 0.048643919741850006
+                    "variance": 0.048643926314861696
                 }
             },
             "audio_artifacts": {
@@ -355,8 +355,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5333661437034607,
-                    "min_sync_score": 0.4455501437187195,
-                    "variance": 0.0035114557063034013
+                    "min_sync_score": 0.44555020332336426,
+                    "variance": 0.003511455264800359
                 }
             },
             "audio_artifacts": {
@@ -415,8 +415,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5757468938827515,
-                    "min_sync_score": 0.41824573278427124,
-                    "variance": 0.007810403067603
+                    "min_sync_score": 0.41824576258659363,
+                    "variance": 0.00781040175069081
                 }
             },
             "audio_artifacts": {
@@ -474,9 +474,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6451743245124817,
+                    "sync_score": 0.6451742649078369,
                     "min_sync_score": 0.5377490520477295,
-                    "variance": 0.002024423191799088
+                    "variance": 0.002024422856570729
                 }
             },
             "audio_artifacts": {
@@ -535,8 +535,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6377765536308289,
-                    "min_sync_score": 0.5467920899391174,
-                    "variance": 0.002081335825269162
+                    "min_sync_score": 0.5467920303344727,
+                    "variance": 0.002081335145453514
                 }
             },
             "audio_artifacts": {
@@ -654,9 +654,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.53293377161026,
-                    "min_sync_score": 0.3880329728126526,
-                    "variance": 0.025749251215885005
+                    "sync_score": 0.5329338312149048,
+                    "min_sync_score": 0.38803303241729736,
+                    "variance": 0.02574925599813671
                 }
             },
             "audio_artifacts": {
@@ -716,7 +716,7 @@
                 "temporal_sync": {
                     "sync_score": 0.5144856572151184,
                     "min_sync_score": 0.3856995701789856,
-                    "variance": 0.013699514629706755
+                    "variance": 0.013699512885601506
                 }
             },
             "audio_artifacts": {
@@ -775,7 +775,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.4747259020805359,
-                    "min_sync_score": 0.3983822762966156,
+                    "min_sync_score": 0.39838218688964844,
                     "variance": 0.0012000268506445894
                 }
             },
@@ -955,8 +955,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.48593077063560486,
-                    "min_sync_score": 0.4252616763114929,
-                    "variance": 0.0009078524164380132
+                    "min_sync_score": 0.4252617657184601,
+                    "variance": 0.0009078514062315635
                 }
             },
             "audio_artifacts": {
@@ -1014,9 +1014,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.48055025935173035,
+                    "sync_score": 0.4805501699447632,
                     "min_sync_score": 0.36001843214035034,
-                    "variance": 0.001418824969598012
+                    "variance": 0.001418825250241229
                 }
             },
             "audio_artifacts": {
@@ -1074,7 +1074,7 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5043752789497375,
+                    "sync_score": 0.5043753385543823,
                     "min_sync_score": 0.4184216558933258,
                     "variance": 0.004822720694901472
                 }
@@ -1136,7 +1136,7 @@
                 "temporal_sync": {
                     "sync_score": 0.5084009170532227,
                     "min_sync_score": 0.43295204639434814,
-                    "variance": 0.004547735982684209
+                    "variance": 0.004547736987572437
                 }
             },
             "audio_artifacts": {

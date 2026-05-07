@@ -1,7 +1,7 @@
 {
     "video_metadata": {
         "video_id": "Donald_Trump",
-        "status": "audio_artifacts_completed"
+        "status": "fully_analyzed"
     },
     "chunks": {
         "chunk_0000": {
@@ -116,7 +116,7 @@
                 "temporal_sync": {
                     "sync_score": 0.6168704032897949,
                     "min_sync_score": 0.4688565135002136,
-                    "variance": 0.021604273187708856
+                    "variance": 0.021604277568171293
                 }
             },
             "audio_artifacts": {
@@ -176,7 +176,7 @@
                 "temporal_sync": {
                     "sync_score": 0.5841800570487976,
                     "min_sync_score": 0.5024491548538208,
-                    "variance": 0.0023834506121817173
+                    "variance": 0.0023834502484399445
                 }
             },
             "audio_artifacts": {
@@ -236,7 +236,7 @@
                 "temporal_sync": {
                     "sync_score": 0.5839250087738037,
                     "min_sync_score": 0.5031187534332275,
-                    "variance": 0.0023745087841576945
+                    "variance": 0.0023745091472165414
                 }
             },
             "audio_artifacts": {
@@ -354,8 +354,8 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6289588809013367,
-                    "min_sync_score": 0.4126362204551697,
+                    "sync_score": 0.6289588212966919,
+                    "min_sync_score": 0.41263625025749207,
                     "variance": 0.02115383309982044
                 }
             },
@@ -415,7 +415,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5404481291770935,
-                    "min_sync_score": 0.45423629879951477,
+                    "min_sync_score": 0.45423635840415955,
                     "variance": 0.005281821985244017
                 }
             },
@@ -474,9 +474,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5368646383285522,
+                    "sync_score": 0.536864697933197,
                     "min_sync_score": 0.4616728723049164,
-                    "variance": 0.0017785492078168375
+                    "variance": 0.0017785495220290631
                 }
             },
             "audio_artifacts": {
@@ -535,7 +535,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5508628487586975,
-                    "min_sync_score": 0.47014620900154114,
+                    "min_sync_score": 0.47014614939689636,
                     "variance": 0.0028811179604698034
                 }
             },
@@ -595,8 +595,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5596836805343628,
-                    "min_sync_score": 0.4789200723171234,
-                    "variance": 0.0032583935537202624
+                    "min_sync_score": 0.47892001271247864,
+                    "variance": 0.003258393979016852
                 }
             },
             "audio_artifacts": {
@@ -655,8 +655,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5972495079040527,
-                    "min_sync_score": 0.4886365830898285,
-                    "variance": 0.010034105303251606
+                    "min_sync_score": 0.4886365234851837,
+                    "variance": 0.010034103810596662
                 }
             },
             "audio_artifacts": {
