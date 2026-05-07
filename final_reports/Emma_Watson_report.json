@@ -49,14 +49,14 @@
                     "wer_score": 0.166667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.287129,
+                    "min_cosine_similarity": 0.022294,
+                    "percentile_3rd_cosine": 0.052464
                 },
                 "temporal_sync": {
                     "sync_score": 0.5103312134742737,
                     "min_sync_score": 0.3991166353225708,
-                    "variance": 0.008116544902263323
+                    "variance": 0.008116546244736844
                 }
             },
             "audio_artifacts": {

@@ -44,19 +44,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "of this year",
+                    "vsr_text_lips": "and visiting",
+                    "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.574601,
+                    "min_cosine_similarity": 0.307983,
+                    "percentile_3rd_cosine": 0.323401
                 },
                 "temporal_sync": {
                     "sync_score": 0.6123918890953064,
-                    "min_sync_score": 0.3684871196746826,
-                    "variance": 0.04928333966094911
+                    "min_sync_score": 0.36848706007003784,
+                    "variance": 0.04928334627702058
                 }
             },
             "audio_artifacts": {
@@ -109,9 +109,9 @@
                     "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.295091,
+                    "min_cosine_similarity": 0.012651,
+                    "percentile_3rd_cosine": 0.037403
                 },
                 "temporal_sync": {
                     "sync_score": 0.5652762651443481,
@@ -164,19 +164,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "this college the royal college of physicians called for obesity to be reduced",
+                    "vsr_text_lips": "college royal college visitors called for obesity to be",
+                    "wer_score": 0.384615
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.215727,
+                    "min_cosine_similarity": -0.051491,
+                    "percentile_3rd_cosine": -0.044163
                 },
                 "temporal_sync": {
                     "sync_score": 0.526141345500946,
-                    "min_sync_score": 0.33437591791152954,
-                    "variance": 0.022888875857953517
+                    "min_sync_score": 0.3343758285045624,
+                    "variance": 0.02288888036676795
                 }
             },
             "audio_artifacts": {
@@ -229,9 +229,9 @@
                     "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.269253,
+                    "min_cosine_similarity": -0.01166,
+                    "percentile_3rd_cosine": 0.009248
                 },
                 "temporal_sync": {
                     "sync_score": 0.541066586971283,
@@ -284,14 +284,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "recognised as a disease that call has resulted",
+                    "vsr_text_lips": "guys had a disease that call henry",
+                    "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.262886,
+                    "min_cosine_similarity": -0.017078,
+                    "percentile_3rd_cosine": 0.000409
                 },
                 "temporal_sync": {
                     "sync_score": 0.618366539478302,
@@ -349,14 +349,14 @@
                     "wer_score": 0.166667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.235071,
+                    "min_cosine_similarity": -0.026318,
+                    "percentile_3rd_cosine": -0.016454
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5300896167755127,
-                    "min_sync_score": 0.3381926715373993,
-                    "variance": 0.04172617415790203
+                    "sync_score": 0.5300895571708679,
+                    "min_sync_score": 0.3381926119327545,
+                    "variance": 0.041726186333335136
                 }
             },
             "audio_artifacts": {
@@ -404,19 +404,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "resulted in a lot of discussion in the media and amongst the profession",
+                    "vsr_text_lips": "did a lot of discussion in the media amongst the professor",
+                    "wer_score": 0.307692
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.119215,
+                    "min_cosine_similarity": -0.002271,
+                    "percentile_3rd_cosine": 0.011782
                 },
                 "temporal_sync": {
                     "sync_score": 0.5110788345336914,
                     "min_sync_score": 0.33763939142227173,
-                    "variance": 0.027744167619695226
+                    "variance": 0.027744157691600435
                 }
             },
             "audio_artifacts": {
@@ -469,14 +469,14 @@
                     "wer_score": 0.307692
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.296384,
+                    "min_cosine_similarity": 0.012399,
+                    "percentile_3rd_cosine": 0.038993
                 },
                 "temporal_sync": {
                     "sync_score": 0.5391398668289185,
-                    "min_sync_score": 0.36774206161499023,
-                    "variance": 0.029863024235887714
+                    "min_sync_score": 0.3677421808242798,
+                    "variance": 0.029863029386003825
                 }
             },
             "audio_artifacts": {
@@ -524,19 +524,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "about whether that was the right thing to do the purpose",
+                    "vsr_text_lips": "about whether that was the right thing to do the purpose",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.26603,
+                    "min_cosine_similarity": -0.035282,
+                    "percentile_3rd_cosine": -0.019135
                 },
                 "temporal_sync": {
                     "sync_score": 0.6515082716941833,
                     "min_sync_score": 0.3772014081478119,
-                    "variance": 0.05642667061103168
+                    "variance": 0.05642666353169923
                 }
             },
             "audio_artifacts": {
@@ -589,13 +589,13 @@
                     "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.298231,
+                    "min_cosine_similarity": 0.05869,
+                    "percentile_3rd_cosine": 0.08063
                 },
                 "temporal_sync": {
                     "sync_score": 0.6733025312423706,
-                    "min_sync_score": 0.3039771616458893,
+                    "min_sync_score": 0.30397722125053406,
                     "variance": 0.06620115285210204
                 }
             },
@@ -644,17 +644,17 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "of me speaking to you now is to give our reasons behind that and",
+                    "vsr_text_lips": "i will be speaking to you now is to give our reason behind that and",
+                    "wer_score": 0.285714
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.302989,
+                    "min_cosine_similarity": 0.114796,
+                    "percentile_3rd_cosine": 0.134214
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5451304912567139,
+                    "sync_score": 0.5451304316520691,
                     "min_sync_score": 0.30380669236183167,
                     "variance": 0.04838224607230135
                 }
@@ -709,9 +709,9 @@
                     "wer_score": 0.181818
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.253747,
+                    "min_cosine_similarity": -0.024816,
+                    "percentile_3rd_cosine": 0.000212
                 },
                 "temporal_sync": {
                     "sync_score": 0.5475715398788452,
@@ -764,17 +764,17 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "hopefully convince you that you should be thinking about it as well",
+                    "vsr_text_lips": "hopefully convince you that you could be silly about it as well ok",
+                    "wer_score": 0.25
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.326684,
+                    "min_cosine_similarity": 0.146535,
+                    "percentile_3rd_cosine": 0.14945
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5176272392272949,
+                    "sync_score": 0.5176271796226501,
                     "min_sync_score": 0.31004247069358826,
                     "variance": 0.035618490361992494
                 }
@@ -829,13 +829,13 @@
                     "wer_score": 0.142857
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.373905,
+                    "min_cosine_similarity": -0.068536,
+                    "percentile_3rd_cosine": -0.061421
                 },
                 "temporal_sync": {
                     "sync_score": 0.7426136136054993,
-                    "min_sync_score": 0.32358598709106445,
+                    "min_sync_score": 0.32358601689338684,
                     "variance": 0.06762471534572345
                 }
             },
@@ -884,19 +884,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "i was a little unsure about that",
+                    "vsr_text_lips": "where did you come from i was last year about",
+                    "wer_score": 1.285714
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.429852,
+                    "min_cosine_similarity": -0.011331,
+                    "percentile_3rd_cosine": -0.002345
                 },
                 "temporal_sync": {
                     "sync_score": 0.7701610326766968,
-                    "min_sync_score": 0.3306267261505127,
-                    "variance": 0.0533839852537179
+                    "min_sync_score": 0.33062660694122314,
+                    "variance": 0.05338399213953715
                 }
             },
             "audio_artifacts": {
@@ -949,9 +949,9 @@
                     "wer_score": 0.153846
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.499935,
+                    "min_cosine_similarity": 0.14035,
+                    "percentile_3rd_cosine": 0.16007
                 },
                 "temporal_sync": {
                     "sync_score": 0.5356543064117432,
@@ -1004,18 +1004,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "whether it should be called a disease and when we first discussed it in",
+                    "vsr_text_lips": "that should be called a disease when we first discussed it here",
+                    "wer_score": 0.285714
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.295368,
+                    "min_cosine_similarity": -0.019237,
+                    "percentile_3rd_cosine": 0.006081
                 },
                 "temporal_sync": {
                     "sync_score": 0.4944031834602356,
-                    "min_sync_score": 0.31237512826919556,
+                    "min_sync_score": 0.31237509846687317,
                     "variance": 0.016395027886556557
                 }
             },
@@ -1069,14 +1069,14 @@
                     "wer_score": 0.416667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.13783,
+                    "min_cosine_similarity": -0.066608,
+                    "percentile_3rd_cosine": -0.058367
                 },
                 "temporal_sync": {
                     "sync_score": 0.46131062507629395,
-                    "min_sync_score": 0.28390079736709595,
-                    "variance": 0.008286851861626587
+                    "min_sync_score": 0.2839007079601288,
+                    "variance": 0.008286846435688666
                 }
             },
             "audio_artifacts": {
@@ -1124,19 +1124,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "in our council meeting over the summer of last year",
+                    "vsr_text_lips": "our council meeting over the summer of last year i",
+                    "wer_score": 0.2
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.175465,
+                    "min_cosine_similarity": 0.043833,
+                    "percentile_3rd_cosine": 0.054377
                 },
                 "temporal_sync": {
                     "sync_score": 0.5572724342346191,
-                    "min_sync_score": 0.28374743461608887,
-                    "variance": 0.04361573173137234
+                    "min_sync_score": 0.2837474048137665,
+                    "variance": 0.043615725507342384
                 }
             },
             "audio_artifacts": {
@@ -1189,14 +1189,14 @@
                     "wer_score": 0.142857
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.285506,
+                    "min_cosine_similarity": 0.017608,
+                    "percentile_3rd_cosine": 0.023767
                 },
                 "temporal_sync": {
                     "sync_score": 0.6145496368408203,
-                    "min_sync_score": 0.3254067897796631,
-                    "variance": 0.053988055954058645
+                    "min_sync_score": 0.32540664076805115,
+                    "variance": 0.05398806287872682
                 }
             },
             "audio_artifacts": {
@@ -1244,17 +1244,17 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "i slowly became convinced listening to our experts talk",
+                    "vsr_text_lips": "slowly became convenient listening to our experts talk",
+                    "wer_score": 0.222222
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.128362,
+                    "min_cosine_similarity": 0.003032,
+                    "percentile_3rd_cosine": 0.009033
                 },
                 "temporal_sync": {
-                    "sync_score": 0.550248384475708,
+                    "sync_score": 0.5502483248710632,
                     "min_sync_score": 0.3250750005245209,
                     "variance": 0.04317185491330222
                 }
@@ -1309,14 +1309,14 @@
                     "wer_score": 0.111111
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.507574,
+                    "min_cosine_similarity": 0.182597,
+                    "percentile_3rd_cosine": 0.189545
                 },
                 "temporal_sync": {
                     "sync_score": 0.5226836204528809,
-                    "min_sync_score": 0.30991917848587036,
-                    "variance": 0.03381489637723534
+                    "min_sync_score": 0.3099193572998047,
+                    "variance": 0.03381489089693801
                 }
             },
             "audio_artifacts": {
@@ -1364,18 +1364,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "about the scientific basis the genetic basis",
+                    "vsr_text_lips": "scientific painting the genetic painting the",
+                    "wer_score": 0.714286
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.360137,
+                    "min_cosine_similarity": 0.099985,
+                    "percentile_3rd_cosine": 0.123349
                 },
                 "temporal_sync": {
                     "sync_score": 0.5827551484107971,
-                    "min_sync_score": 0.3350337743759155,
+                    "min_sync_score": 0.3350338041782379,
                     "variance": 0.04112920219277094
                 }
             },
@@ -1429,9 +1429,9 @@
                     "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.158096,
+                    "min_cosine_similarity": -0.078047,
+                    "percentile_3rd_cosine": -0.035257
                 },
                 "temporal_sync": {
                     "sync_score": 0.533282458782196,
@@ -1484,18 +1484,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "behind obesity and why it should be a disease was compelling",
+                    "vsr_text_lips": "behind obesity and why human disease was compelling and",
+                    "wer_score": 0.454545
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.319541,
+                    "min_cosine_similarity": 0.057213,
+                    "percentile_3rd_cosine": 0.059259
                 },
                 "temporal_sync": {
                     "sync_score": 0.5070861577987671,
-                    "min_sync_score": 0.25535762310028076,
+                    "min_sync_score": 0.255357563495636,
                     "variance": 0.031651178117924283
                 }
             },
@@ -1549,13 +1549,13 @@
                     "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.225369,
+                    "min_cosine_similarity": 0.01878,
+                    "percentile_3rd_cosine": 0.02672
                 },
                 "temporal_sync": {
                     "sync_score": 0.5634661912918091,
-                    "min_sync_score": 0.2552630305290222,
+                    "min_sync_score": 0.25526297092437744,
                     "variance": 0.047852057964892225
                 }
             },
@@ -1604,14 +1604,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "it is clear that there are people who are genetically predisposed",
+                    "vsr_text_lips": "it is clear that there are people who are genetically predisposed and",
+                    "wer_score": 0.090909
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.243276,
+                    "min_cosine_similarity": -0.024126,
+                    "percentile_3rd_cosine": -0.010686
                 },
                 "temporal_sync": {
                     "sync_score": 0.5465002655982971,
@@ -1669,13 +1669,13 @@
                     "wer_score": 0.444444
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.220308,
+                    "min_cosine_similarity": -0.013981,
+                    "percentile_3rd_cosine": -0.008228
                 },
                 "temporal_sync": {
                     "sync_score": 0.6135178208351135,
-                    "min_sync_score": 0.34174197912216187,
+                    "min_sync_score": 0.3417418897151947,
                     "variance": 0.0543767769252137
                 }
             },
@@ -1724,19 +1724,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "both to being thin or to being obese",
+                    "vsr_text_lips": "both to be thin or to be omit a",
+                    "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.29606,
+                    "min_cosine_similarity": 0.063361,
+                    "percentile_3rd_cosine": 0.079494
                 },
                 "temporal_sync": {
                     "sync_score": 0.6666826009750366,
                     "min_sync_score": 0.3394894599914551,
-                    "variance": 0.05911970307121894
+                    "variance": 0.05911968857862249
                 }
             },
             "audio_artifacts": {
@@ -1789,13 +1789,13 @@
                     "wer_score": 0.444444
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.125224,
+                    "min_cosine_similarity": -0.054664,
+                    "percentile_3rd_cosine": -0.037619
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6304388046264648,
-                    "min_sync_score": 0.262464702129364,
+                    "sync_score": 0.6304387450218201,
+                    "min_sync_score": 0.2624645531177521,
                     "variance": 0.05273629854031103
                 }
             },
@@ -1844,19 +1844,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "it is also clear that adipose tissue in itself is metabolic",
+                    "vsr_text_lips": "also clear that adipose tissue in itself is much more",
+                    "wer_score": 0.363636
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.100679,
+                    "min_cosine_similarity": -0.056122,
+                    "percentile_3rd_cosine": -0.04872
                 },
                 "temporal_sync": {
                     "sync_score": 0.5450839996337891,
-                    "min_sync_score": 0.2997458577156067,
-                    "variance": 0.03604939461644108
+                    "min_sync_score": 0.29974573850631714,
+                    "variance": 0.036049400274912324
                 }
             },
             "audio_artifacts": {
@@ -1909,14 +1909,14 @@
                     "wer_score": 0.625
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.184411,
+                    "min_cosine_similarity": -0.037416,
+                    "percentile_3rd_cosine": -0.004214
                 },
                 "temporal_sync": {
                     "sync_score": 0.6217299103736877,
-                    "min_sync_score": 0.2667895257472992,
-                    "variance": 0.06648687929875852
+                    "min_sync_score": 0.26678937673568726,
+                    "variance": 0.06648686392967207
                 }
             },
             "audio_artifacts": {
@@ -1964,19 +1964,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "active and creates a disease in",
+                    "vsr_text_lips": "active and create a disease in",
+                    "wer_score": 0.166667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.395346,
+                    "min_cosine_similarity": 0.10445,
+                    "percentile_3rd_cosine": 0.111652
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6789920330047607,
-                    "min_sync_score": 0.26710301637649536,
-                    "variance": 0.060715015481264345
+                    "sync_score": 0.6789920926094055,
+                    "min_sync_score": 0.267102986574173,
+                    "variance": 0.06071502282468111
                 }
             },
             "audio_artifacts": {
@@ -2029,13 +2029,13 @@
                     "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.282326,
+                    "min_cosine_similarity": 0.045092,
+                    "percentile_3rd_cosine": 0.059257
                 },
                 "temporal_sync": {
                     "sync_score": 0.7176270484924316,
-                    "min_sync_score": 0.29054760932922363,
+                    "min_sync_score": 0.2905476689338684,
                     "variance": 0.05151771551979678
                 }
             },
@@ -2084,18 +2084,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "environment furthermore the role of society helps",
+                    "vsr_text_lips": "environment furthermore the role of society and",
+                    "wer_score": 0.142857
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.205984,
+                    "min_cosine_similarity": 0.012969,
+                    "percentile_3rd_cosine": 0.034408
                 },
                 "temporal_sync": {
                     "sync_score": 0.6525818705558777,
-                    "min_sync_score": 0.3402619957923889,
+                    "min_sync_score": 0.3402620255947113,
                     "variance": 0.051898806187119284
                 }
             },
@@ -2149,13 +2149,13 @@
                     "wer_score": 0.571429
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.33525,
+                    "min_cosine_similarity": 0.076089,
+                    "percentile_3rd_cosine": 0.109132
                 },
                 "temporal_sync": {
                     "sync_score": 0.5759932398796082,
-                    "min_sync_score": 0.34354206919670105,
+                    "min_sync_score": 0.3435421884059906,
                     "variance": 0.040508838777682854
                 }
             },
@@ -2204,19 +2204,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "inequalities and how we condition our brain to think about",
+                    "vsr_text_lips": "in qualities and how we condition our brain to think about",
+                    "wer_score": 0.2
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.099602,
+                    "min_cosine_similarity": -0.081989,
+                    "percentile_3rd_cosine": -0.058669
                 },
                 "temporal_sync": {
                     "sync_score": 0.5383763313293457,
                     "min_sync_score": 0.3626585304737091,
-                    "variance": 0.0395024289521404
+                    "variance": 0.03950244079869436
                 }
             },
             "audio_artifacts": {
@@ -2269,14 +2269,14 @@
                     "wer_score": 0.181818
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.31578,
+                    "min_cosine_similarity": 0.015945,
+                    "percentile_3rd_cosine": 0.025379
                 },
                 "temporal_sync": {
-                    "sync_score": 0.580932080745697,
-                    "min_sync_score": 0.27702075242996216,
-                    "variance": 0.057865734612454256
+                    "sync_score": 0.5809320211410522,
+                    "min_sync_score": 0.2770206034183502,
+                    "variance": 0.05786574178149184
                 }
             },
             "audio_artifacts": {
@@ -2324,19 +2324,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "appetite is all very much based in science",
+                    "vsr_text_lips": "diet is all very much basic diet",
+                    "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.552917,
+                    "min_cosine_similarity": 0.068913,
+                    "percentile_3rd_cosine": 0.107555
                 },
                 "temporal_sync": {
                     "sync_score": 0.6672413349151611,
-                    "min_sync_score": 0.27722179889678955,
-                    "variance": 0.06457586475757982
+                    "min_sync_score": 0.2772216796875,
+                    "variance": 0.0645758799041829
                 }
             },
             "audio_artifacts": {
@@ -2389,14 +2389,14 @@
                     "wer_score": 0.833333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.314995,
+                    "min_cosine_similarity": -0.044967,
+                    "percentile_3rd_cosine": -0.03668
                 },
                 "temporal_sync": {
                     "sync_score": 0.7173354029655457,
-                    "min_sync_score": 0.343312531709671,
-                    "variance": 0.05863322050183584
+                    "min_sync_score": 0.34331247210502625,
+                    "variance": 0.058633213285413044
                 }
             },
             "audio_artifacts": {
@@ -2444,19 +2444,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "the definition of a disease fits",
+                    "vsr_text_lips": "the definition of disease",
+                    "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.450287,
+                    "min_cosine_similarity": 0.13406,
+                    "percentile_3rd_cosine": 0.142377
                 },
                 "temporal_sync": {
                     "sync_score": 0.7407324314117432,
-                    "min_sync_score": 0.33784207701683044,
-                    "variance": 0.05384066126613707
+                    "min_sync_score": 0.3378421366214752,
+                    "variance": 0.05384066818134614
                 }
             },
             "audio_artifacts": {
@@ -2509,14 +2509,14 @@
                     "wer_score": 0.75
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.607424,
+                    "min_cosine_similarity": 0.204452,
+                    "percentile_3rd_cosine": 0.23875
                 },
                 "temporal_sync": {
                     "sync_score": 0.6634616255760193,
-                    "min_sync_score": 0.33713147044181824,
-                    "variance": 0.053243146209771774
+                    "min_sync_score": 0.3371315896511078,
+                    "variance": 0.05324315308650185
                 }
             },
             "audio_artifacts": {
@@ -2564,19 +2564,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "fits with obesity",
+                    "vsr_text_lips": "with obesity and now we are on a",
+                    "wer_score": 2.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.329953,
+                    "min_cosine_similarity": -0.067916,
+                    "percentile_3rd_cosine": -0.058539
                 },
                 "temporal_sync": {
-                    "sync_score": 0.7855687141418457,
-                    "min_sync_score": 0.34123703837394714,
-                    "variance": 0.04917647532668412
+                    "sync_score": 0.7855687737464905,
+                    "min_sync_score": 0.34123697876930237,
+                    "variance": 0.04917648854447365
                 }
             },
             "audio_artifacts": {
@@ -2629,14 +2629,14 @@
                     "wer_score": 0.454545
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.340272,
+                    "min_cosine_similarity": 0.030797,
+                    "percentile_3rd_cosine": 0.068994
                 },
                 "temporal_sync": {
                     "sync_score": 0.6667653322219849,
-                    "min_sync_score": 0.28033578395843506,
-                    "variance": 0.059280266733951814
+                    "min_sync_score": 0.2803359925746918,
+                    "variance": 0.0592802594778199
                 }
             },
             "audio_artifacts": {
@@ -2684,18 +2684,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "expecting to convince you here and now by that but i would ask that you go and have a look",
+                    "vsr_text_lips": "bedding to the video here and now by that but i want to ask you to go and have a look",
+                    "wer_score": 0.35
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.234648,
+                    "min_cosine_similarity": 0.004974,
+                    "percentile_3rd_cosine": 0.047807
                 },
                 "temporal_sync": {
                     "sync_score": 0.46331217885017395,
-                    "min_sync_score": 0.2807962894439697,
+                    "min_sync_score": 0.2807963788509369,
                     "variance": 0.012960184867334912
                 }
             },
@@ -2749,13 +2749,13 @@
                     "wer_score": 0.227273
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.129356,
+                    "min_cosine_similarity": 0.001696,
+                    "percentile_3rd_cosine": 0.016589
                 },
                 "temporal_sync": {
                     "sync_score": 0.4615328311920166,
-                    "min_sync_score": 0.3517695367336273,
+                    "min_sync_score": 0.35176950693130493,
                     "variance": 0.008897462570761627
                 }
             },
@@ -2804,19 +2804,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "at our resources on our website to see what we have said and to look at the evidence",
+                    "vsr_text_lips": "our resources on our website to see what we have said and to look at the",
+                    "wer_score": 0.111111
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.093586,
+                    "min_cosine_similarity": -0.067226,
+                    "percentile_3rd_cosine": -0.057304
                 },
                 "temporal_sync": {
-                    "sync_score": 0.46478065848350525,
-                    "min_sync_score": 0.2619698643684387,
-                    "variance": 0.013234341431585028
+                    "sync_score": 0.46478062868118286,
+                    "min_sync_score": 0.26196980476379395,
+                    "variance": 0.013234339717346444
                 }
             },
             "audio_artifacts": {
@@ -2869,14 +2869,14 @@
                     "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.294582,
+                    "min_cosine_similarity": -0.019087,
+                    "percentile_3rd_cosine": -0.016095
                 },
                 "temporal_sync": {
                     "sync_score": 0.5977542400360107,
-                    "min_sync_score": 0.2613791525363922,
-                    "variance": 0.05820463661587305
+                    "min_sync_score": 0.2613791823387146,
+                    "variance": 0.05820462942587312
                 }
             },
             "audio_artifacts": {
@@ -2924,19 +2924,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "behind it what is probably more important than what we are",
+                    "vsr_text_lips": "behind it was probably more important than what we",
+                    "wer_score": 0.272727
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.172117,
+                    "min_cosine_similarity": -0.004216,
+                    "percentile_3rd_cosine": 0.015553
                 },
                 "temporal_sync": {
                     "sync_score": 0.6263343691825867,
-                    "min_sync_score": 0.3693998456001282,
-                    "variance": 0.05490803413445988
+                    "min_sync_score": 0.36939990520477295,
+                    "variance": 0.05490804111787839
                 }
             },
             "audio_artifacts": {
@@ -2989,14 +2989,14 @@
                     "wer_score": 0.352941
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.129903,
+                    "min_cosine_similarity": -0.029963,
+                    "percentile_3rd_cosine": -0.00954
                 },
                 "temporal_sync": {
                     "sync_score": 0.46098169684410095,
-                    "min_sync_score": 0.32692950963974,
-                    "variance": 0.007064799481786788
+                    "min_sync_score": 0.32692936062812805,
+                    "variance": 0.007064801986742586
                 }
             },
             "audio_artifacts": {
@@ -3044,19 +3044,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "is that this has raised the debate about obesity and the problem",
+                    "vsr_text_lips": "is that this is a great debate about obesity and the problem",
+                    "wer_score": 0.25
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.36166,
+                    "min_cosine_similarity": 0.124258,
+                    "percentile_3rd_cosine": 0.143749
                 },
                 "temporal_sync": {
                     "sync_score": 0.44886380434036255,
                     "min_sync_score": 0.30125221610069275,
-                    "variance": 0.010229870785227746
+                    "variance": 0.010229864756646556
                 }
             },
             "audio_artifacts": {
@@ -3109,14 +3109,14 @@
                     "wer_score": 0.083333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.246542,
+                    "min_cosine_similarity": -0.061083,
+                    "percentile_3rd_cosine": -0.046677
                 },
                 "temporal_sync": {
-                    "sync_score": 0.44135287404060364,
-                    "min_sync_score": 0.2640569806098938,
-                    "variance": 0.007707466953182307
+                    "sync_score": 0.44135284423828125,
+                    "min_sync_score": 0.26405686140060425,
+                    "variance": 0.007707463028566508
                 }
             },
             "audio_artifacts": {
@@ -3164,18 +3164,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "that we as a society have in trying to tackle obesity",
+                    "vsr_text_lips": "that we as a society have in trying to tackle obesity",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.199398,
+                    "min_cosine_similarity": 0.028582,
+                    "percentile_3rd_cosine": 0.04392
                 },
                 "temporal_sync": {
                     "sync_score": 0.521888792514801,
-                    "min_sync_score": 0.2980124354362488,
+                    "min_sync_score": 0.298012375831604,
                     "variance": 0.03483132818546952
                 }
             },
@@ -3229,13 +3229,13 @@
                     "wer_score": 0.6
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.28184,
+                    "min_cosine_similarity": -0.056356,
+                    "percentile_3rd_cosine": -0.020765
                 },
                 "temporal_sync": {
-                    "sync_score": 0.7133294343948364,
-                    "min_sync_score": 0.2984245717525482,
+                    "sync_score": 0.7133293747901917,
+                    "min_sync_score": 0.29842448234558105,
                     "variance": 0.06240863714093181
                 }
             },
@@ -3284,19 +3284,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "this is not about us saying that individuals",
+                    "vsr_text_lips": "this is not about to say that individual",
+                    "wer_score": 0.375
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.274642,
+                    "min_cosine_similarity": -0.038373,
+                    "percentile_3rd_cosine": -0.020943
                 },
                 "temporal_sync": {
-                    "sync_score": 0.68761146068573,
-                    "min_sync_score": 0.30916908383369446,
-                    "variance": 0.0618741760245598
+                    "sync_score": 0.6876114010810852,
+                    "min_sync_score": 0.3091690242290497,
+                    "variance": 0.061874190850930155
                 }
             },
             "audio_artifacts": {
@@ -3349,14 +3349,14 @@
                     "wer_score": 0.75
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.069601,
+                    "min_cosine_similarity": -0.079771,
+                    "percentile_3rd_cosine": -0.055229
                 },
                 "temporal_sync": {
                     "sync_score": 0.45733773708343506,
-                    "min_sync_score": 0.3096134662628174,
-                    "variance": 0.012835151813268608
+                    "min_sync_score": 0.30961334705352783,
+                    "variance": 0.012835148436894317
                 }
             },
             "audio_artifacts": {
@@ -3404,19 +3404,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "no longer have responsibility that we have medicalised obesity",
+                    "vsr_text_lips": "so on every possibility that we have mediclised obesity",
+                    "wer_score": 0.555556
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.244285,
+                    "min_cosine_similarity": -0.017921,
+                    "percentile_3rd_cosine": 0.012649
                 },
                 "temporal_sync": {
                     "sync_score": 0.45954015851020813,
-                    "min_sync_score": 0.3091687560081482,
-                    "variance": 0.015373372117753803
+                    "min_sync_score": 0.30916881561279297,
+                    "variance": 0.01537336657499605
                 }
             },
             "audio_artifacts": {
@@ -3469,9 +3469,9 @@
                     "wer_score": 0.4
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.287688,
+                    "min_cosine_similarity": 0.02138,
+                    "percentile_3rd_cosine": 0.04066
                 },
                 "temporal_sync": {
                     "sync_score": 0.498234361410141,
@@ -3524,19 +3524,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "and that people really no longer have to worry about it if they are fat",
+                    "vsr_text_lips": "and that people no longer have to worry about it they have found",
+                    "wer_score": 0.266667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.153261,
+                    "min_cosine_similarity": -0.04416,
+                    "percentile_3rd_cosine": -0.033177
                 },
                 "temporal_sync": {
                     "sync_score": 0.4936266839504242,
-                    "min_sync_score": 0.3048039972782135,
-                    "variance": 0.021274913979809407
+                    "min_sync_score": 0.3048039376735687,
+                    "variance": 0.021274918326753323
                 }
             },
             "audio_artifacts": {
@@ -3589,13 +3589,13 @@
                     "wer_score": 0.444444
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.170656,
+                    "min_cosine_similarity": -0.038316,
+                    "percentile_3rd_cosine": -0.023468
                 },
                 "temporal_sync": {
                     "sync_score": 0.5885539650917053,
-                    "min_sync_score": 0.36544281244277954,
+                    "min_sync_score": 0.36544254422187805,
                     "variance": 0.05009346508273205
                 }
             },
@@ -3644,19 +3644,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "they are fat it is not their fault certainly is not about that",
+                    "vsr_text_lips": "and it is not their fault certainly is not about that we are",
+                    "wer_score": 0.384615
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.242784,
+                    "min_cosine_similarity": 0.058515,
+                    "percentile_3rd_cosine": 0.083858
                 },
                 "temporal_sync": {
                     "sync_score": 0.672177255153656,
-                    "min_sync_score": 0.3171849846839905,
-                    "variance": 0.061515550627327054
+                    "min_sync_score": 0.3171849250793457,
+                    "variance": 0.06151555801899722
                 }
             },
             "audio_artifacts": {
@@ -3709,14 +3709,14 @@
                     "wer_score": 0.153846
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.152247,
+                    "min_cosine_similarity": -0.046651,
+                    "percentile_3rd_cosine": -0.043808
                 },
                 "temporal_sync": {
                     "sync_score": 0.5006402134895325,
-                    "min_sync_score": 0.3173726797103882,
-                    "variance": 0.03303004536491039
+                    "min_sync_score": 0.31737273931503296,
+                    "variance": 0.03303003994858589
                 }
             },
             "audio_artifacts": {
@@ -3764,19 +3764,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "we are not absolving people of their individual responsibility to be careful about what they",
+                    "vsr_text_lips": "not absolving people of their individual responsibility to be careful about what they eat",
+                    "wer_score": 0.2
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.084435,
+                    "min_cosine_similarity": -0.054825,
+                    "percentile_3rd_cosine": -0.012233
                 },
                 "temporal_sync": {
                     "sync_score": 0.423129141330719,
-                    "min_sync_score": 0.32225877046585083,
-                    "variance": 0.0018465180530533726
+                    "min_sync_score": 0.32225874066352844,
+                    "variance": 0.0018465186933731698
                 }
             },
             "audio_artifacts": {
@@ -3829,13 +3829,13 @@
                     "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.187566,
+                    "min_cosine_similarity": -0.078695,
+                    "percentile_3rd_cosine": -0.065053
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5976656079292297,
-                    "min_sync_score": 0.33211368322372437,
+                    "sync_score": 0.5976656675338745,
+                    "min_sync_score": 0.332113653421402,
                     "variance": 0.057408746858990334
                 }
             },
@@ -3884,14 +3884,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "to think about what they eat and to try",
+                    "vsr_text_lips": "to think about what they eat and to try",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.407148,
+                    "min_cosine_similarity": 0.013186,
+                    "percentile_3rd_cosine": 0.020258
                 },
                 "temporal_sync": {
                     "sync_score": 0.6832876801490784,
@@ -3949,13 +3949,13 @@
                     "wer_score": 0.777778
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.309728,
+                    "min_cosine_similarity": 0.095987,
+                    "percentile_3rd_cosine": 0.108996
                 },
                 "temporal_sync": {
                     "sync_score": 0.5810002088546753,
-                    "min_sync_score": 0.22033487260341644,
+                    "min_sync_score": 0.22033482789993286,
                     "variance": 0.051792220501232444
                 }
             },
@@ -4004,19 +4004,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "and exercise more and do more physical activity",
+                    "vsr_text_lips": "an actor to learn more and do more physical activity",
+                    "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.357258,
+                    "min_cosine_similarity": 0.061701,
+                    "percentile_3rd_cosine": 0.075285
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5427449941635132,
-                    "min_sync_score": 0.3111684024333954,
-                    "variance": 0.04133845749251486
+                    "sync_score": 0.542745053768158,
+                    "min_sync_score": 0.31116825342178345,
+                    "variance": 0.041338463551881865
                 }
             },
             "audio_artifacts": {
@@ -4069,14 +4069,14 @@
                     "wer_score": 0.4
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.147926,
+                    "min_cosine_similarity": -0.031061,
+                    "percentile_3rd_cosine": -0.01681
                 },
                 "temporal_sync": {
                     "sync_score": 0.6257438659667969,
-                    "min_sync_score": 0.32151323556900024,
-                    "variance": 0.059243962608725775
+                    "min_sync_score": 0.3215130567550659,
+                    "variance": 0.059243969862635915
                 }
             },
             "audio_artifacts": {
@@ -4124,18 +4124,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "but society and government",
+                    "vsr_text_lips": "but society and government",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.355546,
+                    "min_cosine_similarity": 0.033996,
+                    "percentile_3rd_cosine": 0.052457
                 },
                 "temporal_sync": {
                     "sync_score": 0.6682944297790527,
-                    "min_sync_score": 0.26515716314315796,
+                    "min_sync_score": 0.2651572823524475,
                     "variance": 0.06399804794290365
                 }
             },
@@ -4189,13 +4189,13 @@
                     "wer_score": 0.25
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.146497,
+                    "min_cosine_similarity": -0.052758,
+                    "percentile_3rd_cosine": -0.036121
                 },
                 "temporal_sync": {
                     "sync_score": 0.5702056288719177,
-                    "min_sync_score": 0.2649414837360382,
+                    "min_sync_score": 0.26494142413139343,
                     "variance": 0.04944658061752727
                 }
             },
@@ -4244,18 +4244,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "is part of society have to recognize that it is not all down",
+                    "vsr_text_lips": "part of society i have to recognise that it is not all guilt",
+                    "wer_score": 0.307692
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.101812,
+                    "min_cosine_similarity": -0.090953,
+                    "percentile_3rd_cosine": -0.083729
                 },
                 "temporal_sync": {
                     "sync_score": 0.4682375490665436,
-                    "min_sync_score": 0.27947998046875,
+                    "min_sync_score": 0.27948006987571716,
                     "variance": 0.016040529646224266
                 }
             },
@@ -4309,13 +4309,13 @@
                     "wer_score": 0.272727
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.286069,
+                    "min_cosine_similarity": 0.041992,
+                    "percentile_3rd_cosine": 0.062166
                 },
                 "temporal_sync": {
                     "sync_score": 0.5213825702667236,
-                    "min_sync_score": 0.31900131702423096,
+                    "min_sync_score": 0.31900128722190857,
                     "variance": 0.03819142132489706
                 }
             },
@@ -4364,18 +4364,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "just an individual choice once you are obese",
+                    "vsr_text_lips": "just individual goods once you are obedient",
+                    "wer_score": 0.375
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.169594,
+                    "min_cosine_similarity": 0.009805,
+                    "percentile_3rd_cosine": 0.016634
                 },
                 "temporal_sync": {
                     "sync_score": 0.6063647270202637,
-                    "min_sync_score": 0.3268958330154419,
+                    "min_sync_score": 0.32689565420150757,
                     "variance": 0.05301306612040535
                 }
             },
@@ -4429,9 +4429,9 @@
                     "wer_score": 0.1
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.322464,
+                    "min_cosine_similarity": 0.06817,
+                    "percentile_3rd_cosine": 0.094069
                 },
                 "temporal_sync": {
                     "sync_score": 0.5636674761772156,
@@ -4484,18 +4484,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "the drivers that are within you metabolically behaviourally",
+                    "vsr_text_lips": "the drivers that are within you metabolically in behaviour",
+                    "wer_score": 0.25
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.277729,
+                    "min_cosine_similarity": 0.049345,
+                    "percentile_3rd_cosine": 0.062828
                 },
                 "temporal_sync": {
                     "sync_score": 0.5265915989875793,
-                    "min_sync_score": 0.34919634461402893,
+                    "min_sync_score": 0.3491964340209961,
                     "variance": 0.03721771219320491
                 }
             },
@@ -4549,14 +4549,14 @@
                     "wer_score": 0.25
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.280638,
+                    "min_cosine_similarity": 0.047256,
+                    "percentile_3rd_cosine": 0.058684
                 },
                 "temporal_sync": {
                     "sync_score": 0.5422226190567017,
-                    "min_sync_score": 0.3217260241508484,
-                    "variance": 0.04085265949816752
+                    "min_sync_score": 0.321725994348526,
+                    "variance": 0.040852665521825315
                 }
             },
             "audio_artifacts": {
@@ -4604,19 +4604,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "and societally are making it very hard",
+                    "vsr_text_lips": "and society are making it very hard",
+                    "wer_score": 0.142857
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.234514,
+                    "min_cosine_similarity": -0.004351,
+                    "percentile_3rd_cosine": 0.00174
                 },
                 "temporal_sync": {
                     "sync_score": 0.551497220993042,
-                    "min_sync_score": 0.32137078046798706,
-                    "variance": 0.04308200221858827
+                    "min_sync_score": 0.3213708698749542,
+                    "variance": 0.04308199603275753
                 }
             },
             "audio_artifacts": {
@@ -4669,13 +4669,13 @@
                     "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.384141,
+                    "min_cosine_similarity": 0.128409,
+                    "percentile_3rd_cosine": 0.148629
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5520176887512207,
-                    "min_sync_score": 0.328116238117218,
+                    "sync_score": 0.5520176291465759,
+                    "min_sync_score": 0.3281162977218628,
                     "variance": 0.03977770542939485
                 }
             },
@@ -4724,18 +4724,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "hard for you to lose weight and we have to work together with individuals",
+                    "vsr_text_lips": "for you to lose weight and we have to work together with individuals",
+                    "wer_score": 0.071429
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.085243,
+                    "min_cosine_similarity": -0.06983,
+                    "percentile_3rd_cosine": -0.053818
                 },
                 "temporal_sync": {
                     "sync_score": 0.5449679493904114,
-                    "min_sync_score": 0.3402315378189087,
+                    "min_sync_score": 0.34023162722587585,
                     "variance": 0.04481652716899398
                 }
             },
@@ -4789,14 +4789,14 @@
                     "wer_score": 0.153846
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.129138,
+                    "min_cosine_similarity": -0.045733,
+                    "percentile_3rd_cosine": -0.03094
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5068894624710083,
-                    "min_sync_score": 0.28079599142074585,
-                    "variance": 0.03494612327148516
+                    "sync_score": 0.5068895220756531,
+                    "min_sync_score": 0.28079578280448914,
+                    "variance": 0.03494612884269643
                 }
             },
             "audio_artifacts": {
@@ -4844,19 +4844,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "and with society via government to try and solve that problem",
+                    "vsr_text_lips": "and with society of our government to try and solve",
+                    "wer_score": 0.363636
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.244538,
+                    "min_cosine_similarity": -0.030418,
+                    "percentile_3rd_cosine": -0.009848
                 },
                 "temporal_sync": {
                     "sync_score": 0.5639373660087585,
-                    "min_sync_score": 0.2807861566543579,
-                    "variance": 0.048128724742311
+                    "min_sync_score": 0.28078606724739075,
+                    "variance": 0.048128731280422166
                 }
             },
             "audio_artifacts": {
@@ -4909,13 +4909,13 @@
                     "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.196361,
+                    "min_cosine_similarity": -0.062074,
+                    "percentile_3rd_cosine": -0.052646
                 },
                 "temporal_sync": {
                     "sync_score": 0.6946954131126404,
-                    "min_sync_score": 0.2999093234539032,
+                    "min_sync_score": 0.2999092936515808,
                     "variance": 0.06649874476352213
                 }
             },
@@ -4964,19 +4964,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "and there are things that we can do as a health service",
+                    "vsr_text_lips": "and there are things we can do as a health service",
+                    "wer_score": 0.083333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.262264,
+                    "min_cosine_similarity": 0.02068,
+                    "percentile_3rd_cosine": 0.027948
                 },
                 "temporal_sync": {
-                    "sync_score": 0.645717203617096,
-                    "min_sync_score": 0.27337464690208435,
-                    "variance": 0.06651439281090266
+                    "sync_score": 0.6457173228263855,
+                    "min_sync_score": 0.2733745276927948,
+                    "variance": 0.06651440818317056
                 }
             },
             "audio_artifacts": {
@@ -5029,13 +5029,13 @@
                     "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.189052,
+                    "min_cosine_similarity": -0.066967,
+                    "percentile_3rd_cosine": -0.046428
                 },
                 "temporal_sync": {
                     "sync_score": 0.6292264461517334,
-                    "min_sync_score": 0.2735057473182678,
+                    "min_sync_score": 0.27350568771362305,
                     "variance": 0.05337734064513122
                 }
             },
@@ -5084,19 +5084,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "forty two of people with obesity",
+                    "vsr_text_lips": "forty two of people with obesity",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.386704,
+                    "min_cosine_similarity": 0.05321,
+                    "percentile_3rd_cosine": 0.07078
                 },
                 "temporal_sync": {
                     "sync_score": 0.6113877296447754,
-                    "min_sync_score": 0.278347373008728,
-                    "variance": 0.05391707375567023
+                    "min_sync_score": 0.2783474624156952,
+                    "variance": 0.05391708759589964
                 }
             },
             "audio_artifacts": {
@@ -5149,13 +5149,13 @@
                     "wer_score": 0.428571
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.274882,
+                    "min_cosine_similarity": -0.046912,
+                    "percentile_3rd_cosine": -0.039015
                 },
                 "temporal_sync": {
                     "sync_score": 0.5766962170600891,
-                    "min_sync_score": 0.2784452736377716,
+                    "min_sync_score": 0.2784453332424164,
                     "variance": 0.05266398995202004
                 }
             },
@@ -5204,18 +5204,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "are too scared to talk about it with their gp",
+                    "vsr_text_lips": "are you scared to talk about it with their gp",
+                    "wer_score": 0.1
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.287403,
+                    "min_cosine_similarity": 0.048139,
+                    "percentile_3rd_cosine": 0.064792
                 },
                 "temporal_sync": {
                     "sync_score": 0.5824846625328064,
-                    "min_sync_score": 0.2712283432483673,
+                    "min_sync_score": 0.27122819423675537,
                     "variance": 0.054558088747827194
                 }
             },
@@ -5269,13 +5269,13 @@
                     "wer_score": 0.857143
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.100681,
+                    "min_cosine_similarity": -0.043555,
+                    "percentile_3rd_cosine": -0.03888
                 },
                 "temporal_sync": {
                     "sync_score": 0.5795876383781433,
-                    "min_sync_score": 0.2712611258029938,
+                    "min_sync_score": 0.2712610065937042,
                     "variance": 0.05738623452464098
                 }
             },
@@ -5324,18 +5324,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "if we can destigmatise being obese",
+                    "vsr_text_lips": "if we can destabilise being obese by",
+                    "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.362523,
+                    "min_cosine_similarity": 0.039641,
+                    "percentile_3rd_cosine": 0.062976
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5983046889305115,
-                    "min_sync_score": 0.3614502251148224,
+                    "sync_score": 0.5983046293258667,
+                    "min_sync_score": 0.36145004630088806,
                     "variance": 0.05736372660516409
                 }
             },
@@ -5389,13 +5389,13 @@
                     "wer_score": 0.461538
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.274595,
+                    "min_cosine_similarity": 0.07872,
+                    "percentile_3rd_cosine": 0.083601
                 },
                 "temporal_sync": {
                     "sync_score": 0.5135244131088257,
-                    "min_sync_score": 0.32947292923927307,
+                    "min_sync_score": 0.32947295904159546,
                     "variance": 0.03674384419416388
                 }
             },
@@ -5444,19 +5444,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "by saying this is something that we recognise as a disease and we d be happy to talk to you about it",
+                    "vsr_text_lips": "say this is something we recognise as disease and we will be happy to talk to you about it",
+                    "wer_score": 0.227273
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.109862,
+                    "min_cosine_similarity": -0.037758,
+                    "percentile_3rd_cosine": -0.021042
                 },
                 "temporal_sync": {
                     "sync_score": 0.4535246193408966,
-                    "min_sync_score": 0.2929812967777252,
-                    "variance": 0.012795312856877183
+                    "min_sync_score": 0.29298126697540283,
+                    "variance": 0.012795311171311996
                 }
             },
             "audio_artifacts": {
@@ -5509,14 +5509,14 @@
                     "wer_score": 0.222222
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.05243,
+                    "min_cosine_similarity": -0.083013,
+                    "percentile_3rd_cosine": -0.075185
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5071560740470886,
+                    "sync_score": 0.5071560144424438,
                     "min_sync_score": 0.29333293437957764,
-                    "variance": 0.03256232345394161
+                    "variance": 0.032562328831780896
                 }
             },
             "audio_artifacts": {
@@ -5564,19 +5564,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "hopefully those people can then feel supported talk to their gp",
+                    "vsr_text_lips": "hopefully those people can then feel supported to join ttp",
+                    "wer_score": 0.272727
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.153833,
+                    "min_cosine_similarity": -0.05706,
+                    "percentile_3rd_cosine": -0.045571
                 },
                 "temporal_sync": {
                     "sync_score": 0.540765643119812,
                     "min_sync_score": 0.295781672000885,
-                    "variance": 0.041684757532227446
+                    "variance": 0.041684751447533586
                 }
             },
             "audio_artifacts": {
@@ -5629,14 +5629,14 @@
                     "wer_score": 0.4
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.401998,
+                    "min_cosine_similarity": 0.135882,
+                    "percentile_3rd_cosine": 0.155492
                 },
                 "temporal_sync": {
                     "sync_score": 0.6019750237464905,
-                    "min_sync_score": 0.29570725560188293,
-                    "variance": 0.04664044475912821
+                    "min_sync_score": 0.2957072854042053,
+                    "variance": 0.04664045119535687
                 }
             },
             "audio_artifacts": {
@@ -5684,19 +5684,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "and do something about it it also allows us to focus",
+                    "vsr_text_lips": "and do something about it it also allows us to",
+                    "wer_score": 0.090909
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.229494,
+                    "min_cosine_similarity": 0.037411,
+                    "percentile_3rd_cosine": 0.076024
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6480439305305481,
-                    "min_sync_score": 0.3351348340511322,
-                    "variance": 0.052905293752063765
+                    "sync_score": 0.6480439901351929,
+                    "min_sync_score": 0.3351348638534546,
+                    "variance": 0.0529053006069411
                 }
             },
             "audio_artifacts": {
@@ -5749,14 +5749,14 @@
                     "wer_score": 0.166667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.398214,
+                    "min_cosine_similarity": 0.049045,
+                    "percentile_3rd_cosine": 0.065646
                 },
                 "temporal_sync": {
                     "sync_score": 0.52684086561203,
-                    "min_sync_score": 0.2947593033313751,
-                    "variance": 0.04125551005623174
+                    "min_sync_score": 0.29475918412208557,
+                    "variance": 0.0412555161095165
                 }
             },
             "audio_artifacts": {
@@ -5804,19 +5804,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "on obesity within the nhs i think it",
+                    "vsr_text_lips": "going to be sitting within the nhs i think it",
+                    "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.153947,
+                    "min_cosine_similarity": -0.074565,
+                    "percentile_3rd_cosine": -0.052684
                 },
                 "temporal_sync": {
                     "sync_score": 0.5995144248008728,
                     "min_sync_score": 0.31471118330955505,
-                    "variance": 0.06032873659201332
+                    "variance": 0.0603287439120328
                 }
             },
             "audio_artifacts": {
@@ -5869,13 +5869,13 @@
                     "wer_score": 0.125
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.263961,
+                    "min_cosine_similarity": -0.010092,
+                    "percentile_3rd_cosine": 0.016233
                 },
                 "temporal_sync": {
                     "sync_score": 0.6732810735702515,
-                    "min_sync_score": 0.3236542344093323,
+                    "min_sync_score": 0.3236541450023651,
                     "variance": 0.05834148514258097
                 }
             },
@@ -5924,19 +5924,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "shameful that last year in this country we did six",
+                    "vsr_text_lips": "for that last year in this country we didn t see",
+                    "wer_score": 0.4
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.244983,
+                    "min_cosine_similarity": 0.087688,
+                    "percentile_3rd_cosine": 0.09993
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5464394688606262,
-                    "min_sync_score": 0.2956363260746002,
-                    "variance": 0.036175082427363
+                    "sync_score": 0.5464393496513367,
+                    "min_sync_score": 0.2956361174583435,
+                    "variance": 0.03617508809568992
                 }
             },
             "audio_artifacts": {
@@ -5989,14 +5989,14 @@
                     "wer_score": 0.363636
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.14518,
+                    "min_cosine_similarity": 0.022162,
+                    "percentile_3rd_cosine": 0.042531
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5095255970954895,
-                    "min_sync_score": 0.29530736804008484,
-                    "variance": 0.02211076789535582
+                    "sync_score": 0.5095255374908447,
+                    "min_sync_score": 0.2953073978424072,
+                    "variance": 0.02211075903233084
                 }
             },
             "audio_artifacts": {
@@ -6044,14 +6044,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "six zero bariatric surgery operations for obesity",
+                    "vsr_text_lips": "down parallel nursery operations obesity and",
+                    "wer_score": 0.857143
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.477551,
+                    "min_cosine_similarity": 0.106572,
+                    "percentile_3rd_cosine": 0.134718
                 },
                 "temporal_sync": {
                     "sync_score": 0.5719067454338074,
@@ -6109,14 +6109,14 @@
                     "wer_score": 0.25
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.257036,
+                    "min_cosine_similarity": 0.025589,
+                    "percentile_3rd_cosine": 0.035466
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5743488669395447,
+                    "sync_score": 0.5743487477302551,
                     "min_sync_score": 0.29769107699394226,
-                    "variance": 0.04619369339117463
+                    "variance": 0.046193699796504006
                 }
             },
             "audio_artifacts": {
@@ -6164,19 +6164,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "compared to sixty zero in france",
+                    "vsr_text_lips": "you painted sixty zero in france",
+                    "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.555784,
+                    "min_cosine_similarity": 0.135073,
+                    "percentile_3rd_cosine": 0.145049
                 },
                 "temporal_sync": {
                     "sync_score": 0.630139946937561,
-                    "min_sync_score": 0.31657281517982483,
-                    "variance": 0.052114741855846525
+                    "min_sync_score": 0.3165726959705353,
+                    "variance": 0.052114748659315646
                 }
             },
             "audio_artifacts": {
@@ -6229,14 +6229,14 @@
                     "wer_score": 0.4
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.443446,
+                    "min_cosine_similarity": 0.14361,
+                    "percentile_3rd_cosine": 0.147094
                 },
                 "temporal_sync": {
                     "sync_score": 0.664059579372406,
-                    "min_sync_score": 0.31643545627593994,
-                    "variance": 0.052747776418776704
+                    "min_sync_score": 0.31643539667129517,
+                    "variance": 0.05274779695277321
                 }
             },
             "audio_artifacts": {
@@ -6284,19 +6284,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "we know that surgery is a brilliant treatment",
+                    "vsr_text_lips": "we know the surgery is in print treatment",
+                    "wer_score": 0.375
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.275797,
+                    "min_cosine_similarity": 0.078951,
+                    "percentile_3rd_cosine": 0.08643
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5381841063499451,
-                    "min_sync_score": 0.3249110281467438,
-                    "variance": 0.03754902134567062
+                    "sync_score": 0.5381840467453003,
+                    "min_sync_score": 0.32491108775138855,
+                    "variance": 0.037549015570705
                 }
             },
             "audio_artifacts": {
@@ -6349,14 +6349,14 @@
                     "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.228182,
+                    "min_cosine_similarity": -0.015059,
+                    "percentile_3rd_cosine": 0.005884
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5249032974243164,
+                    "sync_score": 0.5249032378196716,
                     "min_sync_score": 0.3250363767147064,
-                    "variance": 0.03972059931727778
+                    "variance": 0.03972060525688903
                 }
             },
             "audio_artifacts": {
@@ -6404,14 +6404,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "for diabetes as a result of obesity it changes lives",
+                    "vsr_text_lips": "for diabetes as a result of obesity it changes life",
+                    "wer_score": 0.1
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.174869,
+                    "min_cosine_similarity": -0.121895,
+                    "percentile_3rd_cosine": -0.114439
                 },
                 "temporal_sync": {
                     "sync_score": 0.5312482118606567,
@@ -6469,14 +6469,14 @@
                     "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.421329,
+                    "min_cosine_similarity": 0.043714,
+                    "percentile_3rd_cosine": 0.048972
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5924995541572571,
-                    "min_sync_score": 0.3544446527957916,
-                    "variance": 0.04488585971348957
+                    "sync_score": 0.5924996137619019,
+                    "min_sync_score": 0.3544447124004364,
+                    "variance": 0.044885866027494226
                 }
             },
             "audio_artifacts": {
@@ -6524,19 +6524,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "it allows people to be what they want to be and to give",
+                    "vsr_text_lips": "it allows people to be what they want to be and to give",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.252975,
+                    "min_cosine_similarity": 0.001807,
+                    "percentile_3rd_cosine": 0.019265
                 },
                 "temporal_sync": {
                     "sync_score": 0.5987634062767029,
-                    "min_sync_score": 0.29086431860923767,
-                    "variance": 0.052102020145472494
+                    "min_sync_score": 0.29086434841156006,
+                    "variance": 0.05210202694811117
                 }
             },
             "audio_artifacts": {
@@ -6589,9 +6589,9 @@
                     "wer_score": 0.153846
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.187074,
+                    "min_cosine_similarity": -0.023513,
+                    "percentile_3rd_cosine": -0.01611
                 },
                 "temporal_sync": {
                     "sync_score": 0.5874947309494019,
@@ -6644,19 +6644,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "give back to society and in the long run it saves the nhs",
+                    "vsr_text_lips": "back to society and in the long run it saves it",
+                    "wer_score": 0.230769
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.208683,
+                    "min_cosine_similarity": -0.00028,
+                    "percentile_3rd_cosine": 0.016951
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5526816248893738,
-                    "min_sync_score": 0.2640285789966583,
-                    "variance": 0.04359915871364728
+                    "sync_score": 0.552681565284729,
+                    "min_sync_score": 0.26402854919433594,
+                    "variance": 0.04359915249079993
                 }
             },
             "audio_artifacts": {
@@ -6709,14 +6709,14 @@
                     "wer_score": 0.4
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.263399,
+                    "min_cosine_similarity": 0.042381,
+                    "percentile_3rd_cosine": 0.050501
                 },
                 "temporal_sync": {
                     "sync_score": 0.57745361328125,
                     "min_sync_score": 0.2632744312286377,
-                    "variance": 0.05973778175126654
+                    "variance": 0.05973777446718764
                 }
             },
             "audio_artifacts": {
@@ -6764,18 +6764,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "nhs money one in six people in our hospitals",
+                    "vsr_text_lips": "there is money one in six people in a hospital",
+                    "wer_score": 0.444444
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.129007,
+                    "min_cosine_similarity": -0.056613,
+                    "percentile_3rd_cosine": -0.043916
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5782445073127747,
-                    "min_sync_score": 0.32267069816589355,
+                    "sync_score": 0.5782444477081299,
+                    "min_sync_score": 0.32267066836357117,
                     "variance": 0.050396791222191206
                 }
             },
@@ -6829,13 +6829,13 @@
                     "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.137274,
+                    "min_cosine_similarity": -0.07771,
+                    "percentile_3rd_cosine": -0.05699
                 },
                 "temporal_sync": {
                     "sync_score": 0.5300689339637756,
-                    "min_sync_score": 0.2623341977596283,
+                    "min_sync_score": 0.2623342275619507,
                     "variance": 0.03500205831018377
                 }
             },
@@ -6884,18 +6884,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "have diabetes and almost all of that is as a result of obesity",
+                    "vsr_text_lips": "diabetes and almost all that is the result of a big",
+                    "wer_score": 0.461538
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.18744,
+                    "min_cosine_similarity": -0.063462,
+                    "percentile_3rd_cosine": -0.050992
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5394243597984314,
-                    "min_sync_score": 0.2624424397945404,
+                    "sync_score": 0.5394243001937866,
+                    "min_sync_score": 0.2624424695968628,
                     "variance": 0.03788099234972031
                 }
             },
@@ -6949,14 +6949,14 @@
                     "wer_score": 0.2
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.531643,
+                    "min_cosine_similarity": 0.320726,
+                    "percentile_3rd_cosine": 0.342508
                 },
                 "temporal_sync": {
                     "sync_score": 0.5011378526687622,
-                    "min_sync_score": 0.3163168132305145,
-                    "variance": 0.014979602570713235
+                    "min_sync_score": 0.31631675362586975,
+                    "variance": 0.01497960074694249
                 }
             },
             "audio_artifacts": {
@@ -7004,18 +7004,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "so i will reiterate i am not expecting",
+                    "vsr_text_lips": "i really enjoy it i am not expecting",
+                    "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.386621,
+                    "min_cosine_similarity": -0.045823,
+                    "percentile_3rd_cosine": -0.042126
                 },
                 "temporal_sync": {
                     "sync_score": 0.60372394323349,
-                    "min_sync_score": 0.3353750705718994,
+                    "min_sync_score": 0.33537501096725464,
                     "variance": 0.06508713146943368
                 }
             },
@@ -7069,13 +7069,13 @@
                     "wer_score": 0.466667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.111897,
+                    "min_cosine_similarity": -0.05432,
+                    "percentile_3rd_cosine": -0.023458
                 },
                 "temporal_sync": {
                     "sync_score": 0.5095030665397644,
-                    "min_sync_score": 0.307442307472229,
+                    "min_sync_score": 0.30744218826293945,
                     "variance": 0.0384567924575665
                 }
             },
@@ -7124,18 +7124,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "to convince people that obesity is a disease just by us saying so",
+                    "vsr_text_lips": "to convince people that have been distant just by us saying so",
+                    "wer_score": 0.307692
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.141787,
+                    "min_cosine_similarity": 0.043471,
+                    "percentile_3rd_cosine": 0.050194
                 },
                 "temporal_sync": {
                     "sync_score": 0.47490429878234863,
-                    "min_sync_score": 0.3076836168766022,
+                    "min_sync_score": 0.3076835870742798,
                     "variance": 0.01469854260993575
                 }
             },
@@ -7189,13 +7189,13 @@
                     "wer_score": 0.176471
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.070067,
+                    "min_cosine_similarity": -0.06337,
+                    "percentile_3rd_cosine": -0.053628
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5029521584510803,
-                    "min_sync_score": 0.36467865109443665,
+                    "sync_score": 0.5029520988464355,
+                    "min_sync_score": 0.3646785616874695,
                     "variance": 0.02834285010955373
                 }
             },
@@ -7244,18 +7244,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "but i would ask people to go and look at the evidence see our information",
+                    "vsr_text_lips": "but i would ask people to go and look at the evidence for",
+                    "wer_score": 0.2
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.222588,
+                    "min_cosine_similarity": -0.009143,
+                    "percentile_3rd_cosine": 0.003553
                 },
                 "temporal_sync": {
                     "sync_score": 0.5877291560173035,
-                    "min_sync_score": 0.3684619963169098,
+                    "min_sync_score": 0.368461936712265,
                     "variance": 0.04364282291621979
                 }
             },
@@ -7309,14 +7309,14 @@
                     "wer_score": 0.416667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.151426,
+                    "min_cosine_similarity": -0.00149,
+                    "percentile_3rd_cosine": 0.003416
                 },
                 "temporal_sync": {
                     "sync_score": 0.5568881630897522,
-                    "min_sync_score": 0.3033563792705536,
-                    "variance": 0.04433160171685402
+                    "min_sync_score": 0.3033563196659088,
+                    "variance": 0.044331607991754396
                 }
             },
             "audio_artifacts": {
@@ -7364,19 +7364,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "on our website trying to understand why we have had this call for obesity to be a",
+                    "vsr_text_lips": "to our website to understand why we have had this call from it to be",
+                    "wer_score": 0.294118
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.025492,
+                    "min_cosine_similarity": -0.06923,
+                    "percentile_3rd_cosine": -0.059593
                 },
                 "temporal_sync": {
                     "sync_score": 0.42366987466812134,
                     "min_sync_score": 0.2934032082557678,
-                    "variance": 0.00733741148491035
+                    "variance": 0.007337414037738521
                 }
             },
             "audio_artifacts": {
@@ -7429,14 +7429,14 @@
                     "wer_score": 0.846154
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.275039,
+                    "min_cosine_similarity": -0.034494,
+                    "percentile_3rd_cosine": -0.014219
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5831571221351624,
-                    "min_sync_score": 0.29385989904403687,
-                    "variance": 0.057847569697557555
+                    "sync_score": 0.5831570625305176,
+                    "min_sync_score": 0.2938600182533264,
+                    "variance": 0.05784757686546982
                 }
             },
             "audio_artifacts": {
@@ -7484,18 +7484,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "a disease but then to have those conversations to have that debate",
+                    "vsr_text_lips": "need but then to have those conversations to have that debate",
+                    "wer_score": 0.166667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.267991,
+                    "min_cosine_similarity": -0.050152,
+                    "percentile_3rd_cosine": -0.029534
                 },
                 "temporal_sync": {
                     "sync_score": 0.5727255344390869,
-                    "min_sync_score": 0.30032360553741455,
+                    "min_sync_score": 0.3003234565258026,
                     "variance": 0.0586319504182633
                 }
             },
@@ -7549,14 +7549,14 @@
                     "wer_score": 0.25
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.197135,
+                    "min_cosine_similarity": -0.04362,
+                    "percentile_3rd_cosine": -0.029522
                 },
                 "temporal_sync": {
                     "sync_score": 0.4547255337238312,
                     "min_sync_score": 0.30076518654823303,
-                    "variance": 0.014258467141534725
+                    "variance": 0.014258468920864908
                 }
             },
             "audio_artifacts": {
@@ -7604,19 +7604,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "to think about how we as a society can help people with obesity",
+                    "vsr_text_lips": "to think about how we as a society can help people with obesity",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.316448,
+                    "min_cosine_similarity": 0.026249,
+                    "percentile_3rd_cosine": 0.034461
                 },
                 "temporal_sync": {
                     "sync_score": 0.5063382983207703,
-                    "min_sync_score": 0.30843386054039,
-                    "variance": 0.0315699125770017
+                    "min_sync_score": 0.3084339499473572,
+                    "variance": 0.03156991787225594
                 }
             },
             "audio_artifacts": {
@@ -7669,14 +7669,14 @@
                     "wer_score": 0.222222
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.36982,
+                    "min_cosine_similarity": 0.002213,
+                    "percentile_3rd_cosine": 0.016383
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5442841053009033,
-                    "min_sync_score": 0.3161432147026062,
-                    "variance": 0.04675547951507042
+                    "sync_score": 0.5442840456962585,
+                    "min_sync_score": 0.316143274307251,
+                    "variance": 0.0467554859592314
                 }
             },
             "audio_artifacts": {
@@ -7724,19 +7724,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "to manage their condition to manage their disease",
+                    "vsr_text_lips": "to manage their condition and to manage their disease",
+                    "wer_score": 0.125
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.289561,
+                    "min_cosine_similarity": 0.040045,
+                    "percentile_3rd_cosine": 0.058447
                 },
                 "temporal_sync": {
                     "sync_score": 0.6314371824264526,
-                    "min_sync_score": 0.2657400369644165,
-                    "variance": 0.06031311668209938
+                    "min_sync_score": 0.26573997735977173,
+                    "variance": 0.06031312400117117
                 }
             },
             "audio_artifacts": {
@@ -7789,14 +7789,14 @@
                     "wer_score": 0.166667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.365785,
+                    "min_cosine_similarity": 0.032323,
+                    "percentile_3rd_cosine": 0.047274
                 },
                 "temporal_sync": {
                     "sync_score": 0.7259239554405212,
-                    "min_sync_score": 0.26627641916275024,
-                    "variance": 0.05953564502196773
+                    "min_sync_score": 0.2662762701511383,
+                    "variance": 0.05953565229371294
                 }
             },
             "audio_artifacts": {
@@ -7844,18 +7844,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "thank you",
+                    "vsr_text_lips": "thank you thank you",
+                    "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.435975,
+                    "min_cosine_similarity": 0.089306,
+                    "percentile_3rd_cosine": 0.118997
                 },
                 "temporal_sync": {
                     "sync_score": 0.8377562165260315,
-                    "min_sync_score": 0.38991814851760864,
+                    "min_sync_score": 0.3899182379245758,
                     "variance": 0.04527014081450975
                 }
             },

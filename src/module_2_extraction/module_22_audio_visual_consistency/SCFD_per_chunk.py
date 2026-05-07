@@ -211,7 +211,7 @@ def extract_semantic_embeddings(
 ) -> Tuple[np.ndarray, np.ndarray, Dict]:
     video_frames = load_video_as_is(video_path)
     audio_feats = compute_audio_logfbank(audio_path, stack_order_audio=stack_order_audio)
-    assert_same_num_steps(video_frames, audio_feats)
+    video_frames, audio_feats = assert_same_num_steps(video_frames, audio_feats)
 
     video_tensor = build_video_tensor(video_frames).to(device)
     audio_tensor = torch.from_numpy(audio_feats).transpose(0, 1).unsqueeze(0).to(device)
@@ -233,10 +233,17 @@ def extract_semantic_embeddings(
     audio_emb = audio_emb.squeeze(0).detach().float().cpu().numpy()
 
     if audio_emb.shape[0] != video_emb.shape[0]:
-        raise ValueError(
-            "AV-HuBERT trả về embedding với số bước thời gian không khớp: "
-            f"audio_emb_steps={audio_emb.shape[0]}, video_emb_steps={video_emb.shape[0]}"
-        )
+        diff = abs(audio_emb.shape[0] - video_emb.shape[0])
+
+        if diff <= 5:
+            min_steps = min(audio_emb.shape[0], video_emb.shape[0])
+            audio_emb = audio_emb[:min_steps]
+            video_emb = video_emb[:min_steps]
+        else:
+            raise ValueError(
+                "AV-HuBERT trả về embedding với số bước thời gian không khớp quá lớn: "
+                f"audio_emb_steps={audio_emb.shape[0]}, video_emb_steps={video_emb.shape[0]}"
+            )
 
     meta = {
         "num_video_frames": int(video_frames.shape[0]),
@@ -331,6 +338,7 @@ def main() -> None:
     parser.add_argument("--input-audio-name", type=str, default="sync_audio.wav")
     parser.add_argument("--output-json", type=str, default=None, help="JSON đầu ra khi xử lý một cặp video/audio")
     parser.add_argument("--output-root", type=str, default=None, help="Thư mục đầu ra khi quét nhiều cặp trong --input-root")
+    parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
 
     avhubert_root = Path(args.avhubert_root)

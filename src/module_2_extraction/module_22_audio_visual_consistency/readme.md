@@ -22,7 +22,7 @@ pip install torch torchvision torchaudio pytorch-lightning sentencepiece av tran
 
 Mỗi `chunk_*` trong `data/interim` cần có:
 
-* `audio.wav`
+* `sync_audio.wav`
 * `slides/...`
 
 Sau bước chuẩn bị, mỗi chunk sẽ có thêm:
@@ -139,7 +139,7 @@ CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual
   --checkpoint-path ./pretrained_model/pure_MTDVocaLiST.pth \
   --output-json ./src/module_2_extraction/output/tcfd_output.json \
   --input-video-name vsr_input.mp4 \
-  --audio-name audio.wav \
+  --audio-name sync_audio.wav \
   --video-layout mouth96 \
   --mtdvocalist-root ../MTDVocaLiST \
   --device cuda
@@ -147,7 +147,7 @@ CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual
 
 Ghi chú:
 
-* dùng `vsr_input.mp4` và `audio.wav` ở cấp độ chunk
+* dùng `vsr_input.mp4` và `sync_audio.wav` ở cấp độ chunk
 * `tcfd_score` càng cao thì đồng bộ thời gian càng tốt
 
 ---
@@ -191,15 +191,12 @@ src/module_2_extraction/output/
 ```bash
 python ./src/module_2_extraction/module_22_audio_visual_consistency/build_vsr_asr_input_from_slides.py --input-root ./data/interim --overwrite
 
-CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_vsr_inference_per_chunk.py --input-root ./data/interim --model-path ./pretrained_model/vsr_trlrs2lrs3vox2avsp_base.pth --output-root ./src/module_2_extraction/output/vsr_output --overwrite
+CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_vsr_inference_per_chunk.py --input-root ./data/interim --model-path ./pretrained_model/vsr_trlrs2lrs3vox2avsp_base.pth --output-root ./data/processed/vsr_output --overwrite
 
-CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_asr_inference_per_chunk.py --input-root ./data/interim --model-path ./pretrained_model/whisper-medium-en/model.safetensors --output-root ./src/module_2_extraction/output/asr_output --language english --overwrite
+CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/run_asr_inference_per_chunk.py --input-root ./data/interim --model-path ./pretrained_model/whisper-medium-en/model.safetensors --output-root ./data/processed/asr_output --language english --overwrite
 
-python ./src/module_2_extraction/module_22_audio_visual_consistency/CCFD_from_asr_vsr.py --asr-root ./src/module_2_extraction/output/asr_output --vsr-root ./src/module_2_extraction/output/vsr_output --output-root ./src/module_2_extraction/output/ccfd_output --overwrite
+CUDA_VISIBLE_DEVICES=4 python ./src/module_2_extraction/module_22_audio_visual_consistency/CCFD_per_chunk.py --asr-root ./data/processed/asr_output --vsr-root ./data/processed/vsr_output --output-root ./data/processed/ccfd_output --overwrite
 
-CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/SCFD_per_chunk.py --input-root ./data/interim --input-video-name vsr_input.mp4 --input-audio-name audio.wav --avhubert-root ../av_hubert --model-path ./pretrained_model/base_vox_iter5.pt --output-root ./src/module_2_extraction/output/scfd_output --overwrite
+CUDA_VISIBLE_DEVICES=4 python ./src/module_2_extraction/module_22_audio_visual_consistency/SCFD_per_chunk.py --input-root ./data/interim --input-video-name vsr_input.mp4 --input-audio-name sync_audio.wav --avhubert-root ../av_hubert --model-path ./pretrained_model/base_vox_iter5.pt --output-root ./data/processed/scfd_output --overwrite
 
-CUDA_VISIBLE_DEVICES=3,5 python ./src/module_2_extraction/module_22_audio_visual_consistency/TCFD_per_chunk.py --input-root ./data/interim --checkpoint-path ./pretrained_model/pure_MTDVocaLiST.pth --output-json ./src/module_2_extraction/output/tcfd_output.json --input-video-name vsr_input.mp4 --audio-name audio.wav --video-layout mouth96 --mtdvocalist-root ../MTDVocaLiST --device cuda
-
-python ./src/module_2_extraction/module_22_audio_visual_consistency/module22_system_fusion.py --scfd-root ./src/module_2_extraction/output/scfd_output --ccfd-root ./src/module_2_extraction/output/ccfd_output --tcfd-json ./src/module_2_extraction/output/tcfd_output.json --output-json ./src/module_2_extraction/output/module22_fusion_output.json --require-all-three
-```
+CUDA_VISIBLE_DEVICES=3 python ./src/module_2_extraction/module_22_audio_visual_consistency/TCFD_per_chunk.py --input-root ./data/interim --checkpoint-path ./pretrained_model/pure_MTDVocaLiST.pth --output-json ./data/processed/tcfd_output.json --input-video-name vsr_input.mp4 --audio-name sync_audio.wav --video-layout mouth96 --mtdvocalist-root ../MTDVocaLiST --device cuda

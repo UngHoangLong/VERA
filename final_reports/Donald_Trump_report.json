@@ -44,14 +44,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "yes i am",
+                    "vsr_text_lips": "yes i am",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.40999,
+                    "min_cosine_similarity": 0.118881,
+                    "percentile_3rd_cosine": 0.12538
                 },
                 "temporal_sync": {
                     "sync_score": 0.6885530948638916,
@@ -109,14 +109,14 @@
                     "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.401309,
+                    "min_cosine_similarity": 0.172839,
+                    "percentile_3rd_cosine": 0.185571
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6168704032897949,
+                    "sync_score": 0.6168704628944397,
                     "min_sync_score": 0.4688565135002136,
-                    "variance": 0.021604277568171293
+                    "variance": 0.021604281948634174
                 }
             },
             "audio_artifacts": {
@@ -164,19 +164,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "you said i was evil",
+                    "vsr_text_lips": "down in the harlem",
+                    "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.335703,
+                    "min_cosine_similarity": 0.154288,
+                    "percentile_3rd_cosine": 0.157248
                 },
                 "temporal_sync": {
                     "sync_score": 0.5841800570487976,
-                    "min_sync_score": 0.5024491548538208,
-                    "variance": 0.0023834502484399445
+                    "min_sync_score": 0.5024490356445312,
+                    "variance": 0.002383451339665346
                 }
             },
             "audio_artifacts": {
@@ -229,13 +229,13 @@
                     "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.322179,
+                    "min_cosine_similarity": 0.121238,
+                    "percentile_3rd_cosine": 0.125696
                 },
                 "temporal_sync": {
                     "sync_score": 0.5839250087738037,
-                    "min_sync_score": 0.5031187534332275,
+                    "min_sync_score": 0.5031186938285828,
                     "variance": 0.0023745091472165414
                 }
             },
@@ -284,14 +284,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "i am always beautiful",
+                    "vsr_text_lips": "i am always a music foe",
+                    "wer_score": 0.75
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.488261,
+                    "min_cosine_similarity": 0.109213,
+                    "percentile_3rd_cosine": 0.123555
                 },
                 "temporal_sync": {
                     "sync_score": 0.6300832629203796,
@@ -349,13 +349,13 @@
                     "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.694918,
+                    "min_cosine_similarity": 0.521953,
+                    "percentile_3rd_cosine": 0.530945
                 },
                 "temporal_sync": {
                     "sync_score": 0.6289588212966919,
-                    "min_sync_score": 0.41263625025749207,
+                    "min_sync_score": 0.4126362204551697,
                     "variance": 0.02115383309982044
                 }
             },
@@ -404,14 +404,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "what about that you said you said are you beautiful",
+                    "vsr_text_lips": "you say oh you say oh you are beautiful and i say",
+                    "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.463607,
+                    "min_cosine_similarity": 0.156109,
+                    "percentile_3rd_cosine": 0.174406
                 },
                 "temporal_sync": {
                     "sync_score": 0.5404481291770935,
@@ -469,14 +469,14 @@
                     "wer_score": 0.666667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.340342,
+                    "min_cosine_similarity": 0.193775,
+                    "percentile_3rd_cosine": 0.202113
                 },
                 "temporal_sync": {
                     "sync_score": 0.536864697933197,
-                    "min_sync_score": 0.4616728723049164,
-                    "variance": 0.0017785495220290631
+                    "min_sync_score": 0.46167293190956116,
+                    "variance": 0.0017785492078168375
                 }
             },
             "audio_artifacts": {
@@ -524,19 +524,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "she is thinking i am not beautiful",
+                    "vsr_text_lips": "well i am going for",
+                    "wer_score": 0.714286
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.509472,
+                    "min_cosine_similarity": 0.113283,
+                    "percentile_3rd_cosine": 0.116628
                 },
                 "temporal_sync": {
                     "sync_score": 0.5508628487586975,
-                    "min_sync_score": 0.47014614939689636,
-                    "variance": 0.0028811179604698034
+                    "min_sync_score": 0.4701462984085083,
+                    "variance": 0.0028811191602230585
                 }
             },
             "audio_artifacts": {
@@ -589,13 +589,13 @@
                     "wer_score": 0.888889
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.308636,
+                    "min_cosine_similarity": 0.068305,
+                    "percentile_3rd_cosine": 0.09406
                 },
                 "temporal_sync": {
                     "sync_score": 0.5596836805343628,
-                    "min_sync_score": 0.47892001271247864,
+                    "min_sync_score": 0.4789201319217682,
                     "variance": 0.003258393979016852
                 }
             },
@@ -644,19 +644,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "and i am always beautiful",
+                    "vsr_text_lips": "oh it is beautiful",
+                    "wer_score": 0.8
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.471787,
+                    "min_cosine_similarity": 0.125562,
+                    "percentile_3rd_cosine": 0.142677
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5972495079040527,
-                    "min_sync_score": 0.4886365234851837,
-                    "variance": 0.010034103810596662
+                    "sync_score": 0.597249448299408,
+                    "min_sync_score": 0.4886365830898285,
+                    "variance": 0.010034108288561827
                 }
             },
             "audio_artifacts": {

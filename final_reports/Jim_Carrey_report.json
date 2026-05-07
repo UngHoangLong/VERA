@@ -44,18 +44,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "i think that sonic represents the power of innocence",
+                    "vsr_text_lips": "i think that the sonic represents the power of in essence the",
+                    "wer_score": 0.444444
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.106557,
+                    "min_cosine_similarity": -0.09024,
+                    "percentile_3rd_cosine": -0.034976
                 },
                 "temporal_sync": {
                     "sync_score": 0.5120615363121033,
-                    "min_sync_score": 0.30315691232681274,
+                    "min_sync_score": 0.30315685272216797,
                     "variance": 0.023670727025319138
                 }
             },
@@ -109,13 +109,13 @@
                     "wer_score": 0.4
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.258947,
+                    "min_cosine_similarity": 0.029542,
+                    "percentile_3rd_cosine": 0.040649
                 },
                 "temporal_sync": {
                     "sync_score": 0.5511221289634705,
-                    "min_sync_score": 0.30396994948387146,
+                    "min_sync_score": 0.3039698898792267,
                     "variance": 0.034905860590523696
                 }
             },
@@ -164,18 +164,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "the power of play",
+                    "vsr_text_lips": "power play",
+                    "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.310376,
+                    "min_cosine_similarity": 0.000642,
+                    "percentile_3rd_cosine": 0.017626
                 },
                 "temporal_sync": {
                     "sync_score": 0.5479469895362854,
-                    "min_sync_score": 0.36278313398361206,
+                    "min_sync_score": 0.36278289556503296,
                     "variance": 0.030724354670085496
                 }
             },
@@ -229,13 +229,13 @@
                     "wer_score": 0.6
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.558208,
+                    "min_cosine_similarity": 0.122969,
+                    "percentile_3rd_cosine": 0.176693
                 },
                 "temporal_sync": {
                     "sync_score": 0.5701307654380798,
-                    "min_sync_score": 0.34122568368911743,
+                    "min_sync_score": 0.3412257134914398,
                     "variance": 0.03671239101779933
                 }
             },
@@ -284,19 +284,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "a pure soul who",
+                    "vsr_text_lips": "because or her",
+                    "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.549754,
+                    "min_cosine_similarity": 0.277483,
+                    "percentile_3rd_cosine": 0.27959
                 },
                 "temporal_sync": {
                     "sync_score": 0.5768574476242065,
-                    "min_sync_score": 0.37054720520973206,
-                    "variance": 0.03124489410191078
+                    "min_sync_score": 0.3705471456050873,
+                    "variance": 0.031244899369836654
                 }
             },
             "audio_artifacts": {
@@ -349,13 +349,13 @@
                     "wer_score": 0.888889
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.271548,
+                    "min_cosine_similarity": 0.026261,
+                    "percentile_3rd_cosine": 0.052228
                 },
                 "temporal_sync": {
                     "sync_score": 0.5899375677108765,
-                    "min_sync_score": 0.36786195635795593,
+                    "min_sync_score": 0.3678620159626007,
                     "variance": 0.03459234320433624
                 }
             },
@@ -404,18 +404,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "just is doing his life because",
+                    "vsr_text_lips": "he is doing his guess because he",
+                    "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.359408,
+                    "min_cosine_similarity": 0.089616,
+                    "percentile_3rd_cosine": 0.097292
                 },
                 "temporal_sync": {
                     "sync_score": 0.6018377542495728,
-                    "min_sync_score": 0.3166051506996155,
+                    "min_sync_score": 0.3166050910949707,
                     "variance": 0.046350981805368896
                 }
             },
@@ -469,9 +469,9 @@
                     "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.385392,
+                    "min_cosine_similarity": 0.034377,
+                    "percentile_3rd_cosine": 0.064235
                 },
                 "temporal_sync": {
                     "sync_score": 0.6574432253837585,
@@ -524,19 +524,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "for everybody you know the wonderful",
+                    "vsr_text_lips": "everybody you know the wonderful",
+                    "wer_score": 0.166667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.319926,
+                    "min_cosine_similarity": 0.042296,
+                    "percentile_3rd_cosine": 0.056485
                 },
                 "temporal_sync": {
                     "sync_score": 0.47461381554603577,
                     "min_sync_score": 0.35439351201057434,
-                    "variance": 0.00945524395187669
+                    "variance": 0.009455241053956343
                 }
             },
             "audio_artifacts": {
@@ -589,14 +589,14 @@
                     "wer_score": 0.571429
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.080635,
+                    "min_cosine_similarity": -0.027846,
+                    "percentile_3rd_cosine": -0.01263
                 },
                 "temporal_sync": {
                     "sync_score": 0.5424254536628723,
-                    "min_sync_score": 0.32576602697372437,
-                    "variance": 0.02406193247716093
+                    "min_sync_score": 0.3257661461830139,
+                    "variance": 0.024061927854251985
                 }
             },
             "audio_artifacts": {
@@ -644,19 +644,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "is he is analogous to a lot of the insiders",
+                    "vsr_text_lips": "as he is and alex took out of the",
+                    "wer_score": 0.6
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.1498,
+                    "min_cosine_similarity": -0.050459,
+                    "percentile_3rd_cosine": -0.037025
                 },
                 "temporal_sync": {
                     "sync_score": 0.5459827184677124,
-                    "min_sync_score": 0.31969982385635376,
-                    "variance": 0.026015330898534694
+                    "min_sync_score": 0.31969985365867615,
+                    "variance": 0.026015326091638258
                 }
             },
             "audio_artifacts": {
@@ -709,14 +709,14 @@
                     "wer_score": 0.272727
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.106752,
+                    "min_cosine_similarity": -0.077812,
+                    "percentile_3rd_cosine": -0.053472
                 },
                 "temporal_sync": {
                     "sync_score": 0.48770374059677124,
-                    "min_sync_score": 0.3175980746746063,
-                    "variance": 0.016051107539292397
+                    "min_sync_score": 0.3175981342792511,
+                    "variance": 0.016051103763548014
                 }
             },
             "audio_artifacts": {
@@ -764,18 +764,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "you know in",
+                    "vsr_text_lips": "you know",
+                    "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.678787,
+                    "min_cosine_similarity": 0.538358,
+                    "percentile_3rd_cosine": 0.546562
                 },
                 "temporal_sync": {
                     "sync_score": 0.5642212629318237,
-                    "min_sync_score": 0.3614167273044586,
+                    "min_sync_score": 0.36141660809516907,
                     "variance": 0.022519299948634774
                 }
             },
@@ -829,13 +829,13 @@
                     "wer_score": 0.181818
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.101468,
+                    "min_cosine_similarity": -0.052472,
+                    "percentile_3rd_cosine": -0.030346
                 },
                 "temporal_sync": {
-                    "sync_score": 0.4651508629322052,
-                    "min_sync_score": 0.31252017617225647,
+                    "sync_score": 0.4651508331298828,
+                    "min_sync_score": 0.3125201463699341,
                     "variance": 0.014966700347955941
                 }
             },
@@ -884,19 +884,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "the self dealing the",
+                    "vsr_text_lips": "when i was in here the",
+                    "wer_score": 1.25
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.805275,
+                    "min_cosine_similarity": 0.702909,
+                    "percentile_3rd_cosine": 0.715003
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5658487677574158,
+                    "sync_score": 0.565848708152771,
                     "min_sync_score": 0.3652056157588959,
-                    "variance": 0.023374540065560723
+                    "variance": 0.02337453550916302
                 }
             },
             "audio_artifacts": {
@@ -949,14 +949,14 @@
                     "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.612513,
+                    "min_cosine_similarity": 0.204076,
+                    "percentile_3rd_cosine": 0.277998
                 },
                 "temporal_sync": {
                     "sync_score": 0.5483022332191467,
                     "min_sync_score": 0.3875984251499176,
-                    "variance": 0.0206776487054805
+                    "variance": 0.02067764441998876
                 }
             },
             "audio_artifacts": {
@@ -1004,19 +1004,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "in our desired realms",
+                    "vsr_text_lips": "realms are robotics",
+                    "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.327879,
+                    "min_cosine_similarity": 0.127448,
+                    "percentile_3rd_cosine": 0.137537
                 },
                 "temporal_sync": {
                     "sync_score": 0.6011712551116943,
-                    "min_sync_score": 0.32581883668899536,
-                    "variance": 0.05698207335491734
+                    "min_sync_score": 0.3258189260959625,
+                    "variance": 0.05698205912674226
                 }
             },
             "audio_artifacts": {
@@ -1069,13 +1069,13 @@
                     "wer_score": 0.5
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.359614,
+                    "min_cosine_similarity": 0.091804,
+                    "percentile_3rd_cosine": 0.095084
                 },
                 "temporal_sync": {
                     "sync_score": 0.5950718522071838,
-                    "min_sync_score": 0.3329199254512787,
+                    "min_sync_score": 0.33291998505592346,
                     "variance": 0.05654155580439024
                 }
             },
@@ -1124,18 +1124,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "a lot of those good folks those clever",
+                    "vsr_text_lips": "and daddy who is the only thing ever",
+                    "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.679784,
+                    "min_cosine_similarity": 0.308461,
+                    "percentile_3rd_cosine": 0.375026
                 },
                 "temporal_sync": {
                     "sync_score": 0.5815484523773193,
-                    "min_sync_score": 0.3305717706680298,
+                    "min_sync_score": 0.3305717408657074,
                     "variance": 0.02991604243938184
                 }
             },
@@ -1189,14 +1189,14 @@
                     "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.376149,
+                    "min_cosine_similarity": 0.060817,
+                    "percentile_3rd_cosine": 0.073869
                 },
                 "temporal_sync": {
                     "sync_score": 0.5380672216415405,
-                    "min_sync_score": 0.3417908549308777,
-                    "variance": 0.01746816225643344
+                    "min_sync_score": 0.3417910039424896,
+                    "variance": 0.01746815831754489
                 }
             },
             "audio_artifacts": {
@@ -1244,18 +1244,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "types in silicon valley that is not a",
+                    "vsr_text_lips": "types in silicon valley that is not a micro",
+                    "wer_score": 0.125
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.169742,
+                    "min_cosine_similarity": -0.031433,
+                    "percentile_3rd_cosine": -0.026738
                 },
                 "temporal_sync": {
                     "sync_score": 0.496475487947464,
-                    "min_sync_score": 0.3154343366622925,
+                    "min_sync_score": 0.3154342770576477,
                     "variance": 0.0254625305512457
                 }
             },
@@ -1309,13 +1309,13 @@
                     "wer_score": 0.555556
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.320163,
+                    "min_cosine_similarity": 0.108402,
+                    "percentile_3rd_cosine": 0.124443
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5681489109992981,
-                    "min_sync_score": 0.317833811044693,
+                    "sync_score": 0.5681488513946533,
+                    "min_sync_score": 0.3178339898586273,
                     "variance": 0.04707131744215354
                 }
             },
@@ -1364,18 +1364,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "on his shoulder you know that is a quantified",
+                    "vsr_text_lips": "block i was older so i say quantum",
+                    "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.252175,
+                    "min_cosine_similarity": -0.048114,
+                    "percentile_3rd_cosine": -0.030093
                 },
                 "temporal_sync": {
                     "sync_score": 0.5908790230751038,
-                    "min_sync_score": 0.3528447151184082,
+                    "min_sync_score": 0.352844774723053,
                     "variance": 0.040515845043742615
                 }
             },
@@ -1429,14 +1429,14 @@
                     "wer_score": 0.4
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.275011,
+                    "min_cosine_similarity": 0.042774,
+                    "percentile_3rd_cosine": 0.058927
                 },
                 "temporal_sync": {
                     "sync_score": 0.6106901168823242,
-                    "min_sync_score": 0.32500290870666504,
-                    "variance": 0.04824281038694167
+                    "min_sync_score": 0.32500284910202026,
+                    "variance": 0.04824280384108648
                 }
             },
             "audio_artifacts": {
@@ -1484,18 +1484,18 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "some database of bitterness",
+                    "vsr_text_lips": "a tail piece of middle aged",
+                    "wer_score": 1.25
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.403133,
+                    "min_cosine_similarity": 0.128021,
+                    "percentile_3rd_cosine": 0.129892
                 },
                 "temporal_sync": {
                     "sync_score": 0.6139270067214966,
-                    "min_sync_score": 0.3205215036869049,
+                    "min_sync_score": 0.3205215632915497,
                     "variance": 0.05114170222553782
                 }
             },

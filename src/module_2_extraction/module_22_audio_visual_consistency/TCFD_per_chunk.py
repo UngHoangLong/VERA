@@ -6,6 +6,7 @@ import importlib
 import json
 import math
 import os
+import subprocess
 import sys
 from dataclasses import dataclass, asdict
 from pathlib import Path
@@ -96,6 +97,15 @@ def parse_cuda_visible_devices_env() -> Optional[List[str]]:
     return [x.strip() for x in raw.split(",") if x.strip()]
 
 
+def get_visible_gpu_ids() -> List[str]:
+    visible = parse_cuda_visible_devices_env()
+    if visible is not None:
+        return visible
+    if torch.cuda.is_available():
+        return [str(i) for i in range(torch.cuda.device_count())]
+    return []
+
+
 def resolve_runtime_device(requested_device: str) -> Tuple[torch.device, int, Optional[List[str]]]:
     requested = str(requested_device).lower().strip()
     visible_env = parse_cuda_visible_devices_env()
@@ -137,9 +147,8 @@ class TCFDInferencer:
         self.model = sync_transformer_cls(d_model=d_model).to(self.device)
         self._load_checkpoint(checkpoint_path)
 
-        if self.device.type == "cuda" and self.num_visible_gpus > 1:
-            self.model = torch.nn.DataParallel(self.model, device_ids=list(range(self.num_visible_gpus)))
-
+        # Không dùng torch.nn.DataParallel vì nhánh này đang gây segmentation fault trên TCFD.
+        # Multi-GPU được xử lý ở mức nhiều process: mỗi process chỉ nhìn thấy 1 GPU.
         self.model.eval()
         if self.device.type == "cuda":
             torch.backends.cudnn.benchmark = True
@@ -432,68 +441,134 @@ def process_chunk(
         )
 
 
-def group_results(results: Sequence[ChunkResult]) -> Dict[str, Any]:
-    videos: Dict[str, List[Dict[str, Any]]] = {}
-    for item in results:
-        videos.setdefault(item.video_id, []).append(
-            {
-                "chunk_id": item.chunk_id,
-                "chunk_start_sec": item.chunk_start_sec,
-                "chunk_end_sec": item.chunk_end_sec,
-                "tcfd_score": item.tcfd_score,
-                "window_score_std": item.window_score_std,
-                "window_score_min": item.window_score_min,
-                "window_score_max": item.window_score_max,
-                "num_windows": item.num_windows,
-                "status": item.status,
-                "reason": item.reason,
+def chunk_result_to_row(result: ChunkResult, output_json: Path) -> Dict[str, Any]:
+    row = asdict(result)
+    row["chunk"] = result.chunk_id
+    row["ok"] = result.status == "ok"
+    row["output_json"] = str(output_json)
+    return row
+
+
+def write_chunk_result(output_root: Path, result: ChunkResult) -> Dict[str, Any]:
+    out_dir = output_root / result.video_id
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_json = out_dir / f"{result.chunk_id}.json"
+    row = chunk_result_to_row(result, out_json)
+    out_json.write_text(json.dumps(row, ensure_ascii=False, indent=2), encoding="utf-8")
+    return row
+
+
+def load_json(path: Path) -> Dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def build_video_summary(video_id: str, rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
+    ok_rows = [r for r in rows if r.get("status") == "ok" and r.get("tcfd_score") is not None]
+    scores = [float(r["tcfd_score"]) for r in ok_rows]
+    return {
+        "video_id": video_id,
+        "num_chunks": len(rows),
+        "num_ok": len(ok_rows),
+        "num_skipped": sum(1 for r in rows if r.get("status") == "skipped"),
+        "num_error": sum(1 for r in rows if r.get("status") == "error"),
+        "mean_tcfd_score": float(np.mean(scores)) if scores else None,
+        "std_tcfd_score": float(np.std(scores)) if scores else None,
+        "best_chunk": max(ok_rows, key=lambda r: r["tcfd_score"])["chunk"] if ok_rows else None,
+        "best_chunk_score": max(scores) if scores else None,
+        "worst_chunk": min(ok_rows, key=lambda r: r["tcfd_score"])["chunk"] if ok_rows else None,
+        "worst_chunk_score": min(scores) if scores else None,
+    }
+
+
+def collect_written_rows(output_root: Path, chunk_items: Sequence[Tuple[str, Path]]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    all_rows: List[Dict[str, Any]] = []
+    rows_by_video: Dict[str, List[Dict[str, Any]]] = {}
+
+    for video_id, chunk_dir in chunk_items:
+        out_json = output_root / video_id / f"{chunk_dir.name}.json"
+        if out_json.exists():
+            row = load_json(out_json)
+        else:
+            row = {
+                "video_id": video_id,
+                "chunk": chunk_dir.name,
+                "chunk_id": chunk_dir.name,
+                "ok": False,
+                "status": "error",
+                "reason": "missing_output_json_after_processing",
+                "output_json": str(out_json),
             }
-        )
+        all_rows.append(row)
+        rows_by_video.setdefault(video_id, []).append(row)
 
-    return {
-        "videos": [
-            {"video_id": vid, "chunks": chunks}
-            for vid, chunks in sorted(videos.items())
-        ]
+    video_summaries: List[Dict[str, Any]] = []
+    for video_id, rows in sorted(rows_by_video.items()):
+        rows = sorted(rows, key=lambda r: r.get("chunk", r.get("chunk_id", "")))
+        summary = build_video_summary(video_id, rows)
+        summary_path = output_root / video_id / "summary.json"
+        summary_path.parent.mkdir(parents=True, exist_ok=True)
+        summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+        video_summaries.append(summary)
+
+    return all_rows, video_summaries
+
+
+def write_manifest(args: argparse.Namespace, output_root: Path, chunk_items: Sequence[Tuple[str, Path]]) -> None:
+    all_rows, video_summaries = collect_written_rows(output_root, chunk_items)
+    manifest = {
+        "input_root": str(args.input_root),
+        "checkpoint_path": str(args.checkpoint_path),
+        "mtdvocalist_root": str(args.mtdvocalist_root),
+        "model_module": args.model_module,
+        "d_model": args.d_model,
+        "input_video_name": args.input_video_name,
+        "audio_name": args.audio_name,
+        "video_layout": args.video_layout,
+        "output_root": str(output_root),
+        "num_videos": len({video_id for video_id, _ in chunk_items}),
+        "num_chunks": len(all_rows),
+        "num_ok": sum(1 for r in all_rows if r.get("status") == "ok"),
+        "num_skipped": sum(1 for r in all_rows if r.get("status") == "skipped"),
+        "num_error": sum(1 for r in all_rows if r.get("status") == "error"),
+        "video_summaries": video_summaries,
+        "results": all_rows,
     }
+    manifest_path = output_root / "manifest.json"
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    if args.output_json is not None:
+        args.output_json.parent.mkdir(parents=True, exist_ok=True)
+        args.output_json.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    print(json.dumps(
+        {
+            "output_root": str(output_root),
+            "manifest": str(manifest_path),
+            "legacy_output_json": str(args.output_json) if args.output_json else None,
+            "num_videos": manifest["num_videos"],
+            "num_chunks": manifest["num_chunks"],
+            "num_ok": manifest["num_ok"],
+            "num_skipped": manifest["num_skipped"],
+            "num_error": manifest["num_error"],
+        },
+        ensure_ascii=False,
+        indent=2,
+    ))
 
 
-def build_summary(results: Sequence[ChunkResult]) -> Dict[str, Any]:
-    ok_scores = [r.tcfd_score for r in results if r.status == "ok" and r.tcfd_score is not None]
-    return {
-        "num_chunks_total": len(results),
-        "num_chunks_ok": sum(1 for r in results if r.status == "ok"),
-        "num_chunks_skipped": sum(1 for r in results if r.status == "skipped"),
-        "num_chunks_error": sum(1 for r in results if r.status == "error"),
-        "tcfd_score_mean": float(np.mean(ok_scores)) if ok_scores else None,
-        "tcfd_score_std": float(np.std(ok_scores)) if ok_scores else None,
-    }
+def infer_output_root(args: argparse.Namespace) -> Path:
+    if args.output_root is not None:
+        return args.output_root
+    if args.output_json is not None:
+        return args.output_json.with_suffix("")
+    return Path("data/processed/tcfd")
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run TCFD inference per chunk using MTDVocaLiST")
-    parser.add_argument("--input-root", type=Path, required=True, help="Root folder that contains <video_id>/chunk_* or <video_id>/cache/chunk_*")
-    parser.add_argument("--checkpoint-path", type=Path, required=True, help="Path to pretrained pure_MTDVocaLiST.pth checkpoint")
-    parser.add_argument("--output-json", type=Path, default=Path("data/interim/tcfd_interim.json"), help="Output JSON path")
-    parser.add_argument("--input-video-name", type=str, default="vsr_input.mp4", help="Input video name inside each chunk")
-    parser.add_argument("--audio-name", type=str, default="sync_audio.wav", help="Audio file name inside each chunk")
-    parser.add_argument("--video-layout", type=str, default="mouth96", choices=["mouth96", "face96"], help="mouth96 for mouth-centered 96x96 crops, face96 for full face 96x96 crops")
-    parser.add_argument("--allow-video-fallback", action="store_true", help="Allow fallback to another clip if input_video_name is missing")
-    parser.add_argument("--fallback-video-name", type=str, default="video.mp4", help="Fallback video name inside each chunk")
-    parser.add_argument("--mtdvocalist-root", type=Path, default=Path("../MTDVocaLiST"), help="Path to cloned MTDVocaLiST repo")
-    parser.add_argument("--model-module", type=str, default="student_thin_200_all", help="Model module under models/, e.g. student_thin_200_all")
-    parser.add_argument("--d-model", type=int, default=200, help="d_model used by SyncTransformer")
-    parser.add_argument("--device", type=str, default="cuda", help="cpu hoặc cuda. Nếu là cuda thì script sẽ bắt buộc chạy GPU và dùng toàn bộ GPU đang được expose qua CUDA_VISIBLE_DEVICES")
-    parser.add_argument("--batch-size", type=int, default=64)
-    return parser.parse_args()
-
-
-def main() -> None:
-    args = parse_args()
-    if not args.input_root.exists():
-        raise FileNotFoundError(f"Input root not found: {args.input_root}")
-    if not args.checkpoint_path.exists():
-        raise FileNotFoundError(f"Checkpoint not found: {args.checkpoint_path}")
+def run_worker(args: argparse.Namespace, worker_rank: int, worker_world_size: int) -> None:
+    output_root = infer_output_root(args)
+    chunk_items = collect_chunk_dirs(args.input_root)
+    assigned_items = [item for idx, item in enumerate(chunk_items) if idx % worker_world_size == worker_rank]
 
     sync_transformer_cls = load_sync_transformer_class(args.mtdvocalist_root, args.model_module)
     inferencer = TCFDInferencer(
@@ -507,16 +582,21 @@ def main() -> None:
     if inferencer.device.type == "cuda":
         visible_desc = inferencer.cuda_visible_devices if inferencer.cuda_visible_devices is not None else "ALL"
         print(json.dumps({
+            "mode": "tcfd_worker",
+            "worker_rank": worker_rank,
+            "worker_world_size": worker_world_size,
             "requested_device": args.device,
             "runtime_device": str(inferencer.device),
             "cuda_visible_devices": visible_desc,
             "num_visible_gpus": inferencer.num_visible_gpus,
-            "data_parallel": inferencer.num_visible_gpus > 1,
+            "data_parallel": False,
+            "num_assigned_chunks": len(assigned_items),
         }, ensure_ascii=False, indent=2))
 
-    chunk_items = collect_chunk_dirs(args.input_root)
-    results: List[ChunkResult] = []
-    for video_id, chunk_dir in tqdm(chunk_items, desc="TCFD"):
+    for video_id, chunk_dir in tqdm(assigned_items, desc=f"TCFD worker {worker_rank}"):
+        out_json = output_root / video_id / f"{chunk_dir.name}.json"
+        if out_json.exists() and not args.overwrite:
+            continue
         result = process_chunk(
             inferencer=inferencer,
             video_id=video_id,
@@ -527,40 +607,121 @@ def main() -> None:
             fallback_video_name=args.fallback_video_name,
             video_layout=args.video_layout,
         )
-        results.append(result)
+        write_chunk_result(output_root, result)
 
-    payload: Dict[str, Any] = {
-        "config": {
-            "input_root": str(args.input_root),
-            "checkpoint_path": str(args.checkpoint_path),
-            "mtdvocalist_root": str(args.mtdvocalist_root),
-            "model_module": args.model_module,
-            "d_model": args.d_model,
-            "input_video_name": args.input_video_name,
-            "audio_name": args.audio_name,
-            "video_layout": args.video_layout,
-            "allow_video_fallback": bool(args.allow_video_fallback),
-            "fallback_video_name": args.fallback_video_name if args.allow_video_fallback else None,
-            "device": str(inferencer.device),
-            "requested_device": args.device,
-            "num_visible_gpus": inferencer.num_visible_gpus,
-            "cuda_visible_devices": inferencer.cuda_visible_devices,
-            "batch_size": args.batch_size,
-            "fps": HP.fps,
-            "img_size": HP.img_size,
-            "window_length_frames": HP.video_context,
-            "window_stride_frames": 1,
-            "mel_step_size": HP.mel_step_size,
-            "visual_input_adaptation": "mouth96 -> resize to 48x96" if args.video_layout == "mouth96" else "face96 -> lower-half crop to 48x96",
-            "score_definition": "mean(sigmoid(logit)) across all valid windows",
-        },
-        "summary": build_summary(results),
-        **group_results(results),
-    }
 
-    args.output_json.parent.mkdir(parents=True, exist_ok=True)
-    args.output_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"Done. Saved to: {args.output_json}")
+def build_worker_command(args: argparse.Namespace, rank: int, world_size: int) -> List[str]:
+    script_path = Path(__file__).resolve()
+    command = [
+        sys.executable,
+        str(script_path),
+        "--input-root", str(args.input_root),
+        "--checkpoint-path", str(args.checkpoint_path),
+        "--output-root", str(infer_output_root(args)),
+        "--input-video-name", args.input_video_name,
+        "--audio-name", args.audio_name,
+        "--video-layout", args.video_layout,
+        "--mtdvocalist-root", str(args.mtdvocalist_root),
+        "--model-module", args.model_module,
+        "--d-model", str(args.d_model),
+        "--device", args.device,
+        "--batch-size", str(args.batch_size),
+        "--worker-mode",
+        "--worker-rank", str(rank),
+        "--worker-world-size", str(world_size),
+    ]
+    if args.allow_video_fallback:
+        command += ["--allow-video-fallback"]
+    command += ["--fallback-video-name", args.fallback_video_name]
+    if args.overwrite:
+        command += ["--overwrite"]
+    return command
+
+
+def run_parent(args: argparse.Namespace) -> None:
+    if not args.input_root.exists():
+        raise FileNotFoundError(f"Input root not found: {args.input_root}")
+    if not args.checkpoint_path.exists():
+        raise FileNotFoundError(f"Checkpoint not found: {args.checkpoint_path}")
+
+    output_root = infer_output_root(args)
+    output_root.mkdir(parents=True, exist_ok=True)
+    chunk_items = collect_chunk_dirs(args.input_root)
+    if not chunk_items:
+        raise RuntimeError(f"Không tìm thấy chunk nào trong: {args.input_root}")
+
+    visible_gpus = get_visible_gpu_ids()
+    requested_cuda = str(args.device).lower().startswith("cuda")
+    if args.num_workers and args.num_workers > 0:
+        num_workers = int(args.num_workers)
+    elif requested_cuda and len(visible_gpus) > 1:
+        num_workers = len(visible_gpus)
+    else:
+        num_workers = 1
+    num_workers = max(1, min(num_workers, len(chunk_items)))
+
+    print(json.dumps({
+        "mode": "tcfd_multi_process_chunk_sharding" if num_workers > 1 else "tcfd_single_process",
+        "output_layout": str(output_root / "<video_id>" / "chunk_*.json"),
+        "cuda_visible_devices": visible_gpus,
+        "num_workers": num_workers,
+        "num_tasks": len(chunk_items),
+        "data_parallel": False,
+    }, ensure_ascii=False, indent=2))
+
+    if num_workers == 1:
+        run_worker(args, worker_rank=0, worker_world_size=1)
+    else:
+        processes: List[subprocess.Popen] = []
+        for rank in range(num_workers):
+            env = os.environ.copy()
+            env["CUDA_VISIBLE_DEVICES"] = visible_gpus[rank % len(visible_gpus)]
+            cmd = build_worker_command(args, rank=rank, world_size=num_workers)
+            print(f"[TCFD parent] start worker={rank} CUDA_VISIBLE_DEVICES={env['CUDA_VISIBLE_DEVICES']}")
+            processes.append(subprocess.Popen(cmd, cwd=os.getcwd(), env=env))
+
+        failed_codes: List[int] = []
+        for p in processes:
+            code = p.wait()
+            if code != 0:
+                failed_codes.append(code)
+
+        if failed_codes:
+            raise RuntimeError(f"Có worker TCFD lỗi, return codes: {failed_codes}")
+
+    write_manifest(args, output_root=output_root, chunk_items=chunk_items)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run TCFD inference per chunk using MTDVocaLiST")
+    parser.add_argument("--input-root", type=Path, required=True, help="Root folder that contains <video_id>/chunk_* or <video_id>/cache/chunk_*")
+    parser.add_argument("--checkpoint-path", type=Path, required=True, help="Path to pretrained pure_MTDVocaLiST.pth checkpoint")
+    parser.add_argument("--output-root", type=Path, default=None, help="Output root. Layout: <output_root>/<video_id>/chunk_*.json")
+    parser.add_argument("--output-json", type=Path, default=None, help="Optional legacy manifest path. Per-chunk output is still written to <output_json without .json>/<video_id>/chunk_*.json unless --output-root is set")
+    parser.add_argument("--input-video-name", type=str, default="vsr_input.mp4", help="Input video name inside each chunk")
+    parser.add_argument("--audio-name", type=str, default="sync_audio.wav", help="Audio file name inside each chunk")
+    parser.add_argument("--video-layout", type=str, default="mouth96", choices=["mouth96", "face96"], help="mouth96 for mouth-centered 96x96 crops, face96 for full face 96x96 crops")
+    parser.add_argument("--allow-video-fallback", action="store_true", help="Allow fallback to another clip if input_video_name is missing")
+    parser.add_argument("--fallback-video-name", type=str, default="video.mp4", help="Fallback video name inside each chunk")
+    parser.add_argument("--mtdvocalist-root", type=Path, default=Path("../MTDVocaLiST"), help="Path to cloned MTDVocaLiST repo")
+    parser.add_argument("--model-module", type=str, default="student_thin_200_all", help="Model module under models/, e.g. student_thin_200_all")
+    parser.add_argument("--d-model", type=int, default=200, help="d_model used by SyncTransformer")
+    parser.add_argument("--device", type=str, default="cuda", help="cpu hoặc cuda")
+    parser.add_argument("--batch-size", type=int, default=64)
+    parser.add_argument("--num-workers", type=int, default=0, help="0 = auto. Với CUDA, auto = số GPU trong CUDA_VISIBLE_DEVICES")
+    parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--worker-mode", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--worker-rank", type=int, default=0, help=argparse.SUPPRESS)
+    parser.add_argument("--worker-world-size", type=int, default=1, help=argparse.SUPPRESS)
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    if args.worker_mode:
+        run_worker(args, worker_rank=args.worker_rank, worker_world_size=args.worker_world_size)
+    else:
+        run_parent(args)
 
 
 if __name__ == "__main__":

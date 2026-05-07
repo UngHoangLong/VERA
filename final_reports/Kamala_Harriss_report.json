@@ -54,7 +54,7 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6578094363212585,
+                    "sync_score": 0.6578093767166138,
                     "min_sync_score": 0.41852104663848877,
                     "variance": 0.029700697470108395
                 }
@@ -104,14 +104,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "in the courtroom i stood proudly",
+                    "vsr_text_lips": "room i stood proud",
+                    "wer_score": 0.666667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.442205,
+                    "min_cosine_similarity": 0.20068,
+                    "percentile_3rd_cosine": 0.210936
                 },
                 "temporal_sync": {
                     "sync_score": 0.5875759720802307,
@@ -175,8 +175,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6098955869674683,
-                    "min_sync_score": 0.4038211703300476,
-                    "variance": 0.039946303519027504
+                    "min_sync_score": 0.4038212299346924,
+                    "variance": 0.03994629756256529
                 }
             },
             "audio_artifacts": {
@@ -224,9 +224,9 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "and i said five words",
+                    "vsr_text_lips": "in less than five words i",
+                    "wer_score": 0.8
                 },
                 "semantic_consistency": {
                     "mean_cosine_similarity": null,
@@ -235,7 +235,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6879136562347412,
-                    "min_sync_score": 0.4031381607055664,
+                    "min_sync_score": 0.4031382203102112,
                     "variance": 0.047786216224336764
                 }
             },
@@ -289,14 +289,14 @@
                     "wer_score": 1.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.451593,
+                    "min_cosine_similarity": 0.25426,
+                    "percentile_3rd_cosine": 0.262258
                 },
                 "temporal_sync": {
                     "sync_score": 0.7144342064857483,
-                    "min_sync_score": 0.40542131662368774,
-                    "variance": 0.048643926314861696
+                    "min_sync_score": 0.4054212272167206,
+                    "variance": 0.048643919741850006
                 }
             },
             "audio_artifacts": {
@@ -344,9 +344,9 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "i accept your nomination",
+                    "vsr_text_lips": "except your name",
+                    "wer_score": 0.75
                 },
                 "semantic_consistency": {
                     "mean_cosine_similarity": null,
@@ -355,8 +355,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5333661437034607,
-                    "min_sync_score": 0.44555020332336426,
-                    "variance": 0.003511455264800359
+                    "min_sync_score": 0.4455501437187195,
+                    "variance": 0.0035114557063034013
                 }
             },
             "audio_artifacts": {
@@ -415,7 +415,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5757468938827515,
-                    "min_sync_score": 0.41824576258659363,
+                    "min_sync_score": 0.41824573278427124,
                     "variance": 0.00781040175069081
                 }
             },
@@ -464,9 +464,9 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "to be president of the united states",
+                    "vsr_text_lips": "to be president of the united states",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
                     "mean_cosine_similarity": null,
@@ -475,8 +475,8 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.6451742649078369,
-                    "min_sync_score": 0.5377490520477295,
-                    "variance": 0.002024422856570729
+                    "min_sync_score": 0.5377489328384399,
+                    "variance": 0.0020244225213423978
                 }
             },
             "audio_artifacts": {
@@ -529,13 +529,13 @@
                     "wer_score": 0.166667
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.124708,
+                    "min_cosine_similarity": -0.084731,
+                    "percentile_3rd_cosine": -0.079144
                 },
                 "temporal_sync": {
-                    "sync_score": 0.6377765536308289,
-                    "min_sync_score": 0.5467920303344727,
+                    "sync_score": 0.6377766132354736,
+                    "min_sync_score": 0.546792209148407,
                     "variance": 0.002081335145453514
                 }
             },
@@ -584,14 +584,14 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "donald trump is an unserious man",
+                    "vsr_text_lips": "trip is an unserious man",
+                    "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.303044,
+                    "min_cosine_similarity": 0.109763,
+                    "percentile_3rd_cosine": 0.119094
                 },
                 "temporal_sync": {
                     "sync_score": 0.5140806436538696,
@@ -655,7 +655,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5329338312149048,
-                    "min_sync_score": 0.38803303241729736,
+                    "min_sync_score": 0.3880329728126526,
                     "variance": 0.02574925599813671
                 }
             },
@@ -704,19 +704,19 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "back in the white house are extremely serious",
+                    "vsr_text_lips": "back in the white house are extremely serious",
+                    "wer_score": 0.0
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.196857,
+                    "min_cosine_similarity": -0.061238,
+                    "percentile_3rd_cosine": -0.048838
                 },
                 "temporal_sync": {
                     "sync_score": 0.5144856572151184,
-                    "min_sync_score": 0.3856995701789856,
-                    "variance": 0.013699512885601506
+                    "min_sync_score": 0.38569965958595276,
+                    "variance": 0.013699516373812115
                 }
             },
             "audio_artifacts": {
@@ -774,9 +774,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.4747259020805359,
-                    "min_sync_score": 0.39838218688964844,
-                    "variance": 0.0012000268506445894
+                    "sync_score": 0.4747259318828583,
+                    "min_sync_score": 0.3983822762966156,
+                    "variance": 0.0012000271087431735
                 }
             },
             "audio_artifacts": {
@@ -824,9 +824,9 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "biden and i are working to end this war such that",
+                    "vsr_text_lips": "and i are working to end this war such that it",
+                    "wer_score": 0.181818
                 },
                 "semantic_consistency": {
                     "mean_cosine_similarity": null,
@@ -834,7 +834,7 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.5314832329750061,
+                    "sync_score": 0.5314831733703613,
                     "min_sync_score": 0.414975643157959,
                     "variance": 0.018600838079413373
                 }
@@ -895,7 +895,7 @@
                 },
                 "temporal_sync": {
                     "sync_score": 0.5440167188644409,
-                    "min_sync_score": 0.42245662212371826,
+                    "min_sync_score": 0.42245668172836304,
                     "variance": 0.017329478557948086
                 }
             },
@@ -944,9 +944,9 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "suffering in gaza ends",
+                    "vsr_text_lips": "i freely cut hands",
+                    "wer_score": 1.0
                 },
                 "semantic_consistency": {
                     "mean_cosine_similarity": null,
@@ -956,7 +956,7 @@
                 "temporal_sync": {
                     "sync_score": 0.48593077063560486,
                     "min_sync_score": 0.4252617657184601,
-                    "variance": 0.0009078514062315635
+                    "variance": 0.0009078516307218371
                 }
             },
             "audio_artifacts": {
@@ -1014,9 +1014,9 @@
                     "percentile_3rd_cosine": null
                 },
                 "temporal_sync": {
-                    "sync_score": 0.4805501699447632,
-                    "min_sync_score": 0.36001843214035034,
-                    "variance": 0.001418825250241229
+                    "sync_score": 0.48055025935173035,
+                    "min_sync_score": 0.3600184917449951,
+                    "variance": 0.0014188246889548228
                 }
             },
             "audio_artifacts": {
@@ -1064,9 +1064,9 @@
             },
             "audio_visual_consistency": {
                 "transcripts": {
-                    "asr_text_audio": "",
-                    "vsr_text_lips": "",
-                    "wer_score": null
+                    "asr_text_audio": "palestinian people can realize their right",
+                    "vsr_text_lips": "palestinian people can realise their right",
+                    "wer_score": 0.166667
                 },
                 "semantic_consistency": {
                     "mean_cosine_similarity": null,
@@ -1076,7 +1076,7 @@
                 "temporal_sync": {
                     "sync_score": 0.5043753385543823,
                     "min_sync_score": 0.4184216558933258,
-                    "variance": 0.004822720694901472
+                    "variance": 0.004822721729724755
                 }
             },
             "audio_artifacts": {
@@ -1129,14 +1129,14 @@
                     "wer_score": 0.333333
                 },
                 "semantic_consistency": {
-                    "mean_cosine_similarity": null,
-                    "min_cosine_similarity": null,
-                    "percentile_3rd_cosine": null
+                    "mean_cosine_similarity": 0.08002,
+                    "min_cosine_similarity": -0.032972,
+                    "percentile_3rd_cosine": -0.029631
                 },
                 "temporal_sync": {
                     "sync_score": 0.5084009170532227,
                     "min_sync_score": 0.43295204639434814,
-                    "variance": 0.004547736987572437
+                    "variance": 0.004547735982684209
                 }
             },
             "audio_artifacts": {
