@@ -1,0 +1,1268 @@
+{
+  "video_metadata": {
+    "video_id": "Kamala_Harriss",
+    "source_report": "final_reports/Kamala_Harriss_report.json",
+    "module": "module_3_autoencoder_anomaly_scoring",
+    "status": "analyzed"
+  },
+  "model_metadata": {
+    "model_type": "one_class_mlp_autoencoder",
+    "model_dir": "src/module_3_autoencoder/module3_models",
+    "feature_names": [
+      "wer_score",
+      "semantic_anomaly",
+      "temporal_anomaly",
+      "min_temporal_anomaly",
+      "max_blur_flicker",
+      "blur_flicker_variance",
+      "max_texture_flicker",
+      "asymmetry_max",
+      "mean_landmark_jitter",
+      "max_kinematic_flicker",
+      "max_rigid_violation",
+      "gaze_anomaly",
+      "iris_jitter_variance",
+      "vocal_jitter_relative",
+      "vocal_shimmer_relative"
+    ],
+    "threshold_percentile": 95.0,
+    "threshold": 4.839151382446289
+  },
+  "chunks": {
+    "chunk_0000": {
+      "time_metadata": {
+        "start_sec": 0.0,
+        "end_sec": 4.8,
+        "duration": 4.8,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 120,
+      "feature_vector": {
+        "wer_score": 0.0,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.34219062328338623,
+        "min_temporal_anomaly": 0.5814789533615112,
+        "max_blur_flicker": 56.48459529260822,
+        "blur_flicker_variance": 76.73828219618751,
+        "max_texture_flicker": 23.107822389445545,
+        "asymmetry_max": 138.0643584204269,
+        "mean_landmark_jitter": 0.00760969053953886,
+        "max_kinematic_flicker": 0.049843911081552505,
+        "max_rigid_violation": 0.024669617414474487,
+        "gaze_anomaly": 0.15135168575635516,
+        "iris_jitter_variance": 1.8028848620480435,
+        "vocal_jitter_relative": 0.028208990344249743,
+        "vocal_shimmer_relative": 0.22340786457061768
+      },
+      "anomaly": {
+        "reconstruction_error": 1.876447319984436,
+        "normalized_anomaly_score": 0.3877637155123397,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "asymmetry_max",
+        "wer_score",
+        "max_texture_flicker",
+        "min_temporal_anomaly",
+        "max_kinematic_flicker"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 3.938473701477051,
+        "semantic_anomaly": 2.2126550674438477,
+        "temporal_anomaly": 1.121926188468933,
+        "min_temporal_anomaly": 2.9974277019500732,
+        "max_blur_flicker": 0.4008236527442932,
+        "blur_flicker_variance": 0.006112538743764162,
+        "max_texture_flicker": 3.4866857528686523,
+        "asymmetry_max": 4.17579460144043,
+        "mean_landmark_jitter": 0.019079092890024185,
+        "max_kinematic_flicker": 2.4702603816986084,
+        "max_rigid_violation": 2.1857168674468994,
+        "gaze_anomaly": 0.683940052986145,
+        "iris_jitter_variance": 1.3705096244812012,
+        "vocal_jitter_relative": 1.8231542110443115,
+        "vocal_shimmer_relative": 1.2541460990905762
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "and every day in the courtroom",
+        "vsr_text_lips": "and every day in the courtroom",
+        "wer_score": 0.0,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.6578093767166138,
+        "min_sync_score": 0.41852104663848877
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: bất đối xứng kết cấu vùng mặt, độ lệch nội dung giữa ASR và VSR, dao động kết cấu bề mặt, điểm đồng bộ thời gian yếu nhất trong chunk, dao động hình học khuôn mặt."
+    },
+    "chunk_0001": {
+      "time_metadata": {
+        "start_sec": 3.0,
+        "end_sec": 5.4,
+        "duration": 2.4,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 60,
+      "feature_vector": {
+        "wer_score": 0.666667,
+        "semantic_anomaly": 0.789064,
+        "temporal_anomaly": 0.4124240279197693,
+        "min_temporal_anomaly": 0.6227408349514008,
+        "max_blur_flicker": 32.545972544151006,
+        "blur_flicker_variance": 35.351432735686316,
+        "max_texture_flicker": 101.38772293194532,
+        "asymmetry_max": 114.29988547705143,
+        "mean_landmark_jitter": 0.01124123577028513,
+        "max_kinematic_flicker": 0.08196844160556793,
+        "max_rigid_violation": 0.018676728010177612,
+        "gaze_anomaly": 0.27468453218500233,
+        "iris_jitter_variance": 1.617821098301956,
+        "vocal_jitter_relative": 0.018339302273435727,
+        "vocal_shimmer_relative": 0.2148848921060562
+      },
+      "anomaly": {
+        "reconstruction_error": 1.6747997999191284,
+        "normalized_anomaly_score": 0.34609369857574845,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "max_kinematic_flicker",
+        "vocal_jitter_relative",
+        "mean_landmark_jitter",
+        "asymmetry_max",
+        "max_texture_flicker"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 0.0010752860689535737,
+        "semantic_anomaly": 0.4604090750217438,
+        "temporal_anomaly": 0.28252744674682617,
+        "min_temporal_anomaly": 0.9409480690956116,
+        "max_blur_flicker": 0.1625964194536209,
+        "blur_flicker_variance": 0.035077281296253204,
+        "max_texture_flicker": 1.3052940368652344,
+        "asymmetry_max": 2.8482840061187744,
+        "mean_landmark_jitter": 2.9674415588378906,
+        "max_kinematic_flicker": 10.495295524597168,
+        "max_rigid_violation": 0.7813777327537537,
+        "gaze_anomaly": 0.23057740926742554,
+        "iris_jitter_variance": 0.06355512887239456,
+        "vocal_jitter_relative": 3.371826648712158,
+        "vocal_shimmer_relative": 1.1757148504257202
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "in the courtroom i stood proudly",
+        "vsr_text_lips": "room i stood proud",
+        "wer_score": 0.666667,
+        "percentile_3rd_cosine": 0.210936,
+        "sync_score": 0.5875759720802307,
+        "min_sync_score": 0.37725916504859924
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động hình học khuôn mặt, dao động vi mô tần số giọng nói, dao động landmark trung bình, bất đối xứng kết cấu vùng mặt, dao động kết cấu bề mặt."
+    },
+    "chunk_0002": {
+      "time_metadata": {
+        "start_sec": 5.5,
+        "end_sec": 8.5,
+        "duration": 3.0,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 75,
+      "feature_vector": {
+        "wer_score": 0.166667,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.39010441303253174,
+        "min_temporal_anomaly": 0.5961787700653076,
+        "max_blur_flicker": 63.64041563555439,
+        "blur_flicker_variance": 168.07598584171072,
+        "max_texture_flicker": 31.569289723686097,
+        "asymmetry_max": 144.79604047806356,
+        "mean_landmark_jitter": 0.009125110693275928,
+        "max_kinematic_flicker": 0.04030155763030052,
+        "max_rigid_violation": 0.016329094767570496,
+        "gaze_anomaly": 0.30267629912297933,
+        "iris_jitter_variance": 1.6160931627921402,
+        "vocal_jitter_relative": 0.047903981957029884,
+        "vocal_shimmer_relative": 0.26355475187301636
+      },
+      "anomaly": {
+        "reconstruction_error": 1.590685486793518,
+        "normalized_anomaly_score": 0.3287116605947272,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "asymmetry_max",
+        "vocal_shimmer_relative",
+        "max_texture_flicker",
+        "iris_jitter_variance",
+        "min_temporal_anomaly"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 1.745668649673462,
+        "semantic_anomaly": 1.732013463973999,
+        "temporal_anomaly": 0.15740837156772614,
+        "min_temporal_anomaly": 2.0592713356018066,
+        "max_blur_flicker": 0.3447705805301666,
+        "blur_flicker_variance": 0.7006762623786926,
+        "max_texture_flicker": 2.846492052078247,
+        "asymmetry_max": 4.553630828857422,
+        "mean_landmark_jitter": 1.8239490985870361,
+        "max_kinematic_flicker": 1.103393793106079,
+        "max_rigid_violation": 0.0005820994847454131,
+        "gaze_anomaly": 0.22827878594398499,
+        "iris_jitter_variance": 2.082260847091675,
+        "vocal_jitter_relative": 0.06729461252689362,
+        "vocal_shimmer_relative": 4.4145917892456055
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "before a judge and i said",
+        "vsr_text_lips": "before a judge and he said",
+        "wer_score": 0.166667,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.6098955869674683,
+        "min_sync_score": 0.4038212299346924
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: bất đối xứng kết cấu vùng mặt, dao động vi mô biên độ giọng nói, dao động kết cấu bề mặt, dao động bất thường vùng mống mắt, điểm đồng bộ thời gian yếu nhất trong chunk."
+    },
+    "chunk_0003": {
+      "time_metadata": {
+        "start_sec": 6.5,
+        "end_sec": 10.7,
+        "duration": 4.2,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 105,
+      "feature_vector": {
+        "wer_score": 0.8,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.3120863437652588,
+        "min_temporal_anomaly": 0.5968617796897888,
+        "max_blur_flicker": 26.30843623873521,
+        "blur_flicker_variance": 38.78881773075481,
+        "max_texture_flicker": 33.82146337676414,
+        "asymmetry_max": 145.6862821337307,
+        "mean_landmark_jitter": 0.008155038580298424,
+        "max_kinematic_flicker": 0.03480641543865204,
+        "max_rigid_violation": 0.01488909125328064,
+        "gaze_anomaly": 0.37856654035371806,
+        "iris_jitter_variance": 2.057502760405635,
+        "vocal_jitter_relative": 0.03467494968078076,
+        "vocal_shimmer_relative": 0.23980575799942017
+      },
+      "anomaly": {
+        "reconstruction_error": 1.3416805267333984,
+        "normalized_anomaly_score": 0.2772553327428402,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "asymmetry_max",
+        "semantic_anomaly",
+        "max_texture_flicker",
+        "vocal_shimmer_relative",
+        "iris_jitter_variance"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 0.08516576141119003,
+        "semantic_anomaly": 3.407027006149292,
+        "temporal_anomaly": 1.8330508470535278,
+        "min_temporal_anomaly": 1.5754317045211792,
+        "max_blur_flicker": 0.020588461309671402,
+        "blur_flicker_variance": 0.005250805057585239,
+        "max_texture_flicker": 2.875413656234741,
+        "asymmetry_max": 3.7235805988311768,
+        "mean_landmark_jitter": 0.6269496083259583,
+        "max_kinematic_flicker": 0.37262654304504395,
+        "max_rigid_violation": 1.8121761513612e-06,
+        "gaze_anomaly": 0.08103974163532257,
+        "iris_jitter_variance": 1.8819018602371216,
+        "vocal_jitter_relative": 0.7634804844856262,
+        "vocal_shimmer_relative": 2.873699188232422
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "and i said five words",
+        "vsr_text_lips": "in less than five words i",
+        "wer_score": 0.8,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.6879136562347412,
+        "min_sync_score": 0.4031382203102112
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: bất đối xứng kết cấu vùng mặt, độ suy giảm nhất quán ngữ nghĩa audio-visual, dao động kết cấu bề mặt, dao động vi mô biên độ giọng nói, dao động bất thường vùng mống mắt."
+    },
+    "chunk_0004": {
+      "time_metadata": {
+        "start_sec": 8.0,
+        "end_sec": 10.4,
+        "duration": 2.4,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 60,
+      "feature_vector": {
+        "wer_score": 1.0,
+        "semantic_anomaly": 0.737742,
+        "temporal_anomaly": 0.2855657935142517,
+        "min_temporal_anomaly": 0.5945787727832794,
+        "max_blur_flicker": 22.30329441880241,
+        "blur_flicker_variance": 27.454132489365403,
+        "max_texture_flicker": 31.002321417456272,
+        "asymmetry_max": 140.7610933951939,
+        "mean_landmark_jitter": 0.006867703516036272,
+        "max_kinematic_flicker": 0.03577857464551926,
+        "max_rigid_violation": 0.014576375484466553,
+        "gaze_anomaly": 0.7324185218419828,
+        "iris_jitter_variance": 2.72419523522903,
+        "vocal_jitter_relative": 0.01913064537922152,
+        "vocal_shimmer_relative": 0.1804964393377304
+      },
+      "anomaly": {
+        "reconstruction_error": 1.1955540180206299,
+        "normalized_anomaly_score": 0.2470586108046089,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "vocal_jitter_relative",
+        "temporal_anomaly",
+        "max_texture_flicker",
+        "iris_jitter_variance",
+        "asymmetry_max"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 0.13008153438568115,
+        "semantic_anomaly": 0.06832782924175262,
+        "temporal_anomaly": 2.7400944232940674,
+        "min_temporal_anomaly": 1.2558923959732056,
+        "max_blur_flicker": 0.18682895600795746,
+        "blur_flicker_variance": 0.22810959815979004,
+        "max_texture_flicker": 2.7302725315093994,
+        "asymmetry_max": 2.1842973232269287,
+        "mean_landmark_jitter": 0.0006347686285153031,
+        "max_kinematic_flicker": 0.3138434588909149,
+        "max_rigid_violation": 0.011099560186266899,
+        "gaze_anomaly": 0.2625732719898224,
+        "iris_jitter_variance": 2.5191650390625,
+        "vocal_jitter_relative": 5.13205099105835,
+        "vocal_shimmer_relative": 0.1700357347726822
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "five words",
+        "vsr_text_lips": "of words i",
+        "wer_score": 1.0,
+        "percentile_3rd_cosine": 0.262258,
+        "sync_score": 0.7144342064857483,
+        "min_sync_score": 0.4054212272167206
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động vi mô tần số giọng nói, độ suy giảm đồng bộ thời gian audio-visual, dao động kết cấu bề mặt, dao động bất thường vùng mống mắt, bất đối xứng kết cấu vùng mặt."
+    },
+    "chunk_0005": {
+      "time_metadata": {
+        "start_sec": 12.5,
+        "end_sec": 14.3,
+        "duration": 1.8,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 45,
+      "feature_vector": {
+        "wer_score": 0.75,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.4666338562965393,
+        "min_temporal_anomaly": 0.5544498562812805,
+        "max_blur_flicker": 39.66320441319311,
+        "blur_flicker_variance": 65.7936880807322,
+        "max_texture_flicker": 49.45064891071971,
+        "asymmetry_max": 175.16804844504514,
+        "mean_landmark_jitter": 0.010810013860464096,
+        "max_kinematic_flicker": 0.025376275181770325,
+        "max_rigid_violation": 0.013295337557792664,
+        "gaze_anomaly": 0.2297129784584645,
+        "iris_jitter_variance": 2.1044879515284354,
+        "vocal_jitter_relative": 0.02203902236356584,
+        "vocal_shimmer_relative": 0.16072717308998108
+      },
+      "anomaly": {
+        "reconstruction_error": 1.5106518268585205,
+        "normalized_anomaly_score": 0.3121728806290295,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "min_temporal_anomaly",
+        "mean_landmark_jitter",
+        "vocal_jitter_relative",
+        "max_texture_flicker",
+        "semantic_anomaly"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 0.011611848138272762,
+        "semantic_anomaly": 2.735210657119751,
+        "temporal_anomaly": 0.03250640258193016,
+        "min_temporal_anomaly": 5.342501163482666,
+        "max_blur_flicker": 0.34709611535072327,
+        "blur_flicker_variance": 0.049102939665317535,
+        "max_texture_flicker": 2.8431737422943115,
+        "asymmetry_max": 2.047261953353882,
+        "mean_landmark_jitter": 4.531226634979248,
+        "max_kinematic_flicker": 0.027380021288990974,
+        "max_rigid_violation": 0.39590582251548767,
+        "gaze_anomaly": 0.28377899527549744,
+        "iris_jitter_variance": 1.0173745155334473,
+        "vocal_jitter_relative": 2.9002685546875,
+        "vocal_shimmer_relative": 0.09537661075592041
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "i accept your nomination",
+        "vsr_text_lips": "except your name",
+        "wer_score": 0.75,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.5333661437034607,
+        "min_sync_score": 0.4455501437187195
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, dao động landmark trung bình, dao động vi mô tần số giọng nói, dao động kết cấu bề mặt, độ suy giảm nhất quán ngữ nghĩa audio-visual."
+    },
+    "chunk_0006": {
+      "time_metadata": {
+        "start_sec": 12.0,
+        "end_sec": 16.8,
+        "duration": 4.8,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 120,
+      "feature_vector": {
+        "wer_score": 0.142857,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.42425310611724854,
+        "min_temporal_anomaly": 0.5817542672157288,
+        "max_blur_flicker": 60.7448666449951,
+        "blur_flicker_variance": 113.5156164307124,
+        "max_texture_flicker": 292.89132131061365,
+        "asymmetry_max": 409.78211867334824,
+        "mean_landmark_jitter": 0.010845339857041836,
+        "max_kinematic_flicker": 0.05096352472901344,
+        "max_rigid_violation": 0.047574833035469055,
+        "gaze_anomaly": 0.524082998050915,
+        "iris_jitter_variance": 3.611968487188338,
+        "vocal_jitter_relative": 0.04576028148645559,
+        "vocal_shimmer_relative": 0.10273343324661255
+      },
+      "anomaly": {
+        "reconstruction_error": 3.1897900104522705,
+        "normalized_anomaly_score": 0.6591630966583045,
+        "threshold": 4.839151382446289,
+        "level": "medium"
+      },
+      "top_reconstruction_error_features": [
+        "max_rigid_violation",
+        "max_blur_flicker",
+        "wer_score",
+        "semantic_anomaly",
+        "blur_flicker_variance"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 7.544223785400391,
+        "semantic_anomaly": 6.728172302246094,
+        "temporal_anomaly": 0.8818957805633545,
+        "min_temporal_anomaly": 2.7019248008728027,
+        "max_blur_flicker": 9.20948314666748,
+        "blur_flicker_variance": 3.5148417949676514,
+        "max_texture_flicker": 0.29562172293663025,
+        "asymmetry_max": 2.114163875579834,
+        "mean_landmark_jitter": 0.0002938501420430839,
+        "max_kinematic_flicker": 0.2432231456041336,
+        "max_rigid_violation": 10.627640724182129,
+        "gaze_anomaly": 0.06464998424053192,
+        "iris_jitter_variance": 1.4718741178512573,
+        "vocal_jitter_relative": 0.13471558690071106,
+        "vocal_shimmer_relative": 2.3141305446624756
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "i accept your nomination to be president",
+        "vsr_text_lips": "accept your nomination to be president",
+        "wer_score": 0.142857,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.5757468938827515,
+        "min_sync_score": 0.41824573278427124
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: vi phạm chuyển động cứng của landmark, dao động độ mờ giữa các frame, độ lệch nội dung giữa ASR và VSR, độ suy giảm nhất quán ngữ nghĩa audio-visual, phương sai dao động độ mờ."
+    },
+    "chunk_0007": {
+      "time_metadata": {
+        "start_sec": 14.5,
+        "end_sec": 18.7,
+        "duration": 4.2,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 105,
+      "feature_vector": {
+        "wer_score": 0.0,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.3548257350921631,
+        "min_temporal_anomaly": 0.46225106716156006,
+        "max_blur_flicker": 57.38645955800891,
+        "blur_flicker_variance": 123.21819067630435,
+        "max_texture_flicker": 264.53082457612913,
+        "asymmetry_max": 380.6929346049262,
+        "mean_landmark_jitter": 0.010226313956081867,
+        "max_kinematic_flicker": 0.16450363397598267,
+        "max_rigid_violation": 0.03352661430835724,
+        "gaze_anomaly": 0.7183311013982066,
+        "iris_jitter_variance": 2.20539054143475,
+        "vocal_jitter_relative": 0.020578615838650817,
+        "vocal_shimmer_relative": 0.02649657242000103
+      },
+      "anomaly": {
+        "reconstruction_error": 7.362856864929199,
+        "normalized_anomaly_score": 1.0,
+        "threshold": 4.839151382446289,
+        "level": "high"
+      },
+      "top_reconstruction_error_features": [
+        "max_kinematic_flicker",
+        "min_temporal_anomaly",
+        "vocal_shimmer_relative",
+        "wer_score",
+        "max_blur_flicker"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 4.777535438537598,
+        "semantic_anomaly": 1.6034047603607178,
+        "temporal_anomaly": 2.7182655334472656,
+        "min_temporal_anomaly": 22.342498779296875,
+        "max_blur_flicker": 3.688554286956787,
+        "blur_flicker_variance": 1.4979133605957031,
+        "max_texture_flicker": 9.875914111034945e-05,
+        "asymmetry_max": 0.5061851739883423,
+        "mean_landmark_jitter": 1.223800778388977,
+        "max_kinematic_flicker": 51.90777587890625,
+        "max_rigid_violation": 2.694164514541626,
+        "gaze_anomaly": 0.49324414134025574,
+        "iris_jitter_variance": 1.0377955436706543,
+        "vocal_jitter_relative": 2.7373743057250977,
+        "vocal_shimmer_relative": 13.214237213134766
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "to be president of the united states",
+        "vsr_text_lips": "to be president of the united states",
+        "wer_score": 0.0,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.6451742649078369,
+        "min_sync_score": 0.5377489328384399
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động hình học khuôn mặt, điểm đồng bộ thời gian yếu nhất trong chunk, dao động vi mô biên độ giọng nói, độ lệch nội dung giữa ASR và VSR, dao động độ mờ giữa các frame."
+    },
+    "chunk_0008": {
+      "time_metadata": {
+        "start_sec": 16.0,
+        "end_sec": 19.0,
+        "duration": 3.0,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 75,
+      "feature_vector": {
+        "wer_score": 0.166667,
+        "semantic_anomaly": 1.079144,
+        "temporal_anomaly": 0.36222338676452637,
+        "min_temporal_anomaly": 0.453207790851593,
+        "max_blur_flicker": 54.6140223908576,
+        "blur_flicker_variance": 96.96635390679333,
+        "max_texture_flicker": 38.187172117106456,
+        "asymmetry_max": 145.52581097059382,
+        "mean_landmark_jitter": 0.009574024938046932,
+        "max_kinematic_flicker": 0.029089858755469322,
+        "max_rigid_violation": 0.021946191787719727,
+        "gaze_anomaly": 0.7449410308742119,
+        "iris_jitter_variance": 1.1969499647529938,
+        "vocal_jitter_relative": 0.02538241231053428,
+        "vocal_shimmer_relative": 0.029577672481536865
+      },
+      "anomaly": {
+        "reconstruction_error": 3.677220106124878,
+        "normalized_anomaly_score": 0.7598894548872759,
+        "threshold": 4.839151382446289,
+        "level": "medium"
+      },
+      "top_reconstruction_error_features": [
+        "min_temporal_anomaly",
+        "vocal_shimmer_relative",
+        "semantic_anomaly",
+        "max_texture_flicker",
+        "wer_score"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 2.176666021347046,
+        "semantic_anomaly": 4.197235584259033,
+        "temporal_anomaly": 0.9333393573760986,
+        "min_temporal_anomaly": 23.5269718170166,
+        "max_blur_flicker": 0.8551943898200989,
+        "blur_flicker_variance": 0.1930120587348938,
+        "max_texture_flicker": 2.7390856742858887,
+        "asymmetry_max": 2.103384494781494,
+        "mean_landmark_jitter": 0.902950644493103,
+        "max_kinematic_flicker": 0.013037153519690037,
+        "max_rigid_violation": 0.00781529862433672,
+        "gaze_anomaly": 0.3622145652770996,
+        "iris_jitter_variance": 0.7457691431045532,
+        "vocal_jitter_relative": 1.5543813705444336,
+        "vocal_shimmer_relative": 14.847238540649414
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "of the united states of america",
+        "vsr_text_lips": "it of the united states of america",
+        "wer_score": 0.166667,
+        "percentile_3rd_cosine": -0.079144,
+        "sync_score": 0.6377766132354736,
+        "min_sync_score": 0.546792209148407
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, dao động vi mô biên độ giọng nói, độ suy giảm nhất quán ngữ nghĩa audio-visual, dao động kết cấu bề mặt, độ lệch nội dung giữa ASR và VSR."
+    },
+    "chunk_0011": {
+      "time_metadata": {
+        "start_sec": 22.0,
+        "end_sec": 24.4,
+        "duration": 2.4,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 60,
+      "feature_vector": {
+        "wer_score": 0.333333,
+        "semantic_anomaly": 0.880906,
+        "temporal_anomaly": 0.48591935634613037,
+        "min_temporal_anomaly": 0.6391155123710632,
+        "max_blur_flicker": 45.905824525855934,
+        "blur_flicker_variance": 109.20112715060138,
+        "max_texture_flicker": 22.59313329268838,
+        "asymmetry_max": 117.7620197986334,
+        "mean_landmark_jitter": 0.00884243380278349,
+        "max_kinematic_flicker": 0.024482619017362595,
+        "max_rigid_violation": 0.01776738464832306,
+        "gaze_anomaly": 0.8400412304641284,
+        "iris_jitter_variance": 3.808032567998228,
+        "vocal_jitter_relative": 0.03878026628740559,
+        "vocal_shimmer_relative": 0.21289867162704468
+      },
+      "anomaly": {
+        "reconstruction_error": 2.4355900287628174,
+        "normalized_anomaly_score": 0.5033093276637843,
+        "threshold": 4.839151382446289,
+        "level": "medium"
+      },
+      "top_reconstruction_error_features": [
+        "iris_jitter_variance",
+        "max_texture_flicker",
+        "semantic_anomaly",
+        "asymmetry_max",
+        "wer_score"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 3.362119197845459,
+        "semantic_anomaly": 4.254974365234375,
+        "temporal_anomaly": 0.06317431479692459,
+        "min_temporal_anomaly": 0.007139315828680992,
+        "max_blur_flicker": 1.9625786542892456,
+        "blur_flicker_variance": 1.8722105026245117,
+        "max_texture_flicker": 5.564443111419678,
+        "asymmetry_max": 3.9214189052581787,
+        "mean_landmark_jitter": 0.37602880597114563,
+        "max_kinematic_flicker": 0.2159886211156845,
+        "max_rigid_violation": 0.1276160031557083,
+        "gaze_anomaly": 1.439907431602478,
+        "iris_jitter_variance": 10.72083854675293,
+        "vocal_jitter_relative": 0.9308457374572754,
+        "vocal_shimmer_relative": 1.7145675420761108
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "donald trump is an unserious man",
+        "vsr_text_lips": "trip is an unserious man",
+        "wer_score": 0.333333,
+        "percentile_3rd_cosine": 0.119094,
+        "sync_score": 0.5140806436538696,
+        "min_sync_score": 0.36088448762893677
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động bất thường vùng mống mắt, dao động kết cấu bề mặt, độ suy giảm nhất quán ngữ nghĩa audio-visual, bất đối xứng kết cấu vùng mặt, độ lệch nội dung giữa ASR và VSR."
+    },
+    "chunk_0013": {
+      "time_metadata": {
+        "start_sec": 26.5,
+        "end_sec": 30.7,
+        "duration": 4.2,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 105,
+      "feature_vector": {
+        "wer_score": 0.25,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.4670661687850952,
+        "min_temporal_anomaly": 0.6119670271873474,
+        "max_blur_flicker": 57.53451766327686,
+        "blur_flicker_variance": 136.28243514328108,
+        "max_texture_flicker": 104.49422462955091,
+        "asymmetry_max": 168.09200159907883,
+        "mean_landmark_jitter": 0.01797357015311718,
+        "max_kinematic_flicker": 0.1390809714794159,
+        "max_rigid_violation": 0.030773505568504333,
+        "gaze_anomaly": 0.9531278376327141,
+        "iris_jitter_variance": 3.183920623368147,
+        "vocal_jitter_relative": 0.043086139610892,
+        "vocal_shimmer_relative": 0.22413738071918488
+      },
+      "anomaly": {
+        "reconstruction_error": 5.668927192687988,
+        "normalized_anomaly_score": 1.0,
+        "threshold": 4.839151382446289,
+        "level": "high"
+      },
+      "top_reconstruction_error_features": [
+        "max_kinematic_flicker",
+        "mean_landmark_jitter",
+        "iris_jitter_variance",
+        "max_blur_flicker",
+        "max_rigid_violation"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 3.064988851547241,
+        "semantic_anomaly": 2.6306345462799072,
+        "temporal_anomaly": 0.28120413422584534,
+        "min_temporal_anomaly": 1.6684085130691528,
+        "max_blur_flicker": 6.492629051208496,
+        "blur_flicker_variance": 2.976858615875244,
+        "max_texture_flicker": 2.982860565185547,
+        "asymmetry_max": 0.2013758271932602,
+        "mean_landmark_jitter": 14.321419715881348,
+        "max_kinematic_flicker": 31.08811378479004,
+        "max_rigid_violation": 4.1147050857543945,
+        "gaze_anomaly": 1.8157175779342651,
+        "iris_jitter_variance": 10.452460289001465,
+        "vocal_jitter_relative": 0.0010268748737871647,
+        "vocal_shimmer_relative": 2.9414937496185303
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "putting donald trump back in the white house",
+        "vsr_text_lips": "putting donald trump back in the white house on his",
+        "wer_score": 0.25,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.5329338312149048,
+        "min_sync_score": 0.3880329728126526
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động hình học khuôn mặt, dao động landmark trung bình, dao động bất thường vùng mống mắt, dao động độ mờ giữa các frame, vi phạm chuyển động cứng của landmark."
+    },
+    "chunk_0014": {
+      "time_metadata": {
+        "start_sec": 28.0,
+        "end_sec": 31.6,
+        "duration": 3.6,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 90,
+      "feature_vector": {
+        "wer_score": 0.0,
+        "semantic_anomaly": 1.048838,
+        "temporal_anomaly": 0.4855143427848816,
+        "min_temporal_anomaly": 0.6143003404140472,
+        "max_blur_flicker": 55.69757123335836,
+        "blur_flicker_variance": 121.88431107014361,
+        "max_texture_flicker": 82.28782549482301,
+        "asymmetry_max": 227.4584906064158,
+        "mean_landmark_jitter": 0.018541933968663216,
+        "max_kinematic_flicker": 0.055143583565950394,
+        "max_rigid_violation": 0.032066404819488525,
+        "gaze_anomaly": 0.5646512620630599,
+        "iris_jitter_variance": 2.907037370138248,
+        "vocal_jitter_relative": 0.057931628865026015,
+        "vocal_shimmer_relative": 0.23201429843902588
+      },
+      "anomaly": {
+        "reconstruction_error": 4.009376525878906,
+        "normalized_anomaly_score": 0.8285288491742238,
+        "threshold": 4.839151382446289,
+        "level": "medium"
+      },
+      "top_reconstruction_error_features": [
+        "mean_landmark_jitter",
+        "iris_jitter_variance",
+        "wer_score",
+        "semantic_anomaly",
+        "max_blur_flicker"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 6.234007358551025,
+        "semantic_anomaly": 5.38972806930542,
+        "temporal_anomaly": 0.0022524590604007244,
+        "min_temporal_anomaly": 1.3011434078216553,
+        "max_blur_flicker": 4.282809257507324,
+        "blur_flicker_variance": 1.8320136070251465,
+        "max_texture_flicker": 2.9180171489715576,
+        "asymmetry_max": 0.08786268532276154,
+        "mean_landmark_jitter": 26.73993682861328,
+        "max_kinematic_flicker": 0.4736812710762024,
+        "max_rigid_violation": 0.10049060732126236,
+        "gaze_anomaly": 0.08680753409862518,
+        "iris_jitter_variance": 6.58583402633667,
+        "vocal_jitter_relative": 1.0705952644348145,
+        "vocal_shimmer_relative": 3.035463571548462
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "back in the white house are extremely serious",
+        "vsr_text_lips": "back in the white house are extremely serious",
+        "wer_score": 0.0,
+        "percentile_3rd_cosine": -0.048838,
+        "sync_score": 0.5144856572151184,
+        "min_sync_score": 0.38569965958595276
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động landmark trung bình, dao động bất thường vùng mống mắt, độ lệch nội dung giữa ASR và VSR, độ suy giảm nhất quán ngữ nghĩa audio-visual, dao động độ mờ giữa các frame."
+    },
+    "chunk_0019": {
+      "time_metadata": {
+        "start_sec": 39.5,
+        "end_sec": 42.5,
+        "duration": 3.0,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 75,
+      "feature_vector": {
+        "wer_score": 0.777778,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.5252740681171417,
+        "min_temporal_anomaly": 0.6016177237033844,
+        "max_blur_flicker": 41.38991882096896,
+        "blur_flicker_variance": 95.05076041409714,
+        "max_texture_flicker": 39.72621799865216,
+        "asymmetry_max": 176.86416255341558,
+        "mean_landmark_jitter": 0.011010642163455486,
+        "max_kinematic_flicker": 0.056858129799366,
+        "max_rigid_violation": 0.020098447799682617,
+        "gaze_anomaly": 0.03503337277938601,
+        "iris_jitter_variance": 0.6371088141423572,
+        "vocal_jitter_relative": 0.0181562565927747,
+        "vocal_shimmer_relative": 0.18125395476818085
+      },
+      "anomaly": {
+        "reconstruction_error": 1.2945687770843506,
+        "normalized_anomaly_score": 0.26751979319763547,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "max_texture_flicker",
+        "min_temporal_anomaly",
+        "mean_landmark_jitter",
+        "asymmetry_max",
+        "max_kinematic_flicker"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 1.0701273679733276,
+        "semantic_anomaly": 0.003104965668171644,
+        "temporal_anomaly": 0.3624565303325653,
+        "min_temporal_anomaly": 3.342241048812866,
+        "max_blur_flicker": 0.0002783417876344174,
+        "blur_flicker_variance": 0.037933651357889175,
+        "max_texture_flicker": 3.86651349067688,
+        "asymmetry_max": 2.182199478149414,
+        "mean_landmark_jitter": 3.228609800338745,
+        "max_kinematic_flicker": 1.9153242111206055,
+        "max_rigid_violation": 0.8027842044830322,
+        "gaze_anomaly": 1.3525758981704712,
+        "iris_jitter_variance": 0.02111268788576126,
+        "vocal_jitter_relative": 1.1858090162277222,
+        "vocal_shimmer_relative": 0.047462478280067444
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "president biden and i are working to end this",
+        "vsr_text_lips": "i sit back and i want to take the",
+        "wer_score": 0.777778,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.4747259318828583,
+        "min_sync_score": 0.3983822762966156
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động kết cấu bề mặt, điểm đồng bộ thời gian yếu nhất trong chunk, dao động landmark trung bình, bất đối xứng kết cấu vùng mặt, dao động hình học khuôn mặt."
+    },
+    "chunk_0020": {
+      "time_metadata": {
+        "start_sec": 40.0,
+        "end_sec": 44.8,
+        "duration": 4.8,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 120,
+      "feature_vector": {
+        "wer_score": 0.181818,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.46851682662963867,
+        "min_temporal_anomaly": 0.585024356842041,
+        "max_blur_flicker": 38.481351835236666,
+        "blur_flicker_variance": 85.55438149945493,
+        "max_texture_flicker": 40.974853562801044,
+        "asymmetry_max": 167.28559667177308,
+        "mean_landmark_jitter": 0.008883585222065449,
+        "max_kinematic_flicker": 0.047667428851127625,
+        "max_rigid_violation": 0.015978485345840454,
+        "gaze_anomaly": 0.7443523829570289,
+        "iris_jitter_variance": 1.9119819774380173,
+        "vocal_jitter_relative": 0.01819987397657291,
+        "vocal_shimmer_relative": 0.21183407306671143
+      },
+      "anomaly": {
+        "reconstruction_error": 1.5395740270614624,
+        "normalized_anomaly_score": 0.3181495897495272,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "vocal_jitter_relative",
+        "max_texture_flicker",
+        "asymmetry_max",
+        "min_temporal_anomaly",
+        "wer_score"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 2.167363405227661,
+        "semantic_anomaly": 2.145923614501953,
+        "temporal_anomaly": 0.10224521905183792,
+        "min_temporal_anomaly": 2.7735798358917236,
+        "max_blur_flicker": 0.06634750962257385,
+        "blur_flicker_variance": 0.05147813633084297,
+        "max_texture_flicker": 2.9045979976654053,
+        "asymmetry_max": 2.7863919734954834,
+        "mean_landmark_jitter": 0.8534927368164062,
+        "max_kinematic_flicker": 1.925134539604187,
+        "max_rigid_violation": 0.036676809191703796,
+        "gaze_anomaly": 0.5422971844673157,
+        "iris_jitter_variance": 1.7513245344161987,
+        "vocal_jitter_relative": 4.172713279724121,
+        "vocal_shimmer_relative": 0.8140461444854736
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "biden and i are working to end this war such that",
+        "vsr_text_lips": "and i are working to end this war such that it",
+        "wer_score": 0.181818,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.5314831733703613,
+        "min_sync_score": 0.414975643157959
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động vi mô tần số giọng nói, dao động kết cấu bề mặt, bất đối xứng kết cấu vùng mặt, điểm đồng bộ thời gian yếu nhất trong chunk, độ lệch nội dung giữa ASR và VSR."
+    },
+    "chunk_0021": {
+      "time_metadata": {
+        "start_sec": 42.0,
+        "end_sec": 46.8,
+        "duration": 4.8,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 120,
+      "feature_vector": {
+        "wer_score": 0.142857,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.4559832811355591,
+        "min_temporal_anomaly": 0.577543318271637,
+        "max_blur_flicker": 49.1077130364683,
+        "blur_flicker_variance": 82.42187877971158,
+        "max_texture_flicker": 41.23111408282162,
+        "asymmetry_max": 172.1706584633316,
+        "mean_landmark_jitter": 0.007391712628304958,
+        "max_kinematic_flicker": 0.02691907063126564,
+        "max_rigid_violation": 0.021300897002220154,
+        "gaze_anomaly": 0.3505053202464551,
+        "iris_jitter_variance": 2.284714957514845,
+        "vocal_jitter_relative": 0.02027284526265199,
+        "vocal_shimmer_relative": 0.20823480188846588
+      },
+      "anomaly": {
+        "reconstruction_error": 1.6767808198928833,
+        "normalized_anomaly_score": 0.34650307200038244,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "vocal_jitter_relative",
+        "semantic_anomaly",
+        "max_texture_flicker",
+        "asymmetry_max",
+        "wer_score"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 3.0199077129364014,
+        "semantic_anomaly": 3.458923816680908,
+        "temporal_anomaly": 0.029078161343932152,
+        "min_temporal_anomaly": 2.8556673526763916,
+        "max_blur_flicker": 0.42357105016708374,
+        "blur_flicker_variance": 0.11710072308778763,
+        "max_texture_flicker": 3.2215421199798584,
+        "asymmetry_max": 3.1077113151550293,
+        "mean_landmark_jitter": 9.362919809063897e-05,
+        "max_kinematic_flicker": 1.7541849956614897e-05,
+        "max_rigid_violation": 1.1530719995498657,
+        "gaze_anomaly": 0.050292279571294785,
+        "iris_jitter_variance": 2.7906525135040283,
+        "vocal_jitter_relative": 4.211268901824951,
+        "vocal_shimmer_relative": 0.7128116488456726
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "war such that israel is secure the",
+        "vsr_text_lips": "war such that israel can secure the",
+        "wer_score": 0.142857,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.5440167188644409,
+        "min_sync_score": 0.42245668172836304
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động vi mô tần số giọng nói, độ suy giảm nhất quán ngữ nghĩa audio-visual, dao động kết cấu bề mặt, bất đối xứng kết cấu vùng mặt, độ lệch nội dung giữa ASR và VSR."
+    },
+    "chunk_0023": {
+      "time_metadata": {
+        "start_sec": 48.0,
+        "end_sec": 50.4,
+        "duration": 2.4,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 60,
+      "feature_vector": {
+        "wer_score": 1.0,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.5140692293643951,
+        "min_temporal_anomaly": 0.5747382342815399,
+        "max_blur_flicker": 48.61476629760156,
+        "blur_flicker_variance": 94.52038441072274,
+        "max_texture_flicker": 55.07245914854954,
+        "asymmetry_max": 176.56779192214492,
+        "mean_landmark_jitter": 0.006484030745923519,
+        "max_kinematic_flicker": 0.017914166674017906,
+        "max_rigid_violation": 0.01524043083190918,
+        "gaze_anomaly": 0.716842076537114,
+        "iris_jitter_variance": 0.3666696660659344,
+        "vocal_jitter_relative": 0.01592541073281914,
+        "vocal_shimmer_relative": 0.20252041518688202
+      },
+      "anomaly": {
+        "reconstruction_error": 0.9820427298545837,
+        "normalized_anomaly_score": 0.20293697225854057,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "min_temporal_anomaly",
+        "wer_score",
+        "vocal_jitter_relative",
+        "temporal_anomaly",
+        "max_texture_flicker"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 2.360433578491211,
+        "semantic_anomaly": 0.0034100732300430536,
+        "temporal_anomaly": 0.7067112922668457,
+        "min_temporal_anomaly": 7.587988376617432,
+        "max_blur_flicker": 0.152095764875412,
+        "blur_flicker_variance": 0.2721628248691559,
+        "max_texture_flicker": 0.6976155042648315,
+        "asymmetry_max": 0.6788898706436157,
+        "mean_landmark_jitter": 0.14259813725948334,
+        "max_kinematic_flicker": 0.0010013645514845848,
+        "max_rigid_violation": 0.2640317976474762,
+        "gaze_anomaly": 0.022998657077550888,
+        "iris_jitter_variance": 0.030329817906022072,
+        "vocal_jitter_relative": 1.6704767942428589,
+        "vocal_shimmer_relative": 0.139896959066391
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "suffering in gaza ends",
+        "vsr_text_lips": "i freely cut hands",
+        "wer_score": 1.0,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.48593077063560486,
+        "min_sync_score": 0.4252617657184601
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, độ lệch nội dung giữa ASR và VSR, dao động vi mô tần số giọng nói, độ suy giảm đồng bộ thời gian audio-visual, dao động kết cấu bề mặt."
+    },
+    "chunk_0024": {
+      "time_metadata": {
+        "start_sec": 48.0,
+        "end_sec": 52.8,
+        "duration": 4.8,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 120,
+      "feature_vector": {
+        "wer_score": 0.5,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.5194497406482697,
+        "min_temporal_anomaly": 0.6399815082550049,
+        "max_blur_flicker": 51.12238286236209,
+        "blur_flicker_variance": 92.74943904764042,
+        "max_texture_flicker": 49.80698185270262,
+        "asymmetry_max": 180.97657053604308,
+        "mean_landmark_jitter": 0.007596428506076336,
+        "max_kinematic_flicker": 0.024266421794891357,
+        "max_rigid_violation": 0.019173532724380493,
+        "gaze_anomaly": 0.6301318941738665,
+        "iris_jitter_variance": 0.2923633617693635,
+        "vocal_jitter_relative": 0.02233030475767203,
+        "vocal_shimmer_relative": 0.19316725432872772
+      },
+      "anomaly": {
+        "reconstruction_error": 0.41056522727012634,
+        "normalized_anomaly_score": 0.08484240207060695,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "max_texture_flicker",
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "max_rigid_violation",
+        "mean_landmark_jitter"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 0.022233905270695686,
+        "semantic_anomaly": 0.05809800699353218,
+        "temporal_anomaly": 0.28810858726501465,
+        "min_temporal_anomaly": 1.5154445171356201,
+        "max_blur_flicker": 0.07649925351142883,
+        "blur_flicker_variance": 0.19880425930023193,
+        "max_texture_flicker": 1.6861188411712646,
+        "asymmetry_max": 1.0841844081878662,
+        "mean_landmark_jitter": 0.33225369453430176,
+        "max_kinematic_flicker": 2.073996483886731e-06,
+        "max_rigid_violation": 0.39837464690208435,
+        "gaze_anomaly": 0.006081614177674055,
+        "iris_jitter_variance": 0.005429078359156847,
+        "vocal_jitter_relative": 0.28816157579421997,
+        "vocal_shimmer_relative": 0.19868360459804535
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "suffering in gaza ends and the palestinian people",
+        "vsr_text_lips": "the free guzzling hands and the palestinian people",
+        "wer_score": 0.5,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.48055025935173035,
+        "min_sync_score": 0.3600184917449951
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: dao động kết cấu bề mặt, điểm đồng bộ thời gian yếu nhất trong chunk, bất đối xứng kết cấu vùng mặt, vi phạm chuyển động cứng của landmark, dao động landmark trung bình."
+    },
+    "chunk_0025": {
+      "time_metadata": {
+        "start_sec": 50.5,
+        "end_sec": 54.7,
+        "duration": 4.2,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 105,
+      "feature_vector": {
+        "wer_score": 0.166667,
+        "semantic_anomaly": null,
+        "temporal_anomaly": 0.4956246614456177,
+        "min_temporal_anomaly": 0.5815783441066742,
+        "max_blur_flicker": 44.77655078786644,
+        "blur_flicker_variance": 96.37400711852742,
+        "max_texture_flicker": 54.745217330917086,
+        "asymmetry_max": 195.00149072602795,
+        "mean_landmark_jitter": 0.008602439425885677,
+        "max_kinematic_flicker": 0.023453671485185623,
+        "max_rigid_violation": 0.019331350922584534,
+        "gaze_anomaly": 0.14181128383232688,
+        "iris_jitter_variance": 2.8454864509620434,
+        "vocal_jitter_relative": 0.019605756758213452,
+        "vocal_shimmer_relative": 0.15080943703651428
+      },
+      "anomaly": {
+        "reconstruction_error": 1.917476773262024,
+        "normalized_anomaly_score": 0.3962423618771571,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "semantic_anomaly",
+        "vocal_jitter_relative",
+        "iris_jitter_variance",
+        "wer_score",
+        "max_texture_flicker"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 3.7164878845214844,
+        "semantic_anomaly": 4.993518352508545,
+        "temporal_anomaly": 0.21681351959705353,
+        "min_temporal_anomaly": 2.231198787689209,
+        "max_blur_flicker": 0.8755549192428589,
+        "blur_flicker_variance": 0.6004442572593689,
+        "max_texture_flicker": 3.274563789367676,
+        "asymmetry_max": 2.024047374725342,
+        "mean_landmark_jitter": 0.300457239151001,
+        "max_kinematic_flicker": 0.14742739498615265,
+        "max_rigid_violation": 0.33049237728118896,
+        "gaze_anomaly": 0.4504827558994293,
+        "iris_jitter_variance": 4.488719940185547,
+        "vocal_jitter_relative": 4.827332973480225,
+        "vocal_shimmer_relative": 0.28461140394210815
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "palestinian people can realize their right",
+        "vsr_text_lips": "palestinian people can realise their right",
+        "wer_score": 0.166667,
+        "percentile_3rd_cosine": null,
+        "sync_score": 0.5043753385543823,
+        "min_sync_score": 0.4184216558933258
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: độ suy giảm nhất quán ngữ nghĩa audio-visual, dao động vi mô tần số giọng nói, dao động bất thường vùng mống mắt, độ lệch nội dung giữa ASR và VSR, dao động kết cấu bề mặt."
+    },
+    "chunk_0026": {
+      "time_metadata": {
+        "start_sec": 52.0,
+        "end_sec": 55.0,
+        "duration": 3.0,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 75,
+      "feature_vector": {
+        "wer_score": 0.333333,
+        "semantic_anomaly": 1.029631,
+        "temporal_anomaly": 0.49159908294677734,
+        "min_temporal_anomaly": 0.5670479536056519,
+        "max_blur_flicker": 50.557233558840764,
+        "blur_flicker_variance": 153.4800445385814,
+        "max_texture_flicker": 37.943689059444196,
+        "asymmetry_max": 158.7680519195904,
+        "mean_landmark_jitter": 0.010261193849146366,
+        "max_kinematic_flicker": 0.038208384066820145,
+        "max_rigid_violation": 0.019469350576400757,
+        "gaze_anomaly": 0.25756756849006013,
+        "iris_jitter_variance": 3.38593222926318,
+        "vocal_jitter_relative": 0.022282361678959417,
+        "vocal_shimmer_relative": 0.15189574658870697
+      },
+      "anomaly": {
+        "reconstruction_error": 2.810169219970703,
+        "normalized_anomaly_score": 0.5807152944551044,
+        "threshold": 4.839151382446289,
+        "level": "medium"
+      },
+      "top_reconstruction_error_features": [
+        "semantic_anomaly",
+        "iris_jitter_variance",
+        "vocal_jitter_relative",
+        "max_texture_flicker",
+        "min_temporal_anomaly"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 2.699089527130127,
+        "semantic_anomaly": 9.144993782043457,
+        "temporal_anomaly": 0.10298162698745728,
+        "min_temporal_anomaly": 3.080770969390869,
+        "max_blur_flicker": 2.077799081802368,
+        "blur_flicker_variance": 2.631484031677246,
+        "max_texture_flicker": 4.388832092285156,
+        "asymmetry_max": 2.4311435222625732,
+        "mean_landmark_jitter": 1.9104864597320557,
+        "max_kinematic_flicker": 0.17670731246471405,
+        "max_rigid_violation": 0.08085063844919205,
+        "gaze_anomaly": 0.12547247111797333,
+        "iris_jitter_variance": 8.609357833862305,
+        "vocal_jitter_relative": 4.519755840301514,
+        "vocal_shimmer_relative": 0.17281457781791687
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "can realize their right to dignity",
+        "vsr_text_lips": "can realise their right to",
+        "wer_score": 0.333333,
+        "percentile_3rd_cosine": -0.029631,
+        "sync_score": 0.5084009170532227,
+        "min_sync_score": 0.43295204639434814
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: độ suy giảm nhất quán ngữ nghĩa audio-visual, dao động bất thường vùng mống mắt, dao động vi mô tần số giọng nói, dao động kết cấu bề mặt, điểm đồng bộ thời gian yếu nhất trong chunk."
+    }
+  }
+}

@@ -6,3 +6,4 @@ DFRAG_venv/
 /pretrained_model
 /.cache
 /blobs
+/src/module_3_autoencoder/module3_models

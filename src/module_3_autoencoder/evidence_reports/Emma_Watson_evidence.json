@@ -1,0 +1,98 @@
+{
+  "video_metadata": {
+    "video_id": "Emma_Watson",
+    "source_report": "final_reports/Emma_Watson_report.json",
+    "module": "module_3_autoencoder_anomaly_scoring",
+    "status": "analyzed"
+  },
+  "model_metadata": {
+    "model_type": "one_class_mlp_autoencoder",
+    "model_dir": "src/module_3_autoencoder/module3_models",
+    "feature_names": [
+      "wer_score",
+      "semantic_anomaly",
+      "temporal_anomaly",
+      "min_temporal_anomaly",
+      "max_blur_flicker",
+      "blur_flicker_variance",
+      "max_texture_flicker",
+      "asymmetry_max",
+      "mean_landmark_jitter",
+      "max_kinematic_flicker",
+      "max_rigid_violation",
+      "gaze_anomaly",
+      "iris_jitter_variance",
+      "vocal_jitter_relative",
+      "vocal_shimmer_relative"
+    ],
+    "threshold_percentile": 95.0,
+    "threshold": 4.839151382446289
+  },
+  "chunks": {
+    "chunk_0007": {
+      "time_metadata": {
+        "start_sec": 14.5,
+        "end_sec": 17.5,
+        "duration": 3.0,
+        "source": "module_2.1_refined_by_frames"
+      },
+      "frames_analyzed": 75,
+      "feature_vector": {
+        "wer_score": 0.166667,
+        "semantic_anomaly": 0.947536,
+        "temporal_anomaly": 0.4896687865257263,
+        "min_temporal_anomaly": 0.6008833646774292,
+        "max_blur_flicker": 26.136543985563932,
+        "blur_flicker_variance": 25.26801821120522,
+        "max_texture_flicker": 154.0633205219707,
+        "asymmetry_max": 418.82672072621415,
+        "mean_landmark_jitter": 0.006151888985186815,
+        "max_kinematic_flicker": 0.01779935695230961,
+        "max_rigid_violation": 0.0138634592294693,
+        "gaze_anomaly": 0.7701567565691806,
+        "iris_jitter_variance": 1.8194324675918536,
+        "vocal_jitter_relative": 0.05623217943624912,
+        "vocal_shimmer_relative": 0.23159824311733246
+      },
+      "anomaly": {
+        "reconstruction_error": 0.7131224274635315,
+        "normalized_anomaly_score": 0.14736518267442303,
+        "threshold": 4.839151382446289,
+        "level": "low"
+      },
+      "top_reconstruction_error_features": [
+        "wer_score",
+        "semantic_anomaly",
+        "vocal_shimmer_relative",
+        "min_temporal_anomaly",
+        "iris_jitter_variance"
+      ],
+      "per_feature_reconstruction_error": {
+        "wer_score": 2.2975997924804688,
+        "semantic_anomaly": 2.165503978729248,
+        "temporal_anomaly": 0.6850095987319946,
+        "min_temporal_anomaly": 1.3848907947540283,
+        "max_blur_flicker": 0.14561761915683746,
+        "blur_flicker_variance": 0.21206079423427582,
+        "max_texture_flicker": 0.1255888193845749,
+        "asymmetry_max": 0.010370953939855099,
+        "mean_landmark_jitter": 0.13495388627052307,
+        "max_kinematic_flicker": 0.11554247885942459,
+        "max_rigid_violation": 0.0005080167902633548,
+        "gaze_anomaly": 0.5972942113876343,
+        "iris_jitter_variance": 0.6930744647979736,
+        "vocal_jitter_relative": 0.5571116209030151,
+        "vocal_shimmer_relative": 1.5717092752456665
+      },
+      "raw_text_evidence": {
+        "asr_text_audio": "there is suddenly this bloody influx",
+        "vsr_text_lips": "there is suddenly this bloody",
+        "wer_score": 0.166667,
+        "percentile_3rd_cosine": 0.052464,
+        "sync_score": 0.5103312134742737,
+        "min_sync_score": 0.3991166353225708
+      },
+      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: độ lệch nội dung giữa ASR và VSR, độ suy giảm nhất quán ngữ nghĩa audio-visual, dao động vi mô biên độ giọng nói, điểm đồng bộ thời gian yếu nhất trong chunk, dao động bất thường vùng mống mắt."
+    }
+  }
+}
