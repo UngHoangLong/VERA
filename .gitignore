@@ -9,3 +9,4 @@ DFRAG_venv/
 /ForgeryNet
 /paper
 .DS_Store
+/src/module_3_autoencoder/module3_models
