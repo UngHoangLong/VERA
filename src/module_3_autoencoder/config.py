@@ -29,6 +29,9 @@ FEATURE_SPECS = [
 
 FEATURE_NAMES = [spec["name"] for spec in FEATURE_SPECS]
 FEATURE_GROUPS = {spec["name"]: spec["group"] for spec in FEATURE_SPECS}
+
+VISUAL_FEATURE_NAMES = [spec["name"] for spec in FEATURE_SPECS if spec["group"] == "visual_spatial"]
+AUDIO_FEATURE_NAMES = [spec["name"] for spec in FEATURE_SPECS if spec["group"] != "visual_spatial"]
 FEATURE_INTERPRETATIONS = {
     "wer_score": "độ lệch nội dung giữa ASR và VSR",
     "semantic_anomaly": "độ suy giảm nhất quán ngữ nghĩa audio-visual",
