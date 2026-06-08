@@ -2,17 +2,12 @@
   "video_metadata": {
     "video_id": "Donald_Trump",
     "source_report": "final_reports/Donald_Trump_report.json",
-    "module": "module_3_autoencoder_anomaly_scoring",
+    "module": "module_3_mvae_poe",
     "status": "analyzed"
   },
   "model_metadata": {
-    "model_type": "one_class_mlp_autoencoder",
-    "model_dir": "src/module_3_autoencoder/module3_models",
-    "feature_names": [
-      "wer_score",
-      "semantic_anomaly",
-      "temporal_anomaly",
-      "min_temporal_anomaly",
+    "model_type": "mvae_poe",
+    "visual_feature_names": [
       "max_blur_flicker",
       "blur_flicker_variance",
       "max_texture_flicker",
@@ -21,12 +16,19 @@
       "max_kinematic_flicker",
       "max_rigid_violation",
       "gaze_anomaly",
-      "iris_jitter_variance",
+      "iris_jitter_variance"
+    ],
+    "audio_feature_names": [
+      "wer_score",
+      "semantic_anomaly",
+      "temporal_anomaly",
+      "min_temporal_anomaly",
       "vocal_jitter_relative",
       "vocal_shimmer_relative"
     ],
     "threshold_percentile": 95.0,
-    "threshold": 4.839151382446289
+    "threshold": 20.19012451171875,
+    "beta": 1.0
   },
   "chunks": {
     "chunk_0000": {
@@ -37,52 +39,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 40,
-      "feature_vector": {
-        "wer_score": 0.0,
-        "semantic_anomaly": 0.87462,
-        "temporal_anomaly": 0.3114469051361084,
-        "min_temporal_anomaly": 0.48672211170196533,
-        "max_blur_flicker": 1.3866721894509464,
-        "blur_flicker_variance": 0.13405544219684398,
-        "max_texture_flicker": 5.686766764213999,
-        "asymmetry_max": 24.416730265235817,
-        "mean_landmark_jitter": 0.005181257613003254,
-        "max_kinematic_flicker": 0.01491566188633442,
-        "max_rigid_violation": 0.016402989625930786,
-        "gaze_anomaly": 0.1907442819658708,
-        "iris_jitter_variance": 0.7124346147995106,
-        "vocal_jitter_relative": 0.05262029981062823,
-        "vocal_shimmer_relative": 0.1611376404762268
+      "features": {
+        "visual": {
+          "max_blur_flicker": 1.3866721894509464,
+          "blur_flicker_variance": 0.13405544219684398,
+          "max_texture_flicker": 5.686766764213999,
+          "asymmetry_max": 24.416730265235817,
+          "mean_landmark_jitter": 0.005181257613003254,
+          "max_kinematic_flicker": 0.01491566188633442,
+          "max_rigid_violation": 0.016402989625930786,
+          "gaze_anomaly": 0.1907442819658708,
+          "iris_jitter_variance": 0.7124346147995106
+        },
+        "audio_visual": {
+          "wer_score": 0.0,
+          "semantic_anomaly": 0.87462,
+          "temporal_anomaly": 0.3114469051361084,
+          "min_temporal_anomaly": 0.48672211170196533,
+          "vocal_jitter_relative": 0.05262029981062823,
+          "vocal_shimmer_relative": 0.1611376404762268
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 2.0572004318237305,
-        "normalized_anomaly_score": 0.42511594890080684,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 1.4474788068069353,
+        "audio_reconstruction_score": 4.207060831133276,
+        "kl_divergence": 1.6970727443695068,
+        "joint_anomaly_score": 7.351612382309718,
+        "normalized_anomaly_score": 0.3641192196730799,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "wer_score",
+        "iris_jitter_variance",
+        "max_blur_flicker"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
-        "wer_score",
         "asymmetry_max",
-        "gaze_anomaly",
-        "vocal_jitter_relative"
+        "wer_score",
+        "iris_jitter_variance",
+        "max_blur_flicker"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 4.684837341308594,
-        "semantic_anomaly": 0.03204181790351868,
-        "temporal_anomaly": 0.3829769492149353,
-        "min_temporal_anomaly": 17.31106185913086,
-        "max_blur_flicker": 0.6222478747367859,
-        "blur_flicker_variance": 0.13790152966976166,
-        "max_texture_flicker": 0.767477810382843,
-        "asymmetry_max": 3.1475486755371094,
-        "mean_landmark_jitter": 0.02978631667792797,
-        "max_kinematic_flicker": 0.05748917907476425,
-        "max_rigid_violation": 0.24479448795318604,
-        "gaze_anomaly": 2.315749406814575,
-        "iris_jitter_variance": 0.06012124568223953,
-        "vocal_jitter_relative": 0.7977994680404663,
-        "vocal_shimmer_relative": 0.2661696672439575
+        "max_blur_flicker": 1.5281517505645752,
+        "blur_flicker_variance": 0.8578959703445435,
+        "max_texture_flicker": 1.4541174173355103,
+        "asymmetry_max": 5.620095729827881,
+        "mean_landmark_jitter": 0.10753367096185684,
+        "max_kinematic_flicker": 0.12912428379058838,
+        "max_rigid_violation": 0.22695766389369965,
+        "gaze_anomaly": 1.2232434749603271,
+        "iris_jitter_variance": 1.880189299583435,
+        "wer_score": 5.214950084686279,
+        "semantic_anomaly": 0.008943571709096432,
+        "temporal_anomaly": 0.8333208560943604,
+        "min_temporal_anomaly": 18.294025421142578,
+        "vocal_jitter_relative": 0.43608129024505615,
+        "vocal_shimmer_relative": 0.455043762922287
       },
       "raw_text_evidence": {
         "asr_text_audio": "yes i am",
@@ -92,7 +114,7 @@
         "sync_score": 0.6885530948638916,
         "min_sync_score": 0.5132778882980347
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, độ lệch nội dung giữa ASR và VSR, bất đối xứng kết cấu vùng mặt, suy giảm nhất quán giữa hướng nhìn và tư thế đầu, dao động vi mô tần số giọng nói."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, facial region texture asymmetry, content discrepancy between ASR and VSR, abnormal iris-region jitter, blur fluctuation between frames."
     },
     "chunk_0001": {
       "time_metadata": {
@@ -102,52 +124,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 60,
-      "feature_vector": {
-        "wer_score": 0.0,
-        "semantic_anomaly": 0.814429,
-        "temporal_anomaly": 0.3831295371055603,
-        "min_temporal_anomaly": 0.5311434864997864,
-        "max_blur_flicker": 1.4238329793642333,
-        "blur_flicker_variance": 0.10007996201138046,
-        "max_texture_flicker": 5.851573802721894,
-        "asymmetry_max": 24.32669085261032,
-        "mean_landmark_jitter": 0.0050050136633217335,
-        "max_kinematic_flicker": 0.016569627448916435,
-        "max_rigid_violation": 0.019135117530822754,
-        "gaze_anomaly": 0.18741462673018816,
-        "iris_jitter_variance": 0.7061966756240537,
-        "vocal_jitter_relative": 0.03865922673420912,
-        "vocal_shimmer_relative": 0.16815626621246338
+      "features": {
+        "visual": {
+          "max_blur_flicker": 1.4238329793642333,
+          "blur_flicker_variance": 0.10007996201138046,
+          "max_texture_flicker": 5.851573802721894,
+          "asymmetry_max": 24.32669085261032,
+          "mean_landmark_jitter": 0.0050050136633217335,
+          "max_kinematic_flicker": 0.016569627448916435,
+          "max_rigid_violation": 0.019135117530822754,
+          "gaze_anomaly": 0.18741462673018816,
+          "iris_jitter_variance": 0.7061966756240537
+        },
+        "audio_visual": {
+          "wer_score": 0.0,
+          "semantic_anomaly": 0.814429,
+          "temporal_anomaly": 0.3831295371055603,
+          "min_temporal_anomaly": 0.5311434864997864,
+          "vocal_jitter_relative": 0.03865922673420912,
+          "vocal_shimmer_relative": 0.16815626621246338
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 1.5453791618347168,
-        "normalized_anomaly_score": 0.31934920809465916,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 1.1487440980143018,
+        "audio_reconstruction_score": 2.568191401039561,
+        "kl_divergence": 1.6375455856323242,
+        "joint_anomaly_score": 5.354481084686187,
+        "normalized_anomaly_score": 0.26520297492856343,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "wer_score",
+        "max_texture_flicker",
+        "gaze_anomaly"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
-        "wer_score",
         "asymmetry_max",
-        "gaze_anomaly",
-        "max_rigid_violation"
+        "wer_score",
+        "max_texture_flicker",
+        "gaze_anomaly"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 4.745697021484375,
-        "semantic_anomaly": 0.15062172710895538,
-        "temporal_anomaly": 0.06328202784061432,
-        "min_temporal_anomaly": 9.939414978027344,
-        "max_blur_flicker": 0.5826218128204346,
-        "blur_flicker_variance": 0.13652566075325012,
-        "max_texture_flicker": 0.6973196268081665,
-        "asymmetry_max": 3.0042829513549805,
-        "mean_landmark_jitter": 0.05571744218468666,
-        "max_kinematic_flicker": 0.009302111342549324,
-        "max_rigid_violation": 1.170566439628601,
-        "gaze_anomaly": 2.3978805541992188,
-        "iris_jitter_variance": 0.05345122516155243,
-        "vocal_jitter_relative": 0.051539987325668335,
-        "vocal_shimmer_relative": 0.12246234714984894
+        "max_blur_flicker": 0.45513036847114563,
+        "blur_flicker_variance": 0.18830335140228271,
+        "max_texture_flicker": 1.4860862493515015,
+        "asymmetry_max": 5.622555732727051,
+        "mean_landmark_jitter": 0.5231577157974243,
+        "max_kinematic_flicker": 0.12769296765327454,
+        "max_rigid_violation": 0.7635430693626404,
+        "gaze_anomaly": 1.1215426921844482,
+        "iris_jitter_variance": 0.05068473517894745,
+        "wer_score": 4.4935503005981445,
+        "semantic_anomaly": 0.4056053161621094,
+        "temporal_anomaly": 0.1705542951822281,
+        "min_temporal_anomaly": 10.226115226745605,
+        "vocal_jitter_relative": 0.05260951444506645,
+        "vocal_shimmer_relative": 0.0607137531042099
       },
       "raw_text_evidence": {
         "asr_text_audio": "yes i am beautiful",
@@ -157,7 +199,7 @@
         "sync_score": 0.6168704628944397,
         "min_sync_score": 0.4688565135002136
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, độ lệch nội dung giữa ASR và VSR, bất đối xứng kết cấu vùng mặt, suy giảm nhất quán giữa hướng nhìn và tư thế đầu, vi phạm chuyển động cứng của landmark."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, facial region texture asymmetry, content discrepancy between ASR and VSR, surface texture fluctuation, decrease in consistency between gaze direction and head pose."
     },
     "chunk_0003": {
       "time_metadata": {
@@ -167,52 +209,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 48,
-      "feature_vector": {
-        "wer_score": 1.0,
-        "semantic_anomaly": 0.842752,
-        "temporal_anomaly": 0.4158199429512024,
-        "min_temporal_anomaly": 0.49755096435546875,
-        "max_blur_flicker": 1.0233916320565042,
-        "blur_flicker_variance": 0.05827322325429605,
-        "max_texture_flicker": 3.7292177623769476,
-        "asymmetry_max": 32.500541737744264,
-        "mean_landmark_jitter": 0.004712746944278479,
-        "max_kinematic_flicker": 0.011508180759847164,
-        "max_rigid_violation": 0.009562402963638306,
-        "gaze_anomaly": 0.1935846688452426,
-        "iris_jitter_variance": 0.399102587376455,
-        "vocal_jitter_relative": 0.01259869564753253,
-        "vocal_shimmer_relative": 0.1490643322467804
+      "features": {
+        "visual": {
+          "max_blur_flicker": 1.0233916320565042,
+          "blur_flicker_variance": 0.05827322325429605,
+          "max_texture_flicker": 3.7292177623769476,
+          "asymmetry_max": 32.500541737744264,
+          "mean_landmark_jitter": 0.004712746944278479,
+          "max_kinematic_flicker": 0.011508180759847164,
+          "max_rigid_violation": 0.009562402963638306,
+          "gaze_anomaly": 0.1935846688452426,
+          "iris_jitter_variance": 0.399102587376455
+        },
+        "audio_visual": {
+          "wer_score": 1.0,
+          "semantic_anomaly": 0.842752,
+          "temporal_anomaly": 0.4158199429512024,
+          "min_temporal_anomaly": 0.49755096435546875,
+          "vocal_jitter_relative": 0.01259869564753253,
+          "vocal_shimmer_relative": 0.1490643322467804
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 2.099663496017456,
-        "normalized_anomaly_score": 0.43389084781133663,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 1.8708074026637607,
+        "audio_reconstruction_score": 4.630087289959192,
+        "kl_divergence": 1.2852439880371094,
+        "joint_anomaly_score": 7.786138680660063,
+        "normalized_anomaly_score": 0.38564094422203526,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "vocal_jitter_relative",
+        "max_blur_flicker",
+        "max_texture_flicker"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
+        "asymmetry_max",
         "vocal_jitter_relative",
-        "gaze_anomaly",
-        "vocal_shimmer_relative",
-        "asymmetry_max"
+        "max_blur_flicker",
+        "max_texture_flicker"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 0.9412925839424133,
-        "semantic_anomaly": 0.1961207091808319,
-        "temporal_anomaly": 0.42918887734413147,
-        "min_temporal_anomaly": 19.435054779052734,
-        "max_blur_flicker": 0.21991781890392303,
-        "blur_flicker_variance": 0.0076206764206290245,
-        "max_texture_flicker": 0.20317158102989197,
-        "asymmetry_max": 1.1950898170471191,
-        "mean_landmark_jitter": 3.6618253943743184e-05,
-        "max_kinematic_flicker": 0.0290837399661541,
-        "max_rigid_violation": 0.20671381056308746,
-        "gaze_anomaly": 3.2433111667633057,
-        "iris_jitter_variance": 0.00013979175128042698,
-        "vocal_jitter_relative": 4.0655107498168945,
-        "vocal_shimmer_relative": 1.3226982355117798
+        "max_blur_flicker": 2.82631778717041,
+        "blur_flicker_variance": 1.676457405090332,
+        "max_texture_flicker": 1.9613176584243774,
+        "asymmetry_max": 6.829737186431885,
+        "mean_landmark_jitter": 0.38724857568740845,
+        "max_kinematic_flicker": 0.293052077293396,
+        "max_rigid_violation": 0.7445082068443298,
+        "gaze_anomaly": 1.1232781410217285,
+        "iris_jitter_variance": 0.9953495860099792,
+        "wer_score": 1.8728666305541992,
+        "semantic_anomaly": 0.676913321018219,
+        "temporal_anomaly": 0.09043946117162704,
+        "min_temporal_anomaly": 18.67299461364746,
+        "vocal_jitter_relative": 4.68358039855957,
+        "vocal_shimmer_relative": 1.7837293148040771
       },
       "raw_text_evidence": {
         "asr_text_audio": "you said i was evil",
@@ -222,7 +284,7 @@
         "sync_score": 0.5841800570487976,
         "min_sync_score": 0.5024490356445312
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, dao động vi mô tần số giọng nói, suy giảm nhất quán giữa hướng nhìn và tư thế đầu, dao động vi mô biên độ giọng nói, bất đối xứng kết cấu vùng mặt."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, facial region texture asymmetry, micro-fluctuation in voice frequency, blur fluctuation between frames, surface texture fluctuation."
     },
     "chunk_0004": {
       "time_metadata": {
@@ -232,52 +294,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 48,
-      "feature_vector": {
-        "wer_score": 1.0,
-        "semantic_anomaly": 0.874304,
-        "temporal_anomaly": 0.4160749912261963,
-        "min_temporal_anomaly": 0.49688130617141724,
-        "max_blur_flicker": 0.8851089104740639,
-        "blur_flicker_variance": 0.05238434637171405,
-        "max_texture_flicker": 4.529554410534281,
-        "asymmetry_max": 32.99511017888858,
-        "mean_landmark_jitter": 0.0047370921820402145,
-        "max_kinematic_flicker": 0.011426043696701527,
-        "max_rigid_violation": 0.008540838956832886,
-        "gaze_anomaly": 0.2776515862310016,
-        "iris_jitter_variance": 0.4053800340204343,
-        "vocal_jitter_relative": 0.01259869564753253,
-        "vocal_shimmer_relative": 0.14902541041374207
+      "features": {
+        "visual": {
+          "max_blur_flicker": 0.8851089104740639,
+          "blur_flicker_variance": 0.05238434637171405,
+          "max_texture_flicker": 4.529554410534281,
+          "asymmetry_max": 32.99511017888858,
+          "mean_landmark_jitter": 0.0047370921820402145,
+          "max_kinematic_flicker": 0.011426043696701527,
+          "max_rigid_violation": 0.008540838956832886,
+          "gaze_anomaly": 0.2776515862310016,
+          "iris_jitter_variance": 0.4053800340204343
+        },
+        "audio_visual": {
+          "wer_score": 1.0,
+          "semantic_anomaly": 0.874304,
+          "temporal_anomaly": 0.4160749912261963,
+          "min_temporal_anomaly": 0.49688130617141724,
+          "vocal_jitter_relative": 0.01259869564753253,
+          "vocal_shimmer_relative": 0.14902541041374207
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 2.067958116531372,
-        "normalized_anomaly_score": 0.4273390008075238,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 1.8700370854801602,
+        "audio_reconstruction_score": 4.598841831088066,
+        "kl_divergence": 1.3023455142974854,
+        "joint_anomaly_score": 7.771224430865711,
+        "normalized_anomaly_score": 0.38490225388925925,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "vocal_jitter_relative",
+        "max_blur_flicker",
+        "max_texture_flicker"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
+        "asymmetry_max",
         "vocal_jitter_relative",
-        "gaze_anomaly",
-        "vocal_shimmer_relative",
-        "asymmetry_max"
+        "max_blur_flicker",
+        "max_texture_flicker"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 0.9869235754013062,
-        "semantic_anomaly": 0.04452624171972275,
-        "temporal_anomaly": 0.3221513032913208,
-        "min_temporal_anomaly": 20.070127487182617,
-        "max_blur_flicker": 0.19865788519382477,
-        "blur_flicker_variance": 0.0008562754956074059,
-        "max_texture_flicker": 0.22807088494300842,
-        "asymmetry_max": 1.127268671989441,
-        "mean_landmark_jitter": 2.2727983832737664e-06,
-        "max_kinematic_flicker": 0.03211579844355583,
-        "max_rigid_violation": 0.40967872738838196,
-        "gaze_anomaly": 2.477083444595337,
-        "iris_jitter_variance": 0.0035503478720784187,
-        "vocal_jitter_relative": 3.796865701675415,
-        "vocal_shimmer_relative": 1.321494698524475
+        "max_blur_flicker": 2.852466106414795,
+        "blur_flicker_variance": 1.6794930696487427,
+        "max_texture_flicker": 1.9206249713897705,
+        "asymmetry_max": 6.801294803619385,
+        "mean_landmark_jitter": 0.35836538672447205,
+        "max_kinematic_flicker": 0.2945588529109955,
+        "max_rigid_violation": 1.132482647895813,
+        "gaze_anomaly": 0.7181566953659058,
+        "iris_jitter_variance": 1.0728912353515625,
+        "wer_score": 1.8755522966384888,
+        "semantic_anomaly": 0.2787182331085205,
+        "temporal_anomaly": 0.09909167885780334,
+        "min_temporal_anomaly": 18.817882537841797,
+        "vocal_jitter_relative": 4.699944972991943,
+        "vocal_shimmer_relative": 1.8218612670898438
       },
       "raw_text_evidence": {
         "asr_text_audio": "you said i was evil",
@@ -287,7 +369,7 @@
         "sync_score": 0.5839250087738037,
         "min_sync_score": 0.5031186938285828
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, dao động vi mô tần số giọng nói, suy giảm nhất quán giữa hướng nhìn và tư thế đầu, dao động vi mô biên độ giọng nói, bất đối xứng kết cấu vùng mặt."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, facial region texture asymmetry, micro-fluctuation in voice frequency, blur fluctuation between frames, surface texture fluctuation."
     },
     "chunk_0005": {
       "time_metadata": {
@@ -297,52 +379,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 88,
-      "feature_vector": {
-        "wer_score": 0.75,
-        "semantic_anomaly": 0.876445,
-        "temporal_anomaly": 0.36991673707962036,
-        "min_temporal_anomaly": 0.5590744018554688,
-        "max_blur_flicker": 1.2815889784547378,
-        "blur_flicker_variance": 0.08601754258203936,
-        "max_texture_flicker": 30.37998404519677,
-        "asymmetry_max": 66.70401969760272,
-        "mean_landmark_jitter": 0.005168456584215164,
-        "max_kinematic_flicker": 0.01811417192220688,
-        "max_rigid_violation": 0.013151705265045166,
-        "gaze_anomaly": 0.07818417523042731,
-        "iris_jitter_variance": 1.7145934048368776,
-        "vocal_jitter_relative": 0.04950281974043532,
-        "vocal_shimmer_relative": 0.12538392841815948
+      "features": {
+        "visual": {
+          "max_blur_flicker": 1.2815889784547378,
+          "blur_flicker_variance": 0.08601754258203936,
+          "max_texture_flicker": 30.37998404519677,
+          "asymmetry_max": 66.70401969760272,
+          "mean_landmark_jitter": 0.005168456584215164,
+          "max_kinematic_flicker": 0.01811417192220688,
+          "max_rigid_violation": 0.013151705265045166,
+          "gaze_anomaly": 0.07818417523042731,
+          "iris_jitter_variance": 1.7145934048368776
+        },
+        "audio_visual": {
+          "wer_score": 0.75,
+          "semantic_anomaly": 0.876445,
+          "temporal_anomaly": 0.36991673707962036,
+          "min_temporal_anomaly": 0.5590744018554688,
+          "vocal_jitter_relative": 0.04950281974043532,
+          "vocal_shimmer_relative": 0.12538392841815948
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 1.0236198902130127,
-        "normalized_anomaly_score": 0.21152880108812397,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 1.2468109938264307,
+        "audio_reconstruction_score": 1.1439035686926218,
+        "kl_divergence": 3.618623971939087,
+        "joint_anomaly_score": 6.00933853445814,
+        "normalized_anomaly_score": 0.29763751734021765,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "mean_landmark_jitter",
+        "gaze_anomaly",
+        "iris_jitter_variance"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
         "asymmetry_max",
+        "mean_landmark_jitter",
         "gaze_anomaly",
-        "vocal_shimmer_relative",
-        "max_texture_flicker"
+        "iris_jitter_variance"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 0.02316160500049591,
-        "semantic_anomaly": 1.0425629615783691,
-        "temporal_anomaly": 0.11712092161178589,
-        "min_temporal_anomaly": 4.68717098236084,
-        "max_blur_flicker": 0.24789218604564667,
-        "blur_flicker_variance": 0.009577414952218533,
-        "max_texture_flicker": 1.4975558519363403,
-        "asymmetry_max": 3.4719271659851074,
-        "mean_landmark_jitter": 0.42119935154914856,
-        "max_kinematic_flicker": 0.09812746942043304,
-        "max_rigid_violation": 0.0007120796362869442,
-        "gaze_anomaly": 1.9859580993652344,
-        "iris_jitter_variance": 0.006233316846191883,
-        "vocal_jitter_relative": 0.11467254906892776,
-        "vocal_shimmer_relative": 1.630424976348877
+        "max_blur_flicker": 0.009005808271467686,
+        "blur_flicker_variance": 0.0025120258796960115,
+        "max_texture_flicker": 1.4564807415008545,
+        "asymmetry_max": 2.5493600368499756,
+        "mean_landmark_jitter": 2.3808422088623047,
+        "max_kinematic_flicker": 0.37159568071365356,
+        "max_rigid_violation": 0.8143997192382812,
+        "gaze_anomaly": 2.0710482597351074,
+        "iris_jitter_variance": 1.5660544633865356,
+        "wer_score": 0.12315879017114639,
+        "semantic_anomaly": 0.1683618575334549,
+        "temporal_anomaly": 0.2539389431476593,
+        "min_temporal_anomaly": 4.787745475769043,
+        "vocal_jitter_relative": 0.0004004332877229899,
+        "vocal_shimmer_relative": 1.529815912246704
       },
       "raw_text_evidence": {
         "asr_text_audio": "i am always beautiful",
@@ -352,7 +454,7 @@
         "sync_score": 0.6300832629203796,
         "min_sync_score": 0.44092559814453125
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, bất đối xứng kết cấu vùng mặt, suy giảm nhất quán giữa hướng nhìn và tư thế đầu, dao động vi mô biên độ giọng nói, dao động kết cấu bề mặt."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, facial region texture asymmetry, average landmark jitter, decrease in consistency between gaze direction and head pose, abnormal iris-region jitter."
     },
     "chunk_0006": {
       "time_metadata": {
@@ -362,52 +464,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 100,
-      "feature_vector": {
-        "wer_score": 1.0,
-        "semantic_anomaly": 0.469055,
-        "temporal_anomaly": 0.3710411787033081,
-        "min_temporal_anomaly": 0.5873637795448303,
-        "max_blur_flicker": 9.486701245994084,
-        "blur_flicker_variance": 0.9200564704374252,
-        "max_texture_flicker": 43.378523723754896,
-        "asymmetry_max": 93.60553567330855,
-        "mean_landmark_jitter": 0.0053695570677518845,
-        "max_kinematic_flicker": 0.020209036767482758,
-        "max_rigid_violation": 0.01092788577079773,
-        "gaze_anomaly": 0.6288466913330906,
-        "iris_jitter_variance": 1.9123726899473354,
-        "vocal_jitter_relative": 0.05735400191659422,
-        "vocal_shimmer_relative": 0.14540737867355347
+      "features": {
+        "visual": {
+          "max_blur_flicker": 9.486701245994084,
+          "blur_flicker_variance": 0.9200564704374252,
+          "max_texture_flicker": 43.378523723754896,
+          "asymmetry_max": 93.60553567330855,
+          "mean_landmark_jitter": 0.0053695570677518845,
+          "max_kinematic_flicker": 0.020209036767482758,
+          "max_rigid_violation": 0.01092788577079773,
+          "gaze_anomaly": 0.6288466913330906,
+          "iris_jitter_variance": 1.9123726899473354
+        },
+        "audio_visual": {
+          "wer_score": 1.0,
+          "semantic_anomaly": 0.469055,
+          "temporal_anomaly": 0.3710411787033081,
+          "min_temporal_anomaly": 0.5873637795448303,
+          "vocal_jitter_relative": 0.05735400191659422,
+          "vocal_shimmer_relative": 0.14540737867355347
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 0.8542911410331726,
-        "normalized_anomaly_score": 0.17653738714020858,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 1.330120225094207,
+        "audio_reconstruction_score": 2.5745821644862494,
+        "kl_divergence": 3.964982748031616,
+        "joint_anomaly_score": 7.8696851376120724,
+        "normalized_anomaly_score": 0.3897789304391838,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "semantic_anomaly",
+        "iris_jitter_variance",
+        "min_temporal_anomaly",
+        "mean_landmark_jitter",
+        "max_rigid_violation"
+      ],
       "top_reconstruction_error_features": [
         "semantic_anomaly",
+        "iris_jitter_variance",
         "min_temporal_anomaly",
-        "asymmetry_max",
-        "vocal_jitter_relative",
-        "max_texture_flicker"
+        "mean_landmark_jitter",
+        "max_rigid_violation"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 0.07622280716896057,
-        "semantic_anomaly": 6.5035295486450195,
-        "temporal_anomaly": 0.0658295750617981,
-        "min_temporal_anomaly": 2.170476198196411,
-        "max_blur_flicker": 0.04864485189318657,
-        "blur_flicker_variance": 0.1294439285993576,
-        "max_texture_flicker": 0.7839630246162415,
-        "asymmetry_max": 1.344670295715332,
-        "mean_landmark_jitter": 0.16629236936569214,
-        "max_kinematic_flicker": 0.05371784791350365,
-        "max_rigid_violation": 0.24782322347164154,
-        "gaze_anomaly": 0.032972466200590134,
-        "iris_jitter_variance": 0.0040746210142970085,
-        "vocal_jitter_relative": 0.897264301776886,
-        "vocal_shimmer_relative": 0.28944307565689087
+        "max_blur_flicker": 0.018617477267980576,
+        "blur_flicker_variance": 0.0024513464886695147,
+        "max_texture_flicker": 1.242973804473877,
+        "asymmetry_max": 1.982362985610962,
+        "mean_landmark_jitter": 2.191969394683838,
+        "max_kinematic_flicker": 0.26058635115623474,
+        "max_rigid_violation": 1.9994163513183594,
+        "gaze_anomaly": 0.0004698749980889261,
+        "iris_jitter_variance": 4.2722344398498535,
+        "wer_score": 0.1539498120546341,
+        "semantic_anomaly": 11.908859252929688,
+        "temporal_anomaly": 0.24220873415470123,
+        "min_temporal_anomaly": 2.2858941555023193,
+        "vocal_jitter_relative": 0.36475202441215515,
+        "vocal_shimmer_relative": 0.4918290078639984
       },
       "raw_text_evidence": {
         "asr_text_audio": "who said what about that you said you",
@@ -417,7 +539,7 @@
         "sync_score": 0.6289588212966919,
         "min_sync_score": 0.4126362204551697
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: độ suy giảm nhất quán ngữ nghĩa audio-visual, điểm đồng bộ thời gian yếu nhất trong chunk, bất đối xứng kết cấu vùng mặt, dao động vi mô tần số giọng nói, dao động kết cấu bề mặt."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: decrease in audio-visual semantic consistency, abnormal iris-region jitter, weakest temporal synchronization score within the chunk, average landmark jitter, violation of rigid landmark motion."
     },
     "chunk_0007": {
       "time_metadata": {
@@ -427,52 +549,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 100,
-      "feature_vector": {
-        "wer_score": 1.0,
-        "semantic_anomaly": 0.8255939999999999,
-        "temporal_anomaly": 0.4595518708229065,
-        "min_temporal_anomaly": 0.5457636415958405,
-        "max_blur_flicker": 1.1122632292632737,
-        "blur_flicker_variance": 0.05073597688302244,
-        "max_texture_flicker": 46.91982208751362,
-        "asymmetry_max": 93.68268669639473,
-        "mean_landmark_jitter": 0.005432567093521357,
-        "max_kinematic_flicker": 0.029175791889429092,
-        "max_rigid_violation": 0.00940483808517456,
-        "gaze_anomaly": 0.6311783266176256,
-        "iris_jitter_variance": 0.9910188296807511,
-        "vocal_jitter_relative": 0.0556329059177362,
-        "vocal_shimmer_relative": 0.14610835909843445
+      "features": {
+        "visual": {
+          "max_blur_flicker": 1.1122632292632737,
+          "blur_flicker_variance": 0.05073597688302244,
+          "max_texture_flicker": 46.91982208751362,
+          "asymmetry_max": 93.68268669639473,
+          "mean_landmark_jitter": 0.005432567093521357,
+          "max_kinematic_flicker": 0.029175791889429092,
+          "max_rigid_violation": 0.00940483808517456,
+          "gaze_anomaly": 0.6311783266176256,
+          "iris_jitter_variance": 0.9910188296807511
+        },
+        "audio_visual": {
+          "wer_score": 1.0,
+          "semantic_anomaly": 0.8255939999999999,
+          "temporal_anomaly": 0.4595518708229065,
+          "min_temporal_anomaly": 0.5457636415958405,
+          "vocal_jitter_relative": 0.0556329059177362,
+          "vocal_shimmer_relative": 0.14610835909843445
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 0.9372599124908447,
-        "normalized_anomaly_score": 0.19368270145267644,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 0.5394258686493332,
+        "audio_reconstruction_score": 1.573341391980648,
+        "kl_divergence": 2.387528657913208,
+        "joint_anomaly_score": 4.500295918543189,
+        "normalized_anomaly_score": 0.2228958972457503,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "max_rigid_violation",
+        "vocal_shimmer_relative",
+        "temporal_anomaly"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
         "asymmetry_max",
-        "vocal_jitter_relative",
-        "temporal_anomaly",
-        "vocal_shimmer_relative"
+        "max_rigid_violation",
+        "vocal_shimmer_relative",
+        "temporal_anomaly"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 0.516626238822937,
-        "semantic_anomaly": 0.0007599936798214912,
-        "temporal_anomaly": 1.0934185981750488,
-        "min_temporal_anomaly": 7.360924243927002,
-        "max_blur_flicker": 0.30964046716690063,
-        "blur_flicker_variance": 0.03063061647117138,
-        "max_texture_flicker": 0.2502501606941223,
-        "asymmetry_max": 1.390162467956543,
-        "mean_landmark_jitter": 0.0015003334265202284,
-        "max_kinematic_flicker": 0.41684988141059875,
-        "max_rigid_violation": 0.6364672780036926,
-        "gaze_anomaly": 0.11734528839588165,
-        "iris_jitter_variance": 0.15743854641914368,
-        "vocal_jitter_relative": 1.0971074104309082,
-        "vocal_shimmer_relative": 0.6797785758972168
+        "max_blur_flicker": 0.13543227314949036,
+        "blur_flicker_variance": 0.03399371728301048,
+        "max_texture_flicker": 0.46204477548599243,
+        "asymmetry_max": 2.1932530403137207,
+        "mean_landmark_jitter": 0.4548940360546112,
+        "max_kinematic_flicker": 0.1205046996474266,
+        "max_rigid_violation": 1.453320860862732,
+        "gaze_anomaly": 0.00013014317664783448,
+        "iris_jitter_variance": 0.001259271870367229,
+        "wer_score": 0.25622066855430603,
+        "semantic_anomaly": 0.09056605398654938,
+        "temporal_anomaly": 0.5699241161346436,
+        "min_temporal_anomaly": 7.293767929077148,
+        "vocal_jitter_relative": 0.423422247171402,
+        "vocal_shimmer_relative": 0.8061473369598389
       },
       "raw_text_evidence": {
         "asr_text_audio": "what about that you said you said are you beautiful",
@@ -482,7 +624,7 @@
         "sync_score": 0.5404481291770935,
         "min_sync_score": 0.45423635840415955
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, bất đối xứng kết cấu vùng mặt, dao động vi mô tần số giọng nói, độ suy giảm đồng bộ thời gian audio-visual, dao động vi mô biên độ giọng nói."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, facial region texture asymmetry, violation of rigid landmark motion, micro-fluctuation in voice amplitude, decrease in audio-visual temporal synchronization."
     },
     "chunk_0008": {
       "time_metadata": {
@@ -492,52 +634,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 100,
-      "feature_vector": {
-        "wer_score": 0.666667,
-        "semantic_anomaly": 0.797887,
-        "temporal_anomaly": 0.463135302066803,
-        "min_temporal_anomaly": 0.5383270680904388,
-        "max_blur_flicker": 1.99843326886376,
-        "blur_flicker_variance": 0.12711464124119487,
-        "max_texture_flicker": 9.34957210568367,
-        "asymmetry_max": 52.73227918082336,
-        "mean_landmark_jitter": 0.005260270554572344,
-        "max_kinematic_flicker": 0.01432616077363491,
-        "max_rigid_violation": 0.010856002569198608,
-        "gaze_anomaly": 0.8050482181069892,
-        "iris_jitter_variance": 0.5333561610025663,
-        "vocal_jitter_relative": 0.02301877106182927,
-        "vocal_shimmer_relative": 0.11075633764266968
+      "features": {
+        "visual": {
+          "max_blur_flicker": 1.99843326886376,
+          "blur_flicker_variance": 0.12711464124119487,
+          "max_texture_flicker": 9.34957210568367,
+          "asymmetry_max": 52.73227918082336,
+          "mean_landmark_jitter": 0.005260270554572344,
+          "max_kinematic_flicker": 0.01432616077363491,
+          "max_rigid_violation": 0.010856002569198608,
+          "gaze_anomaly": 0.8050482181069892,
+          "iris_jitter_variance": 0.5333561610025663
+        },
+        "audio_visual": {
+          "wer_score": 0.666667,
+          "semantic_anomaly": 0.797887,
+          "temporal_anomaly": 0.463135302066803,
+          "min_temporal_anomaly": 0.5383270680904388,
+          "vocal_jitter_relative": 0.02301877106182927,
+          "vocal_shimmer_relative": 0.11075633764266968
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 1.2883756160736084,
-        "normalized_anomaly_score": 0.26623999008314597,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 1.8686638573805492,
+        "audio_reconstruction_score": 3.529266585906347,
+        "kl_divergence": 1.1153696775436401,
+        "joint_anomaly_score": 6.513300120830536,
+        "normalized_anomaly_score": 0.32259831369785585,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "vocal_shimmer_relative",
+        "max_blur_flicker",
+        "iris_jitter_variance"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
+        "asymmetry_max",
         "vocal_shimmer_relative",
-        "temporal_anomaly",
-        "vocal_jitter_relative",
-        "semantic_anomaly"
+        "max_blur_flicker",
+        "iris_jitter_variance"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 0.07652312517166138,
-        "semantic_anomaly": 0.5565272569656372,
-        "temporal_anomaly": 1.8766710758209229,
-        "min_temporal_anomaly": 10.871728897094727,
-        "max_blur_flicker": 0.05296117067337036,
-        "blur_flicker_variance": 0.0004073184682056308,
-        "max_texture_flicker": 0.061158306896686554,
-        "asymmetry_max": 0.38915979862213135,
-        "mean_landmark_jitter": 0.056025367230176926,
-        "max_kinematic_flicker": 0.02520112693309784,
-        "max_rigid_violation": 0.3046325147151947,
-        "gaze_anomaly": 0.11717528849840164,
-        "iris_jitter_variance": 0.044172342866659164,
-        "vocal_jitter_relative": 1.4348708391189575,
-        "vocal_shimmer_relative": 3.458420991897583
+        "max_blur_flicker": 2.715287923812866,
+        "blur_flicker_variance": 1.7900559902191162,
+        "max_texture_flicker": 2.128295660018921,
+        "asymmetry_max": 6.809772491455078,
+        "mean_landmark_jitter": 0.1609402298927307,
+        "max_kinematic_flicker": 0.18038597702980042,
+        "max_rigid_violation": 0.42699965834617615,
+        "gaze_anomaly": 0.36256203055381775,
+        "iris_jitter_variance": 2.2436747550964355,
+        "wer_score": 0.670731246471405,
+        "semantic_anomaly": 2.1527271270751953,
+        "temporal_anomaly": 0.2546015977859497,
+        "min_temporal_anomaly": 12.011542320251465,
+        "vocal_jitter_relative": 0.9429327249526978,
+        "vocal_shimmer_relative": 5.143064498901367
       },
       "raw_text_evidence": {
         "asr_text_audio": "you said are you beautiful and i said i am and i was almost going to say that",
@@ -547,7 +709,7 @@
         "sync_score": 0.536864697933197,
         "min_sync_score": 0.46167293190956116
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, dao động vi mô biên độ giọng nói, độ suy giảm đồng bộ thời gian audio-visual, dao động vi mô tần số giọng nói, độ suy giảm nhất quán ngữ nghĩa audio-visual."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, facial region texture asymmetry, micro-fluctuation in voice amplitude, blur fluctuation between frames, abnormal iris-region jitter."
     },
     "chunk_0010": {
       "time_metadata": {
@@ -557,52 +719,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 76,
-      "feature_vector": {
-        "wer_score": 0.714286,
-        "semantic_anomaly": 0.883372,
-        "temporal_anomaly": 0.4491371512413025,
-        "min_temporal_anomaly": 0.5298537015914917,
-        "max_blur_flicker": 4.3323035357909685,
-        "blur_flicker_variance": 0.5718818132639134,
-        "max_texture_flicker": 9.627749675330833,
-        "asymmetry_max": 45.07469019578604,
-        "mean_landmark_jitter": 0.004955099429935217,
-        "max_kinematic_flicker": 0.01261586882174015,
-        "max_rigid_violation": 0.011059671640396118,
-        "gaze_anomaly": 0.5310028092694767,
-        "iris_jitter_variance": 1.053023669586079,
-        "vocal_jitter_relative": 0.03996870473218192,
-        "vocal_shimmer_relative": 0.1952456384897232
+      "features": {
+        "visual": {
+          "max_blur_flicker": 4.3323035357909685,
+          "blur_flicker_variance": 0.5718818132639134,
+          "max_texture_flicker": 9.627749675330833,
+          "asymmetry_max": 45.07469019578604,
+          "mean_landmark_jitter": 0.004955099429935217,
+          "max_kinematic_flicker": 0.01261586882174015,
+          "max_rigid_violation": 0.011059671640396118,
+          "gaze_anomaly": 0.5310028092694767,
+          "iris_jitter_variance": 1.053023669586079
+        },
+        "audio_visual": {
+          "wer_score": 0.714286,
+          "semantic_anomaly": 0.883372,
+          "temporal_anomaly": 0.4491371512413025,
+          "min_temporal_anomaly": 0.5298537015914917,
+          "vocal_jitter_relative": 0.03996870473218192,
+          "vocal_shimmer_relative": 0.1952456384897232
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 1.0425634384155273,
-        "normalized_anomaly_score": 0.2154434436990634,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 0.8358568968251348,
+        "audio_reconstruction_score": 1.7243323177099228,
+        "kl_divergence": 2.4527697563171387,
+        "joint_anomaly_score": 5.012958970852196,
+        "normalized_anomaly_score": 0.2482876699419227,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "max_texture_flicker",
+        "mean_landmark_jitter",
+        "max_rigid_violation"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
         "asymmetry_max",
-        "temporal_anomaly",
         "max_texture_flicker",
-        "gaze_anomaly"
+        "mean_landmark_jitter",
+        "max_rigid_violation"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 0.002815091051161289,
-        "semantic_anomaly": 0.19803263247013092,
-        "temporal_anomaly": 0.9435039162635803,
-        "min_temporal_anomaly": 9.76077938079834,
-        "max_blur_flicker": 0.31797701120376587,
-        "blur_flicker_variance": 0.11603772640228271,
-        "max_texture_flicker": 0.7784234285354614,
-        "asymmetry_max": 2.578313112258911,
-        "mean_landmark_jitter": 0.055803071707487106,
-        "max_kinematic_flicker": 0.11103660613298416,
-        "max_rigid_violation": 0.07298587262630463,
-        "gaze_anomaly": 0.32266682386398315,
-        "iris_jitter_variance": 0.21118830144405365,
-        "vocal_jitter_relative": 0.02719550020992756,
-        "vocal_shimmer_relative": 0.14169184863567352
+        "max_blur_flicker": 0.01536138728260994,
+        "blur_flicker_variance": 0.003925361670553684,
+        "max_texture_flicker": 1.2672721147537231,
+        "asymmetry_max": 3.3471970558166504,
+        "mean_landmark_jitter": 1.2552862167358398,
+        "max_kinematic_flicker": 0.6210079789161682,
+        "max_rigid_violation": 0.8813159465789795,
+        "gaze_anomaly": 0.05909024924039841,
+        "iris_jitter_variance": 0.07225576043128967,
+        "wer_score": 0.15624788403511047,
+        "semantic_anomaly": 0.09046010673046112,
+        "temporal_anomaly": 0.3515397012233734,
+        "min_temporal_anomaly": 9.153627395629883,
+        "vocal_jitter_relative": 0.37816664576530457,
+        "vocal_shimmer_relative": 0.21595217287540436
       },
       "raw_text_evidence": {
         "asr_text_audio": "she is thinking i am not beautiful",
@@ -612,7 +794,7 @@
         "sync_score": 0.5508628487586975,
         "min_sync_score": 0.4701462984085083
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, bất đối xứng kết cấu vùng mặt, độ suy giảm đồng bộ thời gian audio-visual, dao động kết cấu bề mặt, suy giảm nhất quán giữa hướng nhìn và tư thế đầu."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, facial region texture asymmetry, surface texture fluctuation, average landmark jitter, violation of rigid landmark motion."
     },
     "chunk_0011": {
       "time_metadata": {
@@ -622,52 +804,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 76,
-      "feature_vector": {
-        "wer_score": 0.888889,
-        "semantic_anomaly": 0.90594,
-        "temporal_anomaly": 0.4403163194656372,
-        "min_temporal_anomaly": 0.5210798680782318,
-        "max_blur_flicker": 3.5586137719834543,
-        "blur_flicker_variance": 0.5462387323367612,
-        "max_texture_flicker": 5.315723616917483,
-        "asymmetry_max": 15.208085143098668,
-        "mean_landmark_jitter": 0.0058198366314172745,
-        "max_kinematic_flicker": 0.016915425658226013,
-        "max_rigid_violation": 0.015853911638259888,
-        "gaze_anomaly": 0.7958855705983483,
-        "iris_jitter_variance": 0.9389339797564848,
-        "vocal_jitter_relative": 0.02001369159409665,
-        "vocal_shimmer_relative": 0.16918765008449554
+      "features": {
+        "visual": {
+          "max_blur_flicker": 3.5586137719834543,
+          "blur_flicker_variance": 0.5462387323367612,
+          "max_texture_flicker": 5.315723616917483,
+          "asymmetry_max": 15.208085143098668,
+          "mean_landmark_jitter": 0.0058198366314172745,
+          "max_kinematic_flicker": 0.016915425658226013,
+          "max_rigid_violation": 0.015853911638259888,
+          "gaze_anomaly": 0.7958855705983483,
+          "iris_jitter_variance": 0.9389339797564848
+        },
+        "audio_visual": {
+          "wer_score": 0.888889,
+          "semantic_anomaly": 0.90594,
+          "temporal_anomaly": 0.4403163194656372,
+          "min_temporal_anomaly": 0.5210798680782318,
+          "vocal_jitter_relative": 0.02001369159409665,
+          "vocal_shimmer_relative": 0.16918765008449554
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 1.1896255016326904,
-        "normalized_anomaly_score": 0.24583349591991163,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 1.060658989670224,
+        "audio_reconstruction_score": 2.5807756781578064,
+        "kl_divergence": 2.4684579372406006,
+        "joint_anomaly_score": 6.109892605068631,
+        "normalized_anomaly_score": 0.302617876453512,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "vocal_jitter_relative",
+        "asymmetry_max",
+        "iris_jitter_variance",
+        "max_texture_flicker"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
         "vocal_jitter_relative",
         "asymmetry_max",
-        "temporal_anomaly",
+        "iris_jitter_variance",
         "max_texture_flicker"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 0.1558218151330948,
-        "semantic_anomaly": 0.1547018587589264,
-        "temporal_anomaly": 0.6510840654373169,
-        "min_temporal_anomaly": 11.897638320922852,
-        "max_blur_flicker": 0.07314629852771759,
-        "blur_flicker_variance": 0.018185622990131378,
-        "max_texture_flicker": 0.5811100602149963,
-        "asymmetry_max": 1.6420701742172241,
-        "mean_landmark_jitter": 0.05453205853700638,
-        "max_kinematic_flicker": 0.023956308141350746,
-        "max_rigid_violation": 0.18755845725536346,
-        "gaze_anomaly": 0.0012673435267060995,
-        "iris_jitter_variance": 0.2455555498600006,
-        "vocal_jitter_relative": 2.149291753768921,
-        "vocal_shimmer_relative": 0.008463497273623943
+        "max_blur_flicker": 3.884257239405997e-05,
+        "blur_flicker_variance": 0.005233646370470524,
+        "max_texture_flicker": 1.6397337913513184,
+        "asymmetry_max": 4.1062469482421875,
+        "mean_landmark_jitter": 0.6302512884140015,
+        "max_kinematic_flicker": 0.3478887975215912,
+        "max_rigid_violation": 0.014519128948450089,
+        "gaze_anomaly": 0.19158345460891724,
+        "iris_jitter_variance": 2.6104350090026855,
+        "wer_score": 0.025969892740249634,
+        "semantic_anomaly": 0.31433436274528503,
+        "temporal_anomaly": 0.15668663382530212,
+        "min_temporal_anomaly": 10.213517189025879,
+        "vocal_jitter_relative": 4.754782199859619,
+        "vocal_shimmer_relative": 0.01936379075050354
       },
       "raw_text_evidence": {
         "asr_text_audio": "i am not beautiful and i am always beautiful",
@@ -677,7 +879,7 @@
         "sync_score": 0.5596836805343628,
         "min_sync_score": 0.4789201319217682
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, dao động vi mô tần số giọng nói, bất đối xứng kết cấu vùng mặt, độ suy giảm đồng bộ thời gian audio-visual, dao động kết cấu bề mặt."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, micro-fluctuation in voice frequency, facial region texture asymmetry, abnormal iris-region jitter, surface texture fluctuation."
     },
     "chunk_0012": {
       "time_metadata": {
@@ -687,52 +889,72 @@
         "source": "module_2.1_refined_by_frames"
       },
       "frames_analyzed": 72,
-      "feature_vector": {
-        "wer_score": 0.8,
-        "semantic_anomaly": 0.8573230000000001,
-        "temporal_anomaly": 0.40275055170059204,
-        "min_temporal_anomaly": 0.5113634169101715,
-        "max_blur_flicker": 2.543935684987898,
-        "blur_flicker_variance": 0.1302123979991758,
-        "max_texture_flicker": 5.227814853911186,
-        "asymmetry_max": 16.167152163094855,
-        "mean_landmark_jitter": 0.0068166423588991165,
-        "max_kinematic_flicker": 0.028736338019371033,
-        "max_rigid_violation": 0.018286913633346558,
-        "gaze_anomaly": 0.7752410443306818,
-        "iris_jitter_variance": 0.5857400141602827,
-        "vocal_jitter_relative": 0.01969929005808536,
-        "vocal_shimmer_relative": 0.11634107679128647
+      "features": {
+        "visual": {
+          "max_blur_flicker": 2.543935684987898,
+          "blur_flicker_variance": 0.1302123979991758,
+          "max_texture_flicker": 5.227814853911186,
+          "asymmetry_max": 16.167152163094855,
+          "mean_landmark_jitter": 0.0068166423588991165,
+          "max_kinematic_flicker": 0.028736338019371033,
+          "max_rigid_violation": 0.018286913633346558,
+          "gaze_anomaly": 0.7752410443306818,
+          "iris_jitter_variance": 0.5857400141602827
+        },
+        "audio_visual": {
+          "wer_score": 0.8,
+          "semantic_anomaly": 0.8573230000000001,
+          "temporal_anomaly": 0.40275055170059204,
+          "min_temporal_anomaly": 0.5113634169101715,
+          "vocal_jitter_relative": 0.01969929005808536,
+          "vocal_shimmer_relative": 0.11634107679128647
+        }
       },
+      "missing_features": [],
+      "modalities_analyzed": [
+        "visual",
+        "audio_visual"
+      ],
+      "modalities_missing": [],
       "anomaly": {
-        "reconstruction_error": 1.320879578590393,
-        "normalized_anomaly_score": 0.27295686251550755,
-        "threshold": 4.839151382446289,
+        "visual_reconstruction_score": 1.1262113865878847,
+        "audio_reconstruction_score": 3.2262052764805653,
+        "kl_divergence": 1.7357957363128662,
+        "joint_anomaly_score": 6.088212399381316,
+        "normalized_anomaly_score": 0.30154407397771593,
+        "threshold": 20.19012451171875,
         "level": "low"
       },
+      "top_anomalous_features": [
+        "min_temporal_anomaly",
+        "asymmetry_max",
+        "vocal_jitter_relative",
+        "vocal_shimmer_relative",
+        "iris_jitter_variance"
+      ],
       "top_reconstruction_error_features": [
         "min_temporal_anomaly",
-        "vocal_shimmer_relative",
-        "vocal_jitter_relative",
         "asymmetry_max",
-        "max_texture_flicker"
+        "vocal_jitter_relative",
+        "vocal_shimmer_relative",
+        "iris_jitter_variance"
       ],
       "per_feature_reconstruction_error": {
-        "wer_score": 0.013851405121386051,
-        "semantic_anomaly": 0.15638597309589386,
-        "temporal_anomaly": 0.06801903247833252,
-        "min_temporal_anomaly": 14.28830623626709,
-        "max_blur_flicker": 0.03652941808104515,
-        "blur_flicker_variance": 0.0006825568270869553,
-        "max_texture_flicker": 0.46659985184669495,
-        "asymmetry_max": 0.8792541027069092,
-        "mean_landmark_jitter": 0.35023483633995056,
-        "max_kinematic_flicker": 0.1659398078918457,
-        "max_rigid_violation": 0.09061770141124725,
-        "gaze_anomaly": 0.05606682226061821,
-        "iris_jitter_variance": 0.06726183742284775,
-        "vocal_jitter_relative": 1.5618468523025513,
-        "vocal_shimmer_relative": 1.6115963459014893
+        "max_blur_flicker": 0.15834280848503113,
+        "blur_flicker_variance": 0.0445350706577301,
+        "max_texture_flicker": 1.4155548810958862,
+        "asymmetry_max": 5.182978630065918,
+        "mean_landmark_jitter": 0.11733489483594894,
+        "max_kinematic_flicker": 0.12415730208158493,
+        "max_rigid_violation": 0.38744279742240906,
+        "gaze_anomaly": 0.19015425443649292,
+        "iris_jitter_variance": 2.515401840209961,
+        "wer_score": 0.03676922619342804,
+        "semantic_anomaly": 0.019244074821472168,
+        "temporal_anomaly": 0.009859648533165455,
+        "min_temporal_anomaly": 13.019576072692871,
+        "vocal_jitter_relative": 3.6102685928344727,
+        "vocal_shimmer_relative": 2.6615140438079834
       },
       "raw_text_evidence": {
         "asr_text_audio": "and i am always beautiful",
@@ -742,7 +964,7 @@
         "sync_score": 0.597249448299408,
         "min_sync_score": 0.4886365830898285
       },
-      "interpretation": "Chunk này có lỗi tái tạo cao hơn mẫu genuine baseline; các đặc trưng đóng góp lớn nhất gồm: điểm đồng bộ thời gian yếu nhất trong chunk, dao động vi mô biên độ giọng nói, dao động vi mô tần số giọng nói, bất đối xứng kết cấu vùng mặt, dao động kết cấu bề mặt."
+      "interpretation": "This chunk has a low anomaly score. The listed features are the largest reconstruction-error contributors within this chunk, but they do not necessarily indicate a strong anomaly: weakest temporal synchronization score within the chunk, facial region texture asymmetry, micro-fluctuation in voice frequency, micro-fluctuation in voice amplitude, abnormal iris-region jitter."
     }
   }
 }

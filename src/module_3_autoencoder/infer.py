@@ -70,15 +70,52 @@ def _level(score: float) -> str:
     return "low"
 
 
-def _interpretation(top_features: List[str]) -> str:
-    if not top_features:
-        return "Chunk này có điểm dị thường, nhưng chưa xác định được đặc trưng đóng góp chính."
-    labels = [FEATURE_INTERPRETATIONS.get(n, n) for n in top_features]
-    return (
-        "Chunk này có lỗi tái tạo cao hơn baseline genuine; "
-        "các đặc trưng đóng góp lớn nhất gồm: " + ", ".join(labels) + "."
-    )
+# def _interpretation(top_features: List[str]) -> str:
+#     if not top_features:
+#         return "Chunk này có điểm dị thường, nhưng chưa xác định được đặc trưng đóng góp chính."
+#     labels = [FEATURE_INTERPRETATIONS.get(n, n) for n in top_features]
+#     return (
+#         "Chunk này có lỗi tái tạo cao hơn baseline genuine; "
+#         "các đặc trưng đóng góp lớn nhất gồm: " + ", ".join(labels) + "."
+#     )
 
+# def _interpretation(top_features: List[str]) -> str:
+#     if not top_features:
+#         return "This chunk has an anomaly score, but the main contributing features have not been identified yet."
+#     labels = [FEATURE_INTERPRETATIONS.get(n, n) for n in top_features]
+#     return (
+#         "This chunk has a higher reconstruction error than the genuine baseline; "
+#         "the most contributing features include: " + ", ".join(labels) + "."
+#     )
+
+def _interpretation(top_features: List[str], level: str, norm_score: float) -> str:
+    labels = [FEATURE_INTERPRETATIONS.get(n, n) for n in top_features]
+
+    if not top_features:
+        return (
+            "This chunk was scored by the anomaly model, but no observed feature "
+            "could be identified as a main contributor."
+        )
+
+    feature_text = ", ".join(labels)
+
+    if level == "high":
+        return (
+            "This chunk exceeds the genuine baseline threshold and is considered highly anomalous. "
+            "The main contributing features are: " + feature_text + "."
+        )
+
+    if level == "medium":
+        return (
+            "This chunk shows a moderate deviation from the genuine baseline. "
+            "The largest reconstruction errors are associated with: " + feature_text + "."
+        )
+
+    return (
+        "This chunk has a low anomaly score. "
+        "The listed features are the largest reconstruction-error contributors within this chunk, "
+        "but they do not necessarily indicate a strong anomaly: " + feature_text + "."
+    )
 
 # ---------------------------------------------------------------------------
 # Core inference
@@ -163,6 +200,7 @@ def infer_one_report(
         kl_score = float(kl_scores[idx])
         joint_score = float(joint_scores[idx])
         norm_score = float(min(1.0, joint_score / (threshold + 1e-12)))
+        level = _level(norm_score)
 
         # Per-feature errors (None where feature was missing)
         per_feat_err: Dict[str, Optional[float]] = {}
@@ -201,12 +239,13 @@ def infer_one_report(
                 "joint_anomaly_score": joint_score,
                 "normalized_anomaly_score": norm_score,
                 "threshold": threshold,
-                "level": _level(norm_score),
+                "level": level,
             },
             "top_anomalous_features": top_features,
+            "top_reconstruction_error_features": top_features,
             "per_feature_reconstruction_error": per_feat_err,
             "raw_text_evidence": row["raw_text_evidence"],
-            "interpretation": _interpretation(top_features),
+            "interpretation": _interpretation(top_features, level, norm_score),
         }
 
     save_json(

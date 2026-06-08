@@ -2,9 +2,9 @@
 set -e
 cd "$(dirname "$0")"
 
-python train.py \
-  --input_dir ../../final_reports_genuine \
-  --model_dir ./module3_models \
+python ./src/module_3_autoencoder/train.py \
+  --input_dir ./final_reports \
+  --model_dir ./src/module_3_autoencoder/module3_models \
   --epochs 300 \
   --batch_size 64 \
   --hidden_dims 32 16 \
