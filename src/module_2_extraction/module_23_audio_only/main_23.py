@@ -1,9 +1,15 @@
+import argparse
 import json
+import os
+import sys
 from pathlib import Path
 from audio_artifacts import AudioArtifactFeature
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+from src.utils.paths import get_pipeline_paths, VALID_MODES
+
 class AudioOrchestrator:
-    def __init__(self, base_interim_dir="data/interim", report_dir="final_reports"):
+    def __init__(self, base_interim_dir, report_dir):
         self.base_interim_dir = Path(base_interim_dir)
         self.report_dir = Path(report_dir)
 
@@ -69,10 +75,18 @@ class AudioOrchestrator:
 # KHỞI CHẠY
 # ==========================================
 if __name__ == "__main__":
-    # Nhớ kiểm tra xem tên thư mục "data/final_reports" có khớp với máy cậu không nhé
+    parser = argparse.ArgumentParser(description="Module 2.3: audio-only artifact extraction.")
+    parser.add_argument(
+        "--mode", type=str, required=True, choices=VALID_MODES,
+        help="genuine: genuine-only videos for Module 3 training; "
+             "infer: videos to be scored/evaluated.",
+    )
+    args = parser.parse_args()
+
+    paths = get_pipeline_paths(args.mode)
     orchestrator = AudioOrchestrator(
-        base_interim_dir="data/interim", 
-        report_dir="final_reports" 
+        base_interim_dir=paths["interim_dir"],
+        report_dir=paths["final_reports_dir"],
     )
     orchestrator.process_dataset()
     print("\n🏆 HOÀN THÀNH TOÀN BỘ PIPELINE MODULE 2.3!")

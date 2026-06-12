@@ -7,8 +7,8 @@ python train.py \
   --model_dir ./module3_models \
   --epochs 300 \
   --batch_size 64 \
-  --hidden_dims 32 16 \
-  --latent_dim 6 \
+  --hidden_dims 64 32 \
+  --latent_dim 8 \
   --dropout 0.1 \
   --beta 1.0 \
   --threshold_percentile 95 \

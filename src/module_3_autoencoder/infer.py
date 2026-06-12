@@ -12,7 +12,7 @@ Key design choices for MLLM compatibility:
 
 Usage:
     cd src/module_3_autoencoder
-    python infer.py --input_dir ../../final_reports --model_dir ./module3_models
+    python infer.py --input_dir ../../final_reports_infer --model_dir ./module3_models
 """
 
 import argparse
@@ -34,6 +34,46 @@ from dataset import (
 )
 from loss import compute_chunk_scores
 from model import build_mvae_poe
+
+
+# ---------------------------------------------------------------------------
+# Baseline context helpers
+# ---------------------------------------------------------------------------
+
+def _percentile_rank(value: float, sorted_values: List[float]) -> int:
+    """Return percentile rank (0-100) of value within sorted_values."""
+    if not sorted_values:
+        return 50
+    arr = sorted_values
+    rank = int(np.searchsorted(arr, value, side="right"))
+    return int(round(100 * rank / len(arr)))
+
+
+def _baseline_context(name: str, value: float, baseline: Dict) -> Dict[str, Any]:
+    """
+    Build a context dict for one feature value vs genuine baseline.
+    Used in evidence JSON so MLLM knows if a value is high/low.
+    """
+    stats = baseline.get(name)
+    if stats is None or value is None:
+        return {}
+    prank = _percentile_rank(value, stats["sorted_values"])
+    if prank >= 95:
+        signal = "FAR_ABOVE_NORMAL"
+    elif prank >= 80:
+        signal = "ABOVE_NORMAL"
+    elif prank <= 5:
+        signal = "FAR_BELOW_NORMAL"
+    elif prank <= 20:
+        signal = "BELOW_NORMAL"
+    else:
+        signal = "NORMAL"
+    return {
+        "genuine_p50": round(stats["p50"], 4),
+        "genuine_p95": round(stats["p95"], 4),
+        "percentile_rank": prank,
+        "signal": signal,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -70,13 +110,33 @@ def _level(score: float) -> str:
     return "low"
 
 
-def _interpretation(top_features: List[str]) -> str:
-    if not top_features:
-        return "Chunk này có điểm dị thường, nhưng chưa xác định được đặc trưng đóng góp chính."
+def _interpretation(top_features: List[str], level: str, norm_score: float) -> str:
     labels = [FEATURE_INTERPRETATIONS.get(n, n) for n in top_features]
+
+    if not top_features:
+        return (
+            "This chunk was scored by the anomaly model, but no observed feature "
+            "could be identified as a main contributor."
+        )
+
+    feature_text = ", ".join(labels)
+
+    if level == "high":
+        return (
+            "This chunk exceeds the genuine baseline threshold and is considered highly anomalous. "
+            "The main contributing features are: " + feature_text + "."
+        )
+
+    if level == "medium":
+        return (
+            "This chunk shows a moderate deviation from the genuine baseline. "
+            "The largest reconstruction errors are associated with: " + feature_text + "."
+        )
+
     return (
-        "Chunk này có lỗi tái tạo cao hơn baseline genuine; "
-        "các đặc trưng đóng góp lớn nhất gồm: " + ", ".join(labels) + "."
+        "This chunk has a low anomaly score. "
+        "The listed features are the largest reconstruction-error contributors within this chunk, "
+        "but they do not necessarily indicate a strong anomaly: " + feature_text + "."
     )
 
 
@@ -98,6 +158,9 @@ def infer_one_report(
     preprocessor = joblib.load(model_dir / "preprocessor.joblib")
     visual_scaler = preprocessor["visual_scaler"]
     audio_scaler = preprocessor["audio_scaler"]
+
+    baseline_path = model_dir / "feature_baseline.json"
+    baseline: Dict = load_json(baseline_path) if baseline_path.exists() else {}
 
     threshold_info = load_json(model_dir / "threshold.json")
     threshold = float(threshold_info["threshold"])
@@ -163,6 +226,7 @@ def infer_one_report(
         kl_score = float(kl_scores[idx])
         joint_score = float(joint_scores[idx])
         norm_score = float(min(1.0, joint_score / (threshold + 1e-12)))
+        level = _level(norm_score)
 
         # Per-feature errors (None where feature was missing)
         per_feat_err: Dict[str, Optional[float]] = {}
@@ -175,10 +239,23 @@ def infer_one_report(
         observed_errs = {k: v for k, v in per_feat_err.items() if v is not None}
         top_features = sorted(observed_errs, key=lambda k: observed_errs[k], reverse=True)[:top_n]
 
-        # Clean feature values from original (un-scaled, un-imputed) feature_dict
+        # Clean feature values + add baseline context per feature
         fd = row["feature_dict"]
-        visual_features = {n: _clean(fd.get(n)) for n in VISUAL_FEATURE_NAMES}
-        audio_features = {n: _clean(fd.get(n)) for n in AUDIO_FEATURE_NAMES}
+        visual_features = {}
+        for n in VISUAL_FEATURE_NAMES:
+            v = _clean(fd.get(n))
+            entry: Dict[str, Any] = {"value": v}
+            if v is not None:
+                entry.update(_baseline_context(n, v, baseline))
+            visual_features[n] = entry
+
+        audio_features = {}
+        for n in AUDIO_FEATURE_NAMES:
+            v = _clean(fd.get(n))
+            entry = {"value": v}
+            if v is not None:
+                entry.update(_baseline_context(n, v, baseline))
+            audio_features[n] = entry
 
         missing = [n for n, v in {**visual_features, **audio_features}.items() if v is None]
         modalities_analyzed = (["visual"] if avail_v[idx] else []) + (["audio_visual"] if avail_a[idx] else [])
@@ -201,12 +278,12 @@ def infer_one_report(
                 "joint_anomaly_score": joint_score,
                 "normalized_anomaly_score": norm_score,
                 "threshold": threshold,
-                "level": _level(norm_score),
+                "level": level,
             },
             "top_anomalous_features": top_features,
             "per_feature_reconstruction_error": per_feat_err,
             "raw_text_evidence": row["raw_text_evidence"],
-            "interpretation": _interpretation(top_features),
+            "interpretation": _interpretation(top_features, level, norm_score),
         }
 
     save_json(

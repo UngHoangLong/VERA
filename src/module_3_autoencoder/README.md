@@ -2,7 +2,7 @@
 
 ## Tổng quan
 
-Module 3 nhận đầu vào là các file `*_report.json` từ Module 2 (chứa 15 đặc trưng vật lý per chunk), huấn luyện một **Multimodal Variational Autoencoder với Product of Experts (MVAE-PoE)** trên video genuine, rồi dùng model đó để tính **anomaly score** cho từng chunk của video cần kiểm tra. Điểm cao → chunk đó bất thường so với baseline genuine.
+Module 3 nhận đầu vào là các file `*_report.json` từ Module 2 (chứa 21 đặc trưng vật lý per chunk), huấn luyện một **Multimodal Variational Autoencoder với Product of Experts (MVAE-PoE)** trên video genuine, rồi dùng model đó để tính **anomaly score** cho từng chunk của video cần kiểm tra. Điểm cao → chunk đó bất thường so với baseline genuine.
 
 ---
 
@@ -25,9 +25,9 @@ module_3_autoencoder/
 
 ## Phân chia Features theo Modality
 
-15 features từ Module 2 được chia thành 2 nhóm:
+21 features từ Module 2 được chia thành 2 nhóm:
 
-### Modality 1: Visual (9 features)
+### Modality 1: Visual (13 features)
 
 | Feature | Nguồn | Ý nghĩa |
 |---|---|---|
@@ -38,19 +38,25 @@ module_3_autoencoder/
 | `mean_landmark_jitter` | kinematics | Dao động landmark trung bình |
 | `max_kinematic_flicker` | kinematics | Dao động hình học khuôn mặt |
 | `max_rigid_violation` | kinematics | Vi phạm chuyển động cứng |
+| `blinking_variance` | kinematics | Phương sai tần suất nhấp mắt |
+| `mouth_movement_variance` | kinematics | Phương sai chuyển động miệng |
 | `gaze_anomaly` | eye_gaze | Suy giảm nhất quán hướng nhìn |
 | `iris_jitter_variance` | iris_jitter | Dao động bất thường mống mắt |
+| `max_blending_flicker` | blending | Dao động artifact ghép mặt |
+| `blending_variance` | blending | Phương sai artifact ghép mặt |
 
 **Đặc điểm:** Luôn có mặt khi video có khuôn mặt.
 
-### Modality 2: Audio/AV (6 features)
+### Modality 2: Audio/AV (8 features)
 
 | Feature | Nguồn | Ý nghĩa |
 |---|---|---|
 | `wer_score` | transcripts | Độ lệch nội dung ASR vs VSR |
 | `semantic_anomaly` | semantic_consistency | Suy giảm nhất quán ngữ nghĩa |
+| `min_cosine_anomaly` | semantic_consistency | Suy giảm nhất quán ngữ nghĩa tại điểm yếu nhất |
 | `temporal_anomaly` | temporal_sync | Suy giảm đồng bộ thời gian |
 | `min_temporal_anomaly` | temporal_sync | Điểm đồng bộ yếu nhất trong chunk |
+| `temporal_sync_variance` | temporal_sync | Phương sai đồng bộ thời gian trong chunk |
 | `vocal_jitter_relative` | audio_artifacts | Dao động vi mô tần số giọng |
 | `vocal_shimmer_relative` | audio_artifacts | Dao động vi mô biên độ giọng |
 
@@ -61,9 +67,9 @@ module_3_autoencoder/
 ## Kiến trúc MVAE-PoE
 
 ```
-x_visual (9) ──► VisualEncoder ──► μ_v, σ_v ─┐
-                                               ├──► PoE ──► μ_z, σ_z ──► z ──► VisualDecoder ──► x̂_visual
-x_audio  (6) ──► AudioEncoder  ──► μ_a, σ_a ─┘                    │      └──► AudioDecoder  ──► x̂_audio
+x_visual (13) ──► VisualEncoder ──► μ_v, σ_v ─┐
+                                                ├──► PoE ──► μ_z, σ_z ──► z ──► VisualDecoder ──► x̂_visual
+x_audio  (8)  ──► AudioEncoder  ──► μ_a, σ_a ─┘                    │      └──► AudioDecoder  ──► x̂_audio
                                                               Reparameterization
                                                               (chỉ khi training)
 ```
@@ -155,7 +161,7 @@ L_KL = -½ × mean_batch [ Σ_j (1 + logvar_j - μ²_j - exp(logvar_j)) ]
 
 | Tham số | Giá trị | Lý do |
 |---|---|---|
-| `hidden_dims` | [32, 16] | Sâu hơn (cũ: [10]), đủ capacity học quan hệ phi tuyến 15 features |
+| `hidden_dims` | [32, 16] | Sâu hơn (cũ: [10]), đủ capacity học quan hệ phi tuyến 21 features |
 | `latent_dim` | 6 | Compact đủ để anomaly detection nhạy, không quá rộng |
 | `beta` | 1.0 | ELBO chuẩn, cân bằng reconstruction và regularization |
 | `dropout` | 0.1 | Regularization nhẹ tránh overfitting |

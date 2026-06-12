@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import subprocess
@@ -5,15 +6,20 @@ import sys
 from functools import lru_cache
 from pathlib import Path
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
+from src.utils.paths import get_pipeline_paths, VALID_MODES
+
 
 # ==========================================
 # CẤU HÌNH ĐƯỜNG DẪN TỔNG QUÁT
 # ==========================================
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
-INTERIM_DIR = PROJECT_ROOT / "data" / "interim"
-PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
-FINAL_REPORTS_DIR = PROJECT_ROOT / "final_reports"
+# Mode-dependent paths (genuine/infer) — set by _configure_paths() before the
+# pipeline runs.
+INTERIM_DIR: Path
+PROCESSED_DIR: Path
+FINAL_REPORTS_DIR: Path
 
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
@@ -56,13 +62,30 @@ TCFD_MTDVOCALIST_ROOT = Path(os.environ.get(
 
 
 # ==========================================
-# CẤU HÌNH OUTPUT
+# CẤU HÌNH OUTPUT — set by _configure_paths()
 # ==========================================
-VSR_OUTPUT_ROOT = PROCESSED_DIR / "vsr_output"
-ASR_OUTPUT_ROOT = PROCESSED_DIR / "asr_output"
-CCFD_OUTPUT_ROOT = PROCESSED_DIR / "ccfd_output"
-SCFD_OUTPUT_ROOT = PROCESSED_DIR / "scfd_output"
-TCFD_OUTPUT_JSON = PROCESSED_DIR / "tcfd_output.json"
+VSR_OUTPUT_ROOT: Path
+ASR_OUTPUT_ROOT: Path
+CCFD_OUTPUT_ROOT: Path
+SCFD_OUTPUT_ROOT: Path
+TCFD_OUTPUT_JSON: Path
+
+
+def _configure_paths(mode: str) -> None:
+    """Resolve all mode-dependent paths (genuine/infer) before the pipeline runs."""
+    global INTERIM_DIR, PROCESSED_DIR, FINAL_REPORTS_DIR
+    global VSR_OUTPUT_ROOT, ASR_OUTPUT_ROOT, CCFD_OUTPUT_ROOT, SCFD_OUTPUT_ROOT, TCFD_OUTPUT_JSON
+
+    paths = get_pipeline_paths(mode, PROJECT_ROOT)
+    INTERIM_DIR = paths["interim_dir"]
+    PROCESSED_DIR = paths["processed_dir"]
+    FINAL_REPORTS_DIR = paths["final_reports_dir"]
+
+    VSR_OUTPUT_ROOT = PROCESSED_DIR / "vsr_output"
+    ASR_OUTPUT_ROOT = PROCESSED_DIR / "asr_output"
+    CCFD_OUTPUT_ROOT = PROCESSED_DIR / "ccfd_output"
+    SCFD_OUTPUT_ROOT = PROCESSED_DIR / "scfd_output"
+    TCFD_OUTPUT_JSON = PROCESSED_DIR / "tcfd_output.json"
 
 
 # ==========================================
@@ -374,6 +397,16 @@ def run_pipeline():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Module 2.2: audio-visual consistency pipeline.")
+    parser.add_argument(
+        "--mode", type=str, required=True, choices=VALID_MODES,
+        help="genuine: genuine-only videos for Module 3 training; "
+             "infer: videos to be scored/evaluated.",
+    )
+    args = parser.parse_args()
+
+    _configure_paths(args.mode)
+
     ok = run_pipeline()
 
     if ok:

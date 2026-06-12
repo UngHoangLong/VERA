@@ -19,7 +19,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
-from config import AUDIO_FEATURE_NAMES, VISUAL_FEATURE_NAMES
+from config import AUDIO_FEATURE_NAMES, FEATURE_NAMES, VISUAL_FEATURE_NAMES
 from dataset import (
     ModalityDataset,
     ModalityScaler,
@@ -31,6 +31,44 @@ from dataset import (
 )
 from loss import compute_joint_scores_dataset, elbo_loss
 from model import build_mvae_poe
+
+
+# ---------------------------------------------------------------------------
+# Baseline statistics (saved for MLLM context at inference time)
+# ---------------------------------------------------------------------------
+
+def _compute_feature_baseline(rows: List[Dict]) -> Dict:
+    """
+    Compute per-feature percentile markers from training rows.
+    Uses original (pre-scale) feature values so numbers are interpretable.
+    Saved to feature_baseline.json and loaded by infer.py.
+    """
+    from collections import defaultdict
+    buckets: Dict[str, List[float]] = defaultdict(list)
+    for row in rows:
+        for name, value in row["feature_dict"].items():
+            if value is not None and not (isinstance(value, float) and np.isnan(value)):
+                buckets[name].append(float(value))
+
+    baseline: Dict = {}
+    for name in FEATURE_NAMES:
+        vals = np.array(sorted(buckets.get(name, [])), dtype=np.float32)
+        if len(vals) == 0:
+            baseline[name] = None
+            continue
+        baseline[name] = {
+            "n": int(len(vals)),
+            "mean": float(np.mean(vals)),
+            "std": float(np.std(vals)),
+            "p5":  float(np.percentile(vals, 5)),
+            "p25": float(np.percentile(vals, 25)),
+            "p50": float(np.percentile(vals, 50)),
+            "p75": float(np.percentile(vals, 75)),
+            "p95": float(np.percentile(vals, 95)),
+            "p99": float(np.percentile(vals, 99)),
+            "sorted_values": vals.tolist(),   # kept for exact percentile_rank at inference
+        }
+    return baseline
 
 
 # ---------------------------------------------------------------------------
@@ -250,6 +288,10 @@ def main() -> None:
         lr=args.lr, weight_decay=args.weight_decay, patience=args.patience,
         beta=args.beta, device=device,
     )
+
+    # Save feature baseline (all training rows, for MLLM percentile context)
+    feature_baseline = _compute_feature_baseline(train_rows)
+    save_json(feature_baseline, model_dir / "feature_baseline.json")
 
     threshold_ds = val_ds if val_rows else train_ds
     scores = compute_joint_scores_dataset(model, threshold_ds, device, args.beta)

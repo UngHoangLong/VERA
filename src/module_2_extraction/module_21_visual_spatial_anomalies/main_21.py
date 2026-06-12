@@ -1,3 +1,4 @@
+import argparse
 import json
 import numpy as np
 from pathlib import Path
@@ -17,10 +18,12 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 from src.utils.file_io import collect_slide_pairs
+from src.utils.paths import get_pipeline_paths, VALID_MODES
 
 class VisualOrchestrator:
-    def __init__(self, interim_root="data/interim"):
+    def __init__(self, interim_root, final_report_root):
         self.interim_root = Path(interim_root)
+        self.final_report_root = Path(final_report_root)
         
     def _load_npy(self, file_path):
         """Hàm đọc file .npy an toàn."""
@@ -159,9 +162,7 @@ class VisualOrchestrator:
                 final_db[video_id][chunk_id] = chunk_report
                     
         # --- LƯU RA THƯ MỤC FINAL_REPORTS ---
-        # Tự động tìm thư mục root của project (lùi 3 cấp từ file main_visual.py)
-        project_root = Path(__file__).resolve().parents[3]
-        final_report_root = project_root / "final_reports"
+        final_report_root = self.final_report_root
         final_report_root.mkdir(parents=True, exist_ok=True)
         
         # Duyệt qua từng video trong final_db đã xử lý
@@ -199,5 +200,17 @@ class VisualOrchestrator:
 
     
 if __name__ == "__main__":
-    orchestrator = VisualOrchestrator(interim_root="data/interim")
+    parser = argparse.ArgumentParser(description="Module 2.1: visual-spatial anomaly extraction.")
+    parser.add_argument(
+        "--mode", type=str, required=True, choices=VALID_MODES,
+        help="genuine: genuine-only videos for Module 3 training; "
+             "infer: videos to be scored/evaluated.",
+    )
+    args = parser.parse_args()
+
+    paths = get_pipeline_paths(args.mode)
+    orchestrator = VisualOrchestrator(
+        interim_root=paths["interim_dir"],
+        final_report_root=paths["final_reports_dir"],
+    )
     orchestrator.process_dataset(fps=25.0)
