@@ -1,0 +1,68 @@
+{
+    "video_metadata": {
+        "video_id": "Emma_Watson",
+        "status": "fully_analyzed"
+    },
+    "chunks": {
+        "chunk_0007": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.07808541126871829,
+                    "max_blending_flicker": 0.015763641700991995,
+                    "blending_variance": 6.932170766102327e-06
+                },
+                "blur": {
+                    "mean_sharpness": 55.15025270474039,
+                    "max_blur_flicker": 26.136543985563932,
+                    "blur_flicker_variance": 25.26801821120522
+                },
+                "texture": {
+                    "mean_contrast": 107.74686695156146,
+                    "max_texture_flicker": 154.0633205219707,
+                    "asymmetry_max": 418.82672072621415
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.006151888985186815,
+                    "max_kinematic_flicker": 0.01779935695230961,
+                    "max_rigid_violation": 0.0138634592294693,
+                    "blinking_variance": 0.0018653033504203375,
+                    "mouth_movement_variance": 0.0006230680781394925
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.2298432434308194
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.8194324675918536
+                }
+            },
+            "frames_analyzed": 75,
+            "time_metadata": {
+                "start_sec": 14.5,
+                "end_sec": 17.5,
+                "duration": 3.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "there is suddenly this bloody influx",
+                    "vsr_text_lips": "there is suddenly this bloody",
+                    "wer_score": 0.166667
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.287129,
+                    "min_cosine_similarity": 0.022294,
+                    "percentile_3rd_cosine": 0.052464
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5103312134742737,
+                    "min_sync_score": 0.3991166353225708,
+                    "variance": 0.008116546244736844
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05623217943624912,
+                "vocal_shimmer_relative": 0.23159824311733246
+            }
+        }
+    }
+}

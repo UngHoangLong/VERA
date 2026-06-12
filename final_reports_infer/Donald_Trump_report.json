@@ -1,0 +1,668 @@
+{
+    "video_metadata": {
+        "video_id": "Donald_Trump",
+        "status": "fully_analyzed"
+    },
+    "chunks": {
+        "chunk_0000": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.09365136172003319,
+                    "max_blending_flicker": 0.01632333949507482,
+                    "blending_variance": 1.6523827522393157e-05
+                },
+                "blur": {
+                    "mean_sharpness": 10.369059068775751,
+                    "max_blur_flicker": 1.3866721894509464,
+                    "blur_flicker_variance": 0.13405544219684398
+                },
+                "texture": {
+                    "mean_contrast": 23.143438537747198,
+                    "max_texture_flicker": 5.686766764213999,
+                    "asymmetry_max": 24.416730265235817
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.005181257613003254,
+                    "max_kinematic_flicker": 0.01491566188633442,
+                    "max_rigid_violation": 0.016402989625930786,
+                    "blinking_variance": 0.000694246547483926,
+                    "mouth_movement_variance": 0.0003091067552183742
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.8092557180341292
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.7124346147995106
+                }
+            },
+            "frames_analyzed": 40,
+            "time_metadata": {
+                "start_sec": 2.5,
+                "end_sec": 4.1,
+                "duration": 1.6,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "yes i am",
+                    "vsr_text_lips": "yes i am",
+                    "wer_score": 0.0
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.40999,
+                    "min_cosine_similarity": 0.118881,
+                    "percentile_3rd_cosine": 0.12538
+                },
+                "temporal_sync": {
+                    "sync_score": 0.6885530948638916,
+                    "min_sync_score": 0.5132778882980347,
+                    "variance": 0.024312774684219995
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05262029981062823,
+                "vocal_shimmer_relative": 0.1611376404762268
+            }
+        },
+        "chunk_0001": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.08919830803380037,
+                    "max_blending_flicker": 0.012616459627329199,
+                    "blending_variance": 1.1208814224626605e-05
+                },
+                "blur": {
+                    "mean_sharpness": 9.829913347530827,
+                    "max_blur_flicker": 1.4238329793642333,
+                    "blur_flicker_variance": 0.10007996201138046
+                },
+                "texture": {
+                    "mean_contrast": 24.708618067748816,
+                    "max_texture_flicker": 5.851573802721894,
+                    "asymmetry_max": 24.32669085261032
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.0050050136633217335,
+                    "max_kinematic_flicker": 0.016569627448916435,
+                    "max_rigid_violation": 0.019135117530822754,
+                    "blinking_variance": 0.0005783196563860123,
+                    "mouth_movement_variance": 0.0003880594928471907
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.8125853732698118
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.7061966756240537
+                }
+            },
+            "frames_analyzed": 60,
+            "time_metadata": {
+                "start_sec": 2.5,
+                "end_sec": 4.9,
+                "duration": 2.4,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "yes i am beautiful",
+                    "vsr_text_lips": "yes i am beautiful",
+                    "wer_score": 0.0
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.401309,
+                    "min_cosine_similarity": 0.172839,
+                    "percentile_3rd_cosine": 0.185571
+                },
+                "temporal_sync": {
+                    "sync_score": 0.6168704628944397,
+                    "min_sync_score": 0.4688565135002136,
+                    "variance": 0.021604281948634174
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.03865922673420912,
+                "vocal_shimmer_relative": 0.16815626621246338
+            }
+        },
+        "chunk_0003": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06445236084904228,
+                    "max_blending_flicker": 0.013684006211180134,
+                    "blending_variance": 1.6646373582917507e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.570753475986038,
+                    "max_blur_flicker": 1.0233916320565042,
+                    "blur_flicker_variance": 0.05827322325429605
+                },
+                "texture": {
+                    "mean_contrast": 24.297639864017686,
+                    "max_texture_flicker": 3.7292177623769476,
+                    "asymmetry_max": 32.500541737744264
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.004712746944278479,
+                    "max_kinematic_flicker": 0.011508180759847164,
+                    "max_rigid_violation": 0.009562402963638306,
+                    "blinking_variance": 0.0001751661681516197,
+                    "mouth_movement_variance": 0.00044337451780399024
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.8064153311547574
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.399102587376455
+                }
+            },
+            "frames_analyzed": 48,
+            "time_metadata": {
+                "start_sec": 8.0,
+                "end_sec": 9.92,
+                "duration": 1.92,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "you said i was evil",
+                    "vsr_text_lips": "down in the harlem",
+                    "wer_score": 1.0
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.335703,
+                    "min_cosine_similarity": 0.154288,
+                    "percentile_3rd_cosine": 0.157248
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5841800570487976,
+                    "min_sync_score": 0.5024490356445312,
+                    "variance": 0.002383451339665346
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.01259869564753253,
+                "vocal_shimmer_relative": 0.1490643322467804
+            }
+        },
+        "chunk_0004": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.0650126777361177,
+                    "max_blending_flicker": 0.014755848946704203,
+                    "blending_variance": 1.2863477847423472e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.440353059918785,
+                    "max_blur_flicker": 0.8851089104740639,
+                    "blur_flicker_variance": 0.05238434637171405
+                },
+                "texture": {
+                    "mean_contrast": 24.51998153792914,
+                    "max_texture_flicker": 4.529554410534281,
+                    "asymmetry_max": 32.99511017888858
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.0047370921820402145,
+                    "max_kinematic_flicker": 0.011426043696701527,
+                    "max_rigid_violation": 0.008540838956832886,
+                    "blinking_variance": 0.00016064704629758361,
+                    "mouth_movement_variance": 0.0004307280606786668
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.7223484137689984
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.4053800340204343
+                }
+            },
+            "frames_analyzed": 48,
+            "time_metadata": {
+                "start_sec": 8.0,
+                "end_sec": 9.92,
+                "duration": 1.92,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "you said i was evil",
+                    "vsr_text_lips": "language the ultimate",
+                    "wer_score": 1.0
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.322179,
+                    "min_cosine_similarity": 0.121238,
+                    "percentile_3rd_cosine": 0.125696
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5839250087738037,
+                    "min_sync_score": 0.5031186938285828,
+                    "variance": 0.0023745091472165414
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.01259869564753253,
+                "vocal_shimmer_relative": 0.14902541041374207
+            }
+        },
+        "chunk_0005": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06434448933609221,
+                    "max_blending_flicker": 0.017371894409937895,
+                    "blending_variance": 1.5175810962126788e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.697345467245376,
+                    "max_blur_flicker": 1.2815889784547378,
+                    "blur_flicker_variance": 0.08601754258203936
+                },
+                "texture": {
+                    "mean_contrast": 25.960677335718568,
+                    "max_texture_flicker": 30.37998404519677,
+                    "asymmetry_max": 66.70401969760272
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.005168456584215164,
+                    "max_kinematic_flicker": 0.01811417192220688,
+                    "max_rigid_violation": 0.013151705265045166,
+                    "blinking_variance": 0.00035068344065469634,
+                    "mouth_movement_variance": 0.0003384561127890101
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.9218158247695727
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.7145934048368776
+                }
+            },
+            "frames_analyzed": 88,
+            "time_metadata": {
+                "start_sec": 10.5,
+                "end_sec": 14.02,
+                "duration": 3.52,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "i am always beautiful",
+                    "vsr_text_lips": "i am always a music foe",
+                    "wer_score": 0.75
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.488261,
+                    "min_cosine_similarity": 0.109213,
+                    "percentile_3rd_cosine": 0.123555
+                },
+                "temporal_sync": {
+                    "sync_score": 0.6300832629203796,
+                    "min_sync_score": 0.44092559814453125,
+                    "variance": 0.01946286706996503
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.04950281974043532,
+                "vocal_shimmer_relative": 0.12538392841815948
+            }
+        },
+        "chunk_0006": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06263694871532452,
+                    "max_blending_flicker": 0.02261257763975156,
+                    "blending_variance": 1.247593297474313e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.246730864054329,
+                    "max_blur_flicker": 9.486701245994084,
+                    "blur_flicker_variance": 0.9200564704374252
+                },
+                "texture": {
+                    "mean_contrast": 26.343837942931223,
+                    "max_texture_flicker": 43.378523723754896,
+                    "asymmetry_max": 93.60553567330855
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.0053695570677518845,
+                    "max_kinematic_flicker": 0.020209036767482758,
+                    "max_rigid_violation": 0.01092788577079773,
+                    "blinking_variance": 0.0007185736631436046,
+                    "mouth_movement_variance": 0.00042825229009227
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.3711533086669095
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.9123726899473354
+                }
+            },
+            "frames_analyzed": 100,
+            "time_metadata": {
+                "start_sec": 12.0,
+                "end_sec": 16.0,
+                "duration": 4.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "who said what about that you said you",
+                    "vsr_text_lips": "they lose your heart",
+                    "wer_score": 1.0
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.694918,
+                    "min_cosine_similarity": 0.521953,
+                    "percentile_3rd_cosine": 0.530945
+                },
+                "temporal_sync": {
+                    "sync_score": 0.6289588212966919,
+                    "min_sync_score": 0.4126362204551697,
+                    "variance": 0.02115383309982044
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.05735400191659422,
+                "vocal_shimmer_relative": 0.14540737867355347
+            }
+        },
+        "chunk_0007": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06320695392236166,
+                    "max_blending_flicker": 0.020089285714285705,
+                    "blending_variance": 1.786249870377523e-05
+                },
+                "blur": {
+                    "mean_sharpness": 6.990647104842682,
+                    "max_blur_flicker": 1.1122632292632737,
+                    "blur_flicker_variance": 0.05073597688302244
+                },
+                "texture": {
+                    "mean_contrast": 24.776317772951096,
+                    "max_texture_flicker": 46.91982208751362,
+                    "asymmetry_max": 93.68268669639473
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.005432567093521357,
+                    "max_kinematic_flicker": 0.029175791889429092,
+                    "max_rigid_violation": 0.00940483808517456,
+                    "blinking_variance": 0.0006845628399728867,
+                    "mouth_movement_variance": 0.0004399629837215975
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.3688216733823744
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.9910188296807511
+                }
+            },
+            "frames_analyzed": 100,
+            "time_metadata": {
+                "start_sec": 14.0,
+                "end_sec": 18.0,
+                "duration": 4.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "what about that you said you said are you beautiful",
+                    "vsr_text_lips": "you say oh you say oh you are beautiful and i say",
+                    "wer_score": 1.0
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.463607,
+                    "min_cosine_similarity": 0.156109,
+                    "percentile_3rd_cosine": 0.174406
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5404481291770935,
+                    "min_sync_score": 0.45423635840415955,
+                    "variance": 0.005281821985244017
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.0556329059177362,
+                "vocal_shimmer_relative": 0.14610835909843445
+            }
+        },
+        "chunk_0008": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06737225490558471,
+                    "max_blending_flicker": 0.02241847826086956,
+                    "blending_variance": 2.0573338453229467e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.852214614804938,
+                    "max_blur_flicker": 1.99843326886376,
+                    "blur_flicker_variance": 0.12711464124119487
+                },
+                "texture": {
+                    "mean_contrast": 24.50343712751263,
+                    "max_texture_flicker": 9.34957210568367,
+                    "asymmetry_max": 52.73227918082336
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.005260270554572344,
+                    "max_kinematic_flicker": 0.01432616077363491,
+                    "max_rigid_violation": 0.010856002569198608,
+                    "blinking_variance": 0.0004816279348641078,
+                    "mouth_movement_variance": 0.0006347513780003541
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.1949517818930108
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.5333561610025663
+                }
+            },
+            "frames_analyzed": 100,
+            "time_metadata": {
+                "start_sec": 16.0,
+                "end_sec": 20.0,
+                "duration": 4.0,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "you said are you beautiful and i said i am and i was almost going to say that",
+                    "vsr_text_lips": "say oh you are beautiful and i said i am high out of this",
+                    "wer_score": 0.666667
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.340342,
+                    "min_cosine_similarity": 0.193775,
+                    "percentile_3rd_cosine": 0.202113
+                },
+                "temporal_sync": {
+                    "sync_score": 0.536864697933197,
+                    "min_sync_score": 0.46167293190956116,
+                    "variance": 0.0017785492078168375
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.02301877106182927,
+                "vocal_shimmer_relative": 0.11075633764266968
+            }
+        },
+        "chunk_0010": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06764954714691132,
+                    "max_blending_flicker": 0.01931288819875776,
+                    "blending_variance": 1.7990796894662033e-05
+                },
+                "blur": {
+                    "mean_sharpness": 9.09606588512439,
+                    "max_blur_flicker": 4.3323035357909685,
+                    "blur_flicker_variance": 0.5718818132639134
+                },
+                "texture": {
+                    "mean_contrast": 20.985717410000742,
+                    "max_texture_flicker": 9.627749675330833,
+                    "asymmetry_max": 45.07469019578604
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.004955099429935217,
+                    "max_kinematic_flicker": 0.01261586882174015,
+                    "max_rigid_violation": 0.011059671640396118,
+                    "blinking_variance": 0.000493567671061268,
+                    "mouth_movement_variance": 0.0002390138819414398
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.4689971907305232
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 1.053023669586079
+                }
+            },
+            "frames_analyzed": 76,
+            "time_metadata": {
+                "start_sec": 21.0,
+                "end_sec": 24.04,
+                "duration": 3.04,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "she is thinking i am not beautiful",
+                    "vsr_text_lips": "well i am going for",
+                    "wer_score": 0.714286
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.509472,
+                    "min_cosine_similarity": 0.113283,
+                    "percentile_3rd_cosine": 0.116628
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5508628487586975,
+                    "min_sync_score": 0.4701462984085083,
+                    "variance": 0.0028811191602230585
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.03996870473218192,
+                "vocal_shimmer_relative": 0.1952456384897232
+            }
+        },
+        "chunk_0011": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.06354855667057775,
+                    "max_blending_flicker": 0.02067961165048543,
+                    "blending_variance": 1.978497190226585e-05
+                },
+                "blur": {
+                    "mean_sharpness": 7.7907426539800895,
+                    "max_blur_flicker": 3.5586137719834543,
+                    "blur_flicker_variance": 0.5462387323367612
+                },
+                "texture": {
+                    "mean_contrast": 15.939580070666567,
+                    "max_texture_flicker": 5.315723616917483,
+                    "asymmetry_max": 15.208085143098668
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.0058198366314172745,
+                    "max_kinematic_flicker": 0.016915425658226013,
+                    "max_rigid_violation": 0.015853911638259888,
+                    "blinking_variance": 0.0006401531596260389,
+                    "mouth_movement_variance": 0.0005471144752088805
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.20411442940165175
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.9389339797564848
+                }
+            },
+            "frames_analyzed": 76,
+            "time_metadata": {
+                "start_sec": 23.0,
+                "end_sec": 26.04,
+                "duration": 3.04,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "i am not beautiful and i am always beautiful",
+                    "vsr_text_lips": "you always move",
+                    "wer_score": 0.888889
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.308636,
+                    "min_cosine_similarity": 0.068305,
+                    "percentile_3rd_cosine": 0.09406
+                },
+                "temporal_sync": {
+                    "sync_score": 0.5596836805343628,
+                    "min_sync_score": 0.4789201319217682,
+                    "variance": 0.003258393979016852
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.02001369159409665,
+                "vocal_shimmer_relative": 0.16918765008449554
+            }
+        },
+        "chunk_0012": {
+            "visual_spatial": {
+                "blending": {
+                    "mean_edge_density": 0.058904226226158464,
+                    "max_blending_flicker": 0.021283769523005494,
+                    "blending_variance": 2.3229269272756874e-05
+                },
+                "blur": {
+                    "mean_sharpness": 6.647065674306997,
+                    "max_blur_flicker": 2.543935684987898,
+                    "blur_flicker_variance": 0.1302123979991758
+                },
+                "texture": {
+                    "mean_contrast": 15.495097371863583,
+                    "max_texture_flicker": 5.227814853911186,
+                    "asymmetry_max": 16.167152163094855
+                },
+                "kinematics": {
+                    "mean_landmark_jitter": 0.0068166423588991165,
+                    "max_kinematic_flicker": 0.028736338019371033,
+                    "max_rigid_violation": 0.018286913633346558,
+                    "blinking_variance": 0.00043051366797765815,
+                    "mouth_movement_variance": 0.00048270048379463567
+                },
+                "eye_gaze": {
+                    "gaze_pose_sync_score": 0.22475895566931828
+                },
+                "iris_jitter": {
+                    "iris_jitter_variance": 0.5857400141602827
+                }
+            },
+            "frames_analyzed": 72,
+            "time_metadata": {
+                "start_sec": 24.0,
+                "end_sec": 26.88,
+                "duration": 2.88,
+                "source": "module_2.1_refined_by_frames"
+            },
+            "audio_visual_consistency": {
+                "transcripts": {
+                    "asr_text_audio": "and i am always beautiful",
+                    "vsr_text_lips": "oh it is beautiful",
+                    "wer_score": 0.8
+                },
+                "semantic_consistency": {
+                    "mean_cosine_similarity": 0.471787,
+                    "min_cosine_similarity": 0.125562,
+                    "percentile_3rd_cosine": 0.142677
+                },
+                "temporal_sync": {
+                    "sync_score": 0.597249448299408,
+                    "min_sync_score": 0.4886365830898285,
+                    "variance": 0.010034108288561827
+                }
+            },
+            "audio_artifacts": {
+                "vocal_jitter_relative": 0.01969929005808536,
+                "vocal_shimmer_relative": 0.11634107679128647
+            }
+        }
+    }
+}

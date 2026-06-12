@@ -1,3 +1,4 @@
+import argparse
 import sys
 import os
 import json
@@ -9,6 +10,7 @@ from moviepy import VideoFileClip
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from src.utils.face_crop import AdvancedFaceCropper
+from src.utils.paths import get_pipeline_paths, VALID_MODES
 
 
 class VideoSlicer:
@@ -215,11 +217,20 @@ class VideoSlicer:
 
 
 if __name__ == "__main__":
-    RAW_DATA_DIR = "data/raw"
-    INTERIM_DATA_DIR = "data/interim"
+    parser = argparse.ArgumentParser(description="Module 1: slice raw videos into chunks.")
+    parser.add_argument(
+        "--mode", type=str, required=True, choices=VALID_MODES,
+        help="genuine: genuine-only videos for Module 3 training; "
+             "infer: videos to be scored/evaluated.",
+    )
+    args = parser.parse_args()
 
-    os.makedirs(RAW_DATA_DIR, exist_ok=True)
-    os.makedirs(INTERIM_DATA_DIR, exist_ok=True)
+    paths = get_pipeline_paths(args.mode)
+    RAW_DATA_DIR = paths["raw_dir"]
+    INTERIM_DATA_DIR = paths["interim_dir"]
+
+    RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    INTERIM_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     slicer = VideoSlicer(chunk_duration=4.0, stride=2.0, slide_duration=0.5)
     slicer.process_directory(RAW_DATA_DIR, INTERIM_DATA_DIR)

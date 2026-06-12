@@ -6,3 +6,7 @@ DFRAG_venv/
 /pretrained_model
 /.cache
 /blobs
+/ForgeryNet
+/paper
+.DS_Store
+/src/module_3_autoencoder/module3_models
