@@ -17,6 +17,20 @@ class AdvancedFaceCropper:
         except ImportError:
             raise ImportError('Vui lòng cài đặt mediapipe: pip install mediapipe')
 
+    def _landmarks_bbox(self, landmarks, w, h):
+        xs = [lm.x * w for lm in landmarks]
+        ys = [lm.y * h for lm in landmarks]
+        return int(min(xs)), int(min(ys)), int(max(xs)), int(max(ys))
+
+    def _iou(self, b0, b1):
+        ix1, iy1 = max(b0[0], b1[0]), max(b0[1], b1[1])
+        ix2, iy2 = min(b0[2], b1[2]), min(b0[3], b1[3])
+        inter = max(0, ix2 - ix1) * max(0, iy2 - iy1)
+        a0 = (b0[2] - b0[0]) * (b0[3] - b0[1])
+        a1 = (b1[2] - b1[0]) * (b1[3] - b1[1])
+        union = a0 + a1 - inter
+        return inter / union if union > 0 else 0.0
+
     def _is_valid_face(self, landmarks_list, w):
         """
         Đo khoảng cách từ mũi đến 2 bên má.
@@ -53,12 +67,23 @@ class AdvancedFaceCropper:
         raw_landmarks = None
 
         if results.multi_face_landmarks:
-            # ĐIỀU KIỆN 1: Phát hiện từ 2 mặt trở lên -> GIẾT
+            chosen_idx = 0
+            # ĐIỀU KIỆN 1: Phát hiện từ 2 mặt trở lên
             if len(results.multi_face_landmarks) >= 2:
-                is_fatal = True
-                return None, None, None, False, is_fatal
-                
-            face_landmarks = results.multi_face_landmarks[0]
+                bb0 = self._landmarks_bbox(results.multi_face_landmarks[0].landmark, w, h)
+                bb1 = self._landmarks_bbox(results.multi_face_landmarks[1].landmark, w, h)
+                if self._iou(bb0, bb1) < 0.3:
+                    # 2 box tách rời → 2 người thật → GIẾT
+                    is_fatal = True
+                    return None, None, None, False, is_fatal
+                # double detection → chọn box có diện tích gần frame trước nhất
+                if fallback_bbox is not None:
+                    prev_area = fallback_bbox[2] * fallback_bbox[3]
+                    area0 = (bb0[2] - bb0[0]) * (bb0[3] - bb0[1])
+                    area1 = (bb1[2] - bb1[0]) * (bb1[3] - bb1[1])
+                    chosen_idx = 0 if abs(area0 - prev_area) <= abs(area1 - prev_area) else 1
+
+            face_landmarks = results.multi_face_landmarks[chosen_idx]
             
             # ĐIỀU KIỆN 2: Quay ngang 90 độ (Mất môi/mắt) -> GIẾT
             if not self._is_valid_face(face_landmarks.landmark, w):
