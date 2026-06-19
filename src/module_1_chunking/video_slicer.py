@@ -229,8 +229,25 @@ if __name__ == "__main__":
     RAW_DATA_DIR = paths["raw_dir"]
     INTERIM_DATA_DIR = paths["interim_dir"]
 
-    RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
     INTERIM_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     slicer = VideoSlicer(chunk_duration=4.0, stride=2.0, slide_duration=0.5)
-    slicer.process_directory(RAW_DATA_DIR, INTERIM_DATA_DIR)
+
+    if args.mode == "genuine":
+        # Data is pre-split into train/ and val/ subdirs (matches Drive/MAVOS-DD structure)
+        for split in ("train", "val"):
+            split_dir = RAW_DATA_DIR / split
+            if split_dir.is_dir():
+                print(f"\n--- Processing genuine/{split} ---")
+                slicer.process_directory(split_dir, INTERIM_DATA_DIR)
+            else:
+                print(f"Warning: {split_dir} not found, skipping {split}.")
+    else:
+        # infer data is organised into per-method subdirs (real/, hififace/, roop/, ...)
+        method_dirs = sorted(d for d in RAW_DATA_DIR.iterdir() if d.is_dir())
+        if method_dirs:
+            for md in method_dirs:
+                print(f"\n--- Processing infer/{md.name} ---")
+                slicer.process_directory(md, INTERIM_DATA_DIR)
+        else:
+            slicer.process_directory(RAW_DATA_DIR, INTERIM_DATA_DIR)
