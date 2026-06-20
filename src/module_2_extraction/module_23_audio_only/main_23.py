@@ -4,6 +4,7 @@ import os
 import sys
 from pathlib import Path
 from audio_artifacts import AudioArtifactFeature
+from tqdm import tqdm
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 from src.utils.paths import get_pipeline_paths, VALID_MODES
@@ -22,11 +23,14 @@ class AudioOrchestrator:
         video_interim_dir = self.base_interim_dir / video_id
 
         if not report_path.exists():
-            print(f"Không tìm thấy báo cáo tại: {report_path}")
+            tqdm.write(f"Không tìm thấy báo cáo tại: {report_path}")
             return
 
         with open(report_path, 'r', encoding='utf-8') as f:
             report_data = json.load(f)
+
+        if report_data.get("video_metadata", {}).get("status") == "audio_artifacts_completed":
+            return
 
         chunks_data = report_data.get("chunks", {})
         if not chunks_data:
@@ -68,7 +72,7 @@ class AudioOrchestrator:
             return
             
         videos = sorted([d.name for d in self.base_interim_dir.iterdir() if d.is_dir()])
-        for vid in videos:
+        for vid in tqdm(videos, desc="Module 2.3", unit="video"):
             self.process_video_report(vid)
 
 # ==========================================
