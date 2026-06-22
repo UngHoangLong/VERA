@@ -8,17 +8,10 @@ import cv2
 import numpy as np
 from moviepy import VideoFileClip
 from tqdm import tqdm
-from concurrent.futures import ProcessPoolExecutor, as_completed
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from src.utils.face_crop import AdvancedFaceCropper
 from src.utils.paths import get_pipeline_paths, VALID_MODES
-
-
-def _worker_process_video(args):
-    video_path, output_dir, chunk_duration, stride, slide_duration = args
-    slicer = VideoSlicer(chunk_duration=chunk_duration, stride=stride, slide_duration=slide_duration)
-    slicer.process_video(video_path, output_dir)
 
 
 class VideoSlicer:
@@ -34,7 +27,7 @@ class VideoSlicer:
             margin_ratio=margin_ratio
         )
 
-    def process_directory(self, input_dir, output_dir, workers=1):
+    def process_directory(self, input_dir, output_dir):
         input_dir = Path(input_dir)
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -48,34 +41,18 @@ class VideoSlicer:
             print(f"Không tìm thấy video nào trong: {input_dir}")
             return
 
-        todo = [vf for vf in video_files if not (output_dir / vf.stem).is_dir()]
-        skipped = len(video_files) - len(todo)
+        skipped = 0
+        for video_file in tqdm(video_files, desc=input_dir.name, unit="video"):
+            if (output_dir / video_file.stem).is_dir():
+                skipped += 1
+                continue
+            try:
+                self.process_video(video_file, output_dir)
+            except Exception as e:
+                tqdm.write(f"Lỗi khi xử lý {video_file.name}: {e}")
+
         if skipped:
             tqdm.write(f"Bỏ qua {skipped}/{len(video_files)} video đã xử lý trước đó.")
-
-        if not todo:
-            return
-
-        if workers > 1:
-            args_list = [
-                (vf, output_dir, self.chunk_duration, self.stride, self.slide_duration)
-                for vf in todo
-            ]
-            with ProcessPoolExecutor(max_workers=workers) as pool:
-                futures = {pool.submit(_worker_process_video, a): a[0] for a in args_list}
-                for future in tqdm(as_completed(futures), total=len(futures),
-                                   desc=input_dir.name, unit="video"):
-                    try:
-                        future.result()
-                    except Exception as e:
-                        vf = futures[future]
-                        tqdm.write(f"Lỗi khi xử lý {vf.name}: {e}")
-        else:
-            for video_file in tqdm(todo, desc=input_dir.name, unit="video"):
-                try:
-                    self.process_video(video_file, output_dir)
-                except Exception as e:
-                    tqdm.write(f"Lỗi khi xử lý {video_file.name}: {e}")
 
     def process_video(self, video_path, output_dir):
         video_path = Path(video_path)
@@ -254,8 +231,6 @@ if __name__ == "__main__":
         help="genuine: genuine-only videos for Module 3 training; "
              "infer: videos to be scored/evaluated.",
     )
-    parser.add_argument("--workers", type=int, default=1,
-                        help="Number of parallel workers (default 1 = sequential).")
     args = parser.parse_args()
 
     paths = get_pipeline_paths(args.mode)
@@ -272,7 +247,7 @@ if __name__ == "__main__":
             split_dir = RAW_DATA_DIR / split
             if split_dir.is_dir():
                 print(f"\n--- Processing genuine/{split} ---")
-                slicer.process_directory(split_dir, INTERIM_DATA_DIR, workers=args.workers)
+                slicer.process_directory(split_dir, INTERIM_DATA_DIR)
             else:
                 print(f"Warning: {split_dir} not found, skipping {split}.")
     else:
@@ -281,6 +256,6 @@ if __name__ == "__main__":
         if method_dirs:
             for md in method_dirs:
                 print(f"\n--- Processing infer/{md.name} ---")
-                slicer.process_directory(md, INTERIM_DATA_DIR, workers=args.workers)
+                slicer.process_directory(md, INTERIM_DATA_DIR)
         else:
-            slicer.process_directory(RAW_DATA_DIR, INTERIM_DATA_DIR, workers=args.workers)
+            slicer.process_directory(RAW_DATA_DIR, INTERIM_DATA_DIR)
