@@ -2,6 +2,7 @@ import argparse
 import sys
 import os
 import json
+import multiprocessing
 from pathlib import Path
 import shutil
 import cv2
@@ -61,7 +62,8 @@ class VideoSlicer:
                 (vf, output_dir, self.chunk_duration, self.stride, self.slide_duration)
                 for vf in todo
             ]
-            with ProcessPoolExecutor(max_workers=workers) as pool:
+            ctx = multiprocessing.get_context("spawn")
+            with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
                 futures = {pool.submit(_worker_process_video, a): a[0] for a in args_list}
                 for future in tqdm(as_completed(futures), total=len(futures),
                                    desc=input_dir.name, unit="video"):
