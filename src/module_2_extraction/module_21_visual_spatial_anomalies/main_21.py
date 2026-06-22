@@ -3,6 +3,7 @@ import json
 import numpy as np
 from pathlib import Path
 import re
+from tqdm import tqdm
 
 # Đảm bảo 4 file này nằm cùng thư mục với main_visual.py
 from blending import BlendingFeature
@@ -100,10 +101,14 @@ class VisualOrchestrator:
         
         # Quét từng video
         video_dirs = sorted([d for d in self.interim_root.iterdir() if d.is_dir()])
-        for video_dir in video_dirs:
+        skipped = 0
+        for video_dir in tqdm(video_dirs, desc="Module 2.1", unit="video"):
             video_id = video_dir.name
+            if (self.final_report_root / f"{video_id}_report.json").exists():
+                skipped += 1
+                continue
             final_db[video_id] = {}
-            print(f"Đang xử lý Video: {video_id}")
+            tqdm.write(f"Đang xử lý Video: {video_id}")
             
             # Quét từng Chunk (4s)
             chunk_dirs = sorted(video_dir.glob("chunk_*"))
@@ -160,7 +165,10 @@ class VisualOrchestrator:
                     "source": "module_2.1_refined_by_frames"
                 }
                 final_db[video_id][chunk_id] = chunk_report
-                    
+
+        if skipped:
+            tqdm.write(f"Bỏ qua {skipped}/{len(video_dirs)} video đã xử lý trước đó.")
+
         # --- LƯU RA THƯ MỤC FINAL_REPORTS ---
         final_report_root = self.final_report_root
         final_report_root.mkdir(parents=True, exist_ok=True)
