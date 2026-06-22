@@ -7,7 +7,6 @@ import shutil
 import cv2
 import numpy as np
 from moviepy import VideoFileClip
-from tqdm import tqdm
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from src.utils.face_crop import AdvancedFaceCropper
@@ -41,18 +40,11 @@ class VideoSlicer:
             print(f"Không tìm thấy video nào trong: {input_dir}")
             return
 
-        skipped = 0
-        for video_file in tqdm(video_files, desc=input_dir.name, unit="video"):
-            if (output_dir / video_file.stem).is_dir():
-                skipped += 1
-                continue
+        for video_file in video_files:
             try:
                 self.process_video(video_file, output_dir)
             except Exception as e:
-                tqdm.write(f"Lỗi khi xử lý {video_file.name}: {e}")
-
-        if skipped:
-            tqdm.write(f"Bỏ qua {skipped}/{len(video_files)} video đã xử lý trước đó.")
+                print(f"Lỗi khi xử lý {video_file.name}: {e}")
 
     def process_video(self, video_path, output_dir):
         video_path = Path(video_path)

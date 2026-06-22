@@ -19,7 +19,6 @@ import argparse
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from tqdm import tqdm
 
 import joblib
 import numpy as np
@@ -339,14 +338,10 @@ def main() -> None:
     if not report_paths:
         raise FileNotFoundError("No report files found.")
 
-    output_dir = Path(args.output_dir)
-    written = []
-    for p in tqdm(report_paths, desc="Module 3 infer", unit="report"):
-        video_id = p.stem.replace("_report", "")
-        if (output_dir / f"{video_id}_evidence.json").exists():
-            tqdm.write(f"Skip {video_id} (đã có evidence)")
-            continue
-        written.append(str(infer_one_report(p, Path(args.model_dir), output_dir, device, args.top_n)))
+    written = [
+        str(infer_one_report(p, Path(args.model_dir), Path(args.output_dir), device, args.top_n))
+        for p in report_paths
+    ]
     print(json.dumps({"status": "ok", "num_reports": len(written), "outputs": written}, ensure_ascii=False, indent=2))
 
 
