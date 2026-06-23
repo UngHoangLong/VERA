@@ -19,7 +19,55 @@ import sys
 from typing import Any, Dict, List
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from src.module_3_autoencoder.config import FEATURE_INTERPRETATIONS
+from src.module_3_autoencoder.config import FEATURE_INTERPRETATIONS  # noqa: F401 (kept for reference)
+
+# ---------------------------------------------------------------------------
+# Metric glossary for the MLLM.
+#
+# Unlike FEATURE_INTERPRETATIONS (terse, used inside the evidence JSON), these
+# entries also state WHAT A HIGH VALUE IMPLIES for deepfake detection, so the
+# MLLM can reason from a metric to a manipulation type instead of guessing.
+# ---------------------------------------------------------------------------
+
+METRIC_GLOSSARY = {
+    # GROUP 1 — visual artifacts (blending boundary / texture inconsistency)
+    "max_blur_flicker":      "frame-to-frame sharpness flicker on the face; high -> a synthesized/blended "
+                             "region whose sharpness does not match the real frame (face-swap)",
+    "blur_flicker_variance": "how unstable the blur flicker is over time; high -> intermittent blending artifacts",
+    "max_texture_flicker":   "surface skin-texture flicker; high -> generated texture that fails to stay "
+                             "consistent across frames (synthesis/swap)",
+    "asymmetry_max":         "left-right facial texture asymmetry; high -> imperfect blending of a pasted face",
+    "max_blending_flicker":  "flicker at the face-blend boundary; high -> visible seam where a fake face is "
+                             "composited onto the head (strong face-swap signal)",
+    "blending_variance":     "instability of blending artifacts over time; high -> ongoing compositing seam",
+
+    # GROUP 2 — facial dynamics (unnatural motion / reenactment)
+    "mean_landmark_jitter":  "average landmark instability; high -> jittery, non-physical facial motion",
+    "max_kinematic_flicker": "facial-geometry flicker; high -> geometry that snaps between frames (reenactment)",
+    "max_rigid_violation":   "violation of rigid head motion; high -> face parts moving independently of the "
+                             "head, as in puppeteering/reenactment",
+    "blinking_variance":     "irregularity of blink timing; high -> unnatural/absent blinking typical of synthesis",
+    "mouth_movement_variance":"irregularity of mouth motion; high -> mouth driven by a model rather than real speech",
+    "gaze_anomaly":          "mismatch between gaze direction and head pose; high -> eyes that do not track "
+                             "naturally with the head (face-swap/reenactment)",
+    "iris_jitter_variance":  "abnormal iris-region jitter; high -> eyes synthesized or poorly aligned",
+
+    # GROUP 3 — audio-visual coherence (lip-sync / content mismatch)
+    "wer_score":             "disagreement between what is HEARD (ASR) and what the LIPS say (VSR); high -> "
+                             "audio track does not match lip motion (lip-sync deepfake or dubbed audio)",
+    "semantic_anomaly":      "drop in audio-visual semantic agreement; high -> speech meaning and face/mouth "
+                             "do not align",
+    "min_cosine_anomaly":    "worst-point audio-visual semantic disagreement in the chunk; high -> a clear "
+                             "moment of mismatch",
+    "temporal_anomaly":      "drop in audio-visual temporal sync; high -> lips and sound are out of phase "
+                             "(lip-sync manipulation)",
+    "min_temporal_anomaly":  "worst-point temporal desync in the chunk; high -> a clear out-of-sync moment",
+    "temporal_sync_variance":"how much sync quality fluctuates; high -> unstable lip-sync",
+
+    # GROUP 4 — audio artifacts (synthetic voice)
+    "vocal_jitter_relative": "micro instability of vocal pitch; high -> synthetic/cloned voice (TTS/vocoder)",
+    "vocal_shimmer_relative":"micro instability of vocal amplitude; high -> synthetic/cloned voice (TTS/vocoder)",
+}
 
 # ---------------------------------------------------------------------------
 # Feature grouping (4 groups for the MLLM to reason modality-by-modality)
@@ -64,9 +112,13 @@ _SIGNAL_TO_SEVERITY = {
 # ---------------------------------------------------------------------------
 
 def build_metric_glossary() -> str:
-    lines = ["METRIC GLOSSARY (what each feature measures; higher = more anomalous):"]
-    for name, desc in FEATURE_INTERPRETATIONS.items():
-        lines.append(f"  - {name}: {desc}")
+    lines = ["METRIC GLOSSARY (what each feature measures and what a HIGH value implies):"]
+    for gname, gfeats in GROUPS:
+        lines.append(f"\n{gname}")
+        for fn in gfeats:
+            desc = METRIC_GLOSSARY.get(fn)
+            if desc:
+                lines.append(f"  - {fn}: {desc}")
     return "\n".join(lines)
 
 
