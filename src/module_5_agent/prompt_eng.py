@@ -46,11 +46,15 @@ METRIC_GLOSSARY = {
     "max_kinematic_flicker": "facial-geometry flicker; high -> geometry that snaps between frames (reenactment)",
     "max_rigid_violation":   "violation of rigid head motion; high -> face parts moving independently of the "
                              "head, as in puppeteering/reenactment",
-    "blinking_variance":     "irregularity of blink timing; high -> unnatural/absent blinking typical of synthesis",
-    "mouth_movement_variance":"irregularity of mouth motion; high -> mouth driven by a model rather than real speech",
+    "blinking_variance":     "variance of eye-aspect-ratio (blink activity); LOW -> little/no blinking, a "
+                             "classic synthesis giveaway. A high value is normal human blinking.",
+    "mouth_movement_variance":"variance of mouth opening; LOW (especially while speech is present) -> mouth "
+                             "barely moves, typical of poor lip-sync or synthesis. High is normal speech.",
     "gaze_anomaly":          "mismatch between gaze direction and head pose; high -> eyes that do not track "
                              "naturally with the head (face-swap/reenactment)",
-    "iris_jitter_variance":  "abnormal iris-region jitter; high -> eyes synthesized or poorly aligned",
+    "iris_jitter_variance":  "variance of iris position relative to the eye; LOW -> a 'dead eye' that stays "
+                             "unnaturally still (deepfakes rarely reproduce natural eye micro-movement). "
+                             "A high value is normal natural gaze shift.",
 
     # GROUP 3 — audio-visual coherence (lip-sync / content mismatch)
     "wer_score":             "disagreement between what is HEARD (ASR) and what the LIPS say (VSR); high -> "
@@ -65,8 +69,10 @@ METRIC_GLOSSARY = {
     "temporal_sync_variance":"how much sync quality fluctuates; high -> unstable lip-sync",
 
     # GROUP 4 — audio artifacts (synthetic voice)
-    "vocal_jitter_relative": "micro instability of vocal pitch; high -> synthetic/cloned voice (TTS/vocoder)",
-    "vocal_shimmer_relative":"micro instability of vocal amplitude; high -> synthetic/cloned voice (TTS/vocoder)",
+    "vocal_jitter_relative": "natural micro-fluctuation of vocal pitch; LOW -> too-perfect cycles typical "
+                             "of TTS/voice-cloning (a real larynx always jitters). High is a normal human voice.",
+    "vocal_shimmer_relative":"natural micro-fluctuation of vocal amplitude; LOW -> too-perfect amplitude "
+                             "typical of synthetic voice. High is a normal human voice.",
 }
 
 # ---------------------------------------------------------------------------
@@ -98,13 +104,34 @@ GROUPS = [
     ("GROUP 4 — AUDIO ARTIFACTS",      GROUP_4_AUDIO_ARTIFACTS),
 ]
 
-_SIGNAL_TO_SEVERITY = {
-    "FAR_ABOVE_NORMAL": "CRITICAL",
-    "ABOVE_NORMAL": "ELEVATED",
-    "NORMAL": "NORMAL",
-    "BELOW_NORMAL": "NORMAL",
-    "FAR_BELOW_NORMAL": "NORMAL",
+# Features where an abnormally LOW value is the deepfake signal (too smooth /
+# too static / too perfect). Genuine humans show natural micro-variation here,
+# so for these a FAR_BELOW_NORMAL signal is CRITICAL, while high is normal.
+# Every other feature follows the default (high = suspicious).
+LOW_IS_SUSPICIOUS = {
+    "vocal_jitter_relative",
+    "vocal_shimmer_relative",
+    "blinking_variance",
+    "mouth_movement_variance",
+    "iris_jitter_variance",
 }
+
+
+def _severity(name: str, signal: str) -> str:
+    """Map a baseline signal to a severity, accounting for which direction is
+    anomalous for this specific feature."""
+    if name in LOW_IS_SUSPICIOUS:
+        if signal == "FAR_BELOW_NORMAL":
+            return "CRITICAL"
+        if signal == "BELOW_NORMAL":
+            return "ELEVATED"
+        return "NORMAL"
+    # default: high is suspicious
+    if signal == "FAR_ABOVE_NORMAL":
+        return "CRITICAL"
+    if signal == "ABOVE_NORMAL":
+        return "ELEVATED"
+    return "NORMAL"
 
 
 # ---------------------------------------------------------------------------
@@ -112,7 +139,11 @@ _SIGNAL_TO_SEVERITY = {
 # ---------------------------------------------------------------------------
 
 def build_metric_glossary() -> str:
-    lines = ["METRIC GLOSSARY (what each feature measures and what a HIGH value implies):"]
+    lines = [
+        "METRIC GLOSSARY (what each feature measures and which direction is suspicious).",
+        "NOTE: most features are suspicious when HIGH, but a few are suspicious when "
+        "LOW (too smooth/static/perfect) — each entry states its direction explicitly.",
+    ]
     for gname, gfeats in GROUPS:
         lines.append(f"\n{gname}")
         for fn in gfeats:
@@ -131,10 +162,13 @@ def build_system_prompt() -> str:
         "- The primary evidence is the physical metrics, NOT your visual impression of the frames. "
         "Frames are provided only as grounding context.\n"
         "- Each metric is compared against a GENUINE baseline. 'percentile_rank' is where the value "
-        "falls within genuine videos (0-100). 'signal' summarizes it:\n"
-        "    CRITICAL  = far above the genuine range (>= 95th percentile)\n"
-        "    ELEVATED  = above the genuine range (>= 80th percentile)\n"
+        "falls within genuine videos (0-100). The 'severity' tag already accounts for which "
+        "direction is anomalous for each feature (see glossary):\n"
+        "    CRITICAL  = far into the suspicious direction for that feature\n"
+        "    ELEVATED  = moderately into the suspicious direction\n"
         "    NORMAL    = within the genuine range\n"
+        "  For most features the suspicious direction is HIGH, but for a few (vocal jitter/shimmer, "
+        "blinking, mouth movement, iris jitter) it is LOW — the glossary marks each.\n"
         "- A single CRITICAL feature can be noise. Multiple CRITICAL features in the SAME group "
         "is a strong signal.\n"
         "- Genuine videos may still show a few ELEVATED features — judge the whole picture.\n"
@@ -198,7 +232,7 @@ def _feature_row(name: str, entry: Dict[str, Any]) -> str:
     p95 = entry.get("genuine_p95")
     prank = entry.get("percentile_rank")
     signal = entry.get("signal", "NORMAL")
-    severity = _SIGNAL_TO_SEVERITY.get(signal, "NORMAL")
+    severity = _severity(name, signal)
     p50s = _fmt_val(p50) if p50 is not None else "  -"
     p95s = _fmt_val(p95) if p95 is not None else "  -"
     pranks = f"{prank}" if prank is not None else "-"
