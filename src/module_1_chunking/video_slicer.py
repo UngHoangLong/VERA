@@ -17,9 +17,9 @@ from src.utils.paths import get_pipeline_paths, VALID_MODES
 
 
 def _worker_process_video(args):
-    video_path, output_dir, chunk_duration, stride, slide_duration = args
+    video_path, output_dir, chunk_duration, stride, slide_duration, min_duration = args
     slicer = VideoSlicer(chunk_duration=chunk_duration, stride=stride, slide_duration=slide_duration)
-    slicer.process_video(video_path, output_dir)
+    slicer.process_video(video_path, output_dir, min_duration=min_duration)
 
 
 class VideoSlicer:
@@ -35,7 +35,7 @@ class VideoSlicer:
             margin_ratio=margin_ratio
         )
 
-    def process_directory(self, input_dir, output_dir, workers=1):
+    def process_directory(self, input_dir, output_dir, workers=1, min_duration=0.0):
         input_dir = Path(input_dir)
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -59,7 +59,7 @@ class VideoSlicer:
 
         if workers > 1:
             args_list = [
-                (vf, output_dir, self.chunk_duration, self.stride, self.slide_duration)
+                (vf, output_dir, self.chunk_duration, self.stride, self.slide_duration, min_duration)
                 for vf in todo
             ]
             ctx = multiprocessing.get_context("spawn")
@@ -75,19 +75,24 @@ class VideoSlicer:
         else:
             for video_file in tqdm(todo, desc=input_dir.name, unit="video"):
                 try:
-                    self.process_video(video_file, output_dir)
+                    self.process_video(video_file, output_dir, min_duration=min_duration)
                 except Exception as e:
                     tqdm.write(f"Lỗi khi xử lý {video_file.name}: {e}")
 
-    def process_video(self, video_path, output_dir):
+    def process_video(self, video_path, output_dir, min_duration=0.0):
         video_path = Path(video_path)
         video_id = video_path.stem
         video_out = Path(output_dir) / video_id
-        video_out.mkdir(parents=True, exist_ok=True)
 
         clip = VideoFileClip(str(video_path))
         duration, fps = clip.duration, clip.fps
         width, height = clip.size
+
+        if duration < min_duration:
+            clip.close()
+            return
+
+        video_out.mkdir(parents=True, exist_ok=True)
 
         # ÉP FPS VỀ ĐÚNG 25.0 CHO TOÀN BỘ PIPELINE
         target_fps = 25.0
@@ -259,6 +264,8 @@ if __name__ == "__main__":
     )
     parser.add_argument("--workers", type=int, default=1,
                         help="Number of parallel workers (default 1 = sequential).")
+    parser.add_argument("--min_duration", type=float, default=0.0,
+                        help="Skip videos shorter than this (seconds). E.g. 7.0")
     args = parser.parse_args()
 
     paths = get_pipeline_paths(args.mode)
@@ -275,7 +282,7 @@ if __name__ == "__main__":
             split_dir = RAW_DATA_DIR / split
             if split_dir.is_dir():
                 print(f"\n--- Processing genuine/{split} ---")
-                slicer.process_directory(split_dir, INTERIM_DATA_DIR, workers=args.workers)
+                slicer.process_directory(split_dir, INTERIM_DATA_DIR, workers=args.workers, min_duration=args.min_duration)
             else:
                 print(f"Warning: {split_dir} not found, skipping {split}.")
     else:
@@ -284,6 +291,6 @@ if __name__ == "__main__":
         if method_dirs:
             for md in method_dirs:
                 print(f"\n--- Processing infer/{md.name} ---")
-                slicer.process_directory(md, INTERIM_DATA_DIR, workers=args.workers)
+                slicer.process_directory(md, INTERIM_DATA_DIR, workers=args.workers, min_duration=args.min_duration)
         else:
-            slicer.process_directory(RAW_DATA_DIR, INTERIM_DATA_DIR, workers=args.workers)
+            slicer.process_directory(RAW_DATA_DIR, INTERIM_DATA_DIR, workers=args.workers, min_duration=args.min_duration)
