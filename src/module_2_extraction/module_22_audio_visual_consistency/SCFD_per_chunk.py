@@ -177,18 +177,15 @@ def load_video_as_is(path: str) -> np.ndarray:
 #             "Script này không tự pad hoặc truncate. Hãy kiểm tra lại pipeline cắt đoạn/tiền xử lý đầu vào."
 #         )
 
-# Kiểm tra số bước thời gian giữa video và audio. Nếu dư thừa <= 5 bước thì cắt để cân bằng (ko ảnh hưởng đến chất lượng) 
+# Cân bằng số bước thời gian giữa video và audio.
+# cv2 mp4v codec có thể thêm duplicate frame cuối → video luôn >= audio.
+# Trim về min_steps (bỏ frame thừa cuối video) là chuẩn trong AV research.
 def assert_same_num_steps(video_frames: np.ndarray, audio_feats: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     num_video_steps = int(video_frames.shape[0])
     num_audio_steps = int(audio_feats.shape[0])
-    
-    # Nếu lệch quá nhiều (ví dụ > 5 bước) thì mới báo lỗi thật sự
-    if abs(num_video_steps - num_audio_steps) > 5:
-        raise ValueError(
-            f"Lệch quá lớn: video_steps={num_video_steps}, audio_steps={num_audio_steps}."
-        )
-    # Nếu chỉ lệch nhẹ (1-5 bước), ta sẽ cắt tỉa cho bằng nhau
     min_steps = min(num_video_steps, num_audio_steps)
+    if min_steps == 0:
+        raise ValueError("Video hoặc audio có 0 steps.")
     return video_frames[:min_steps], audio_feats[:min_steps]
 
 
