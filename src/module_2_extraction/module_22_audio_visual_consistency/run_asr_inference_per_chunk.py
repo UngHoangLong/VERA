@@ -389,7 +389,7 @@ def build_pipe_kwargs(
         repetition_penalty=repetition_penalty,
         no_repeat_ngram_size=no_repeat_ngram_size,
     )
-    generate_kwargs.setdefault("max_new_tokens", 448)
+    generate_kwargs.setdefault("max_new_tokens", 440)
     if generate_kwargs:
         pipe_kwargs["generate_kwargs"] = generate_kwargs
     return pipe_kwargs
