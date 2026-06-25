@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import multiprocessing as mp
 import os
 import sys
 from pathlib import Path
@@ -310,6 +311,50 @@ def discover_pairs(input_root: Path, video_name: str, audio_name: str) -> List[T
     pairs.sort(key=lambda x: str(x[0]))
     return pairs
 
+# Worker chạy trên một GPU local, xử lý phần task được chia.
+def _scfd_worker(
+    local_idx: int,
+    physical_id: str,
+    shard: List[Tuple[str, str, str]],
+    avhubert_root: str,
+    model_path: str,
+    stack_order_audio: int,
+    output_layer: Optional[int],
+    overwrite: bool,
+) -> None:
+    torch.cuda.set_device(local_idx)
+    device = torch.device(f"cuda:{local_idx}")
+    model = load_avhubert_model(
+        avhubert_root=Path(avhubert_root), model_path=Path(model_path), device=device
+    )
+    print(f"[GPU local={local_idx} physical={physical_id}] Loaded model, {len(shard)} pairs", flush=True)
+
+    for idx, (video_path, audio_path, out_json) in enumerate(shard, start=1):
+        op = Path(out_json)
+        if op.exists() and not overwrite:
+            continue
+        try:
+            result = process_pair(
+                model=model,
+                video_path=video_path,
+                audio_path=audio_path,
+                device=device,
+                stack_order_audio=stack_order_audio,
+                output_layer=output_layer,
+            )
+        except Exception as e:
+            result = {
+                "video_path": video_path,
+                "audio_path": audio_path,
+                "ok": False,
+                "reason": f"{type(e).__name__}: {e}",
+            }
+        op.parent.mkdir(parents=True, exist_ok=True)
+        op.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+        if idx % 200 == 0:
+            print(f"[GPU local={local_idx}] {idx}/{len(shard)}", flush=True)
+
+
 # Nhận tham số dòng lệnh, load model, chạy cho 1 cặp hoặc nhiều cặp, rồi lưu JSON kết quả.
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -349,8 +394,9 @@ def main() -> None:
         raise RuntimeError("Bạn chọn device CUDA nhưng torch.cuda.is_available() = False")
 
     output_layer = None if args.output_layer == 0 else int(args.output_layer)
-    device = torch.device(args.device)
-    model = load_avhubert_model(avhubert_root=avhubert_root, model_path=model_path, device=device)
+    visible_ids = parse_visible_gpu_ids()
+    use_cuda = args.device.startswith("cuda") and torch.cuda.is_available()
+    num_gpus = len(visible_ids) if use_cuda else 0
 
     if args.input_root is not None:
         input_root = Path(args.input_root)
@@ -370,59 +416,71 @@ def main() -> None:
                 f"Không tìm thấy cặp {args.input_video_name} / {args.input_audio_name} trong {input_root}"
             )
 
-        manifest: Dict = {
-            "input_root": str(input_root),
-            "output_root": str(output_root),
-            "avhubert_root": str(avhubert_root),
-            "model_path": str(model_path),
-            "device": str(device),
-            "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
-            "visible_gpu_ids": parse_visible_gpu_ids(),
-            "stack_order_audio": int(args.stack_order_audio),
-            "output_layer": output_layer,
-            "num_pairs": len(pairs),
-            "results": [],
-        }
-
-        for idx, (video_path, audio_path) in enumerate(pairs, start=1):
-            print(f"[{idx}/{len(pairs)}] Processing: {video_path}", flush=True)
+        # Build danh sách task kèm đường dẫn output JSON.
+        tasks: List[Tuple[str, str, str]] = []
+        for video_path, audio_path in pairs:
             rel_parent = video_path.parent.relative_to(input_root)
             out_dir = output_root / rel_parent
-            out_dir.mkdir(parents=True, exist_ok=True)
             out_json = out_dir / f"{video_path.stem}_semantic.json"
-            try:
-                result = process_pair(
-                    model=model,
-                    video_path=str(video_path),
-                    audio_path=str(audio_path),
-                    device=device,
-                    stack_order_audio=int(args.stack_order_audio),
-                    output_layer=output_layer,
-                )
-            except Exception as e:
-                result = {
-                    "video_path": str(video_path),
-                    "audio_path": str(audio_path),
-                    "ok": False,
-                    "reason": f"{type(e).__name__}: {e}",
-                }
+            tasks.append((str(video_path), str(audio_path), str(out_json)))
 
-            out_json.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
-            manifest["results"].append({
-                "video_path": str(video_path),
-                "audio_path": str(audio_path),
-                "output_json": str(out_json),
-                "ok": result.get("ok", False),
-            })
+        # --- Multi-GPU: chia task cho từng GPU, mỗi GPU 1 process ---
+        if num_gpus >= 2:
+            shards = [tasks[i::num_gpus] for i in range(num_gpus)]
+            print(json.dumps({
+                "mode": "multi_gpu", "num_gpus": num_gpus,
+                "visible_gpu_ids": visible_ids, "num_pairs": len(tasks),
+            }, ensure_ascii=False, indent=2), flush=True)
+
+            mp.set_start_method("spawn", force=True)
+            procs = []
+            for local_idx in range(num_gpus):
+                if not shards[local_idx]:
+                    continue
+                p = mp.Process(
+                    target=_scfd_worker,
+                    args=(local_idx, visible_ids[local_idx], shards[local_idx],
+                          str(avhubert_root), str(model_path),
+                          int(args.stack_order_audio), output_layer, bool(args.overwrite)),
+                )
+                p.start()
+                procs.append(p)
+            for p in procs:
+                p.join()
+        else:
+            # --- Sequential: 1 GPU/CPU, load model 1 lần ---
+            device = torch.device(args.device)
+            model = load_avhubert_model(avhubert_root=avhubert_root, model_path=model_path, device=device)
+            for idx, (video_path, audio_path, out_json) in enumerate(tasks, start=1):
+                op = Path(out_json)
+                if op.exists() and not args.overwrite:
+                    continue
+                print(f"[{idx}/{len(tasks)}] Processing: {video_path}", flush=True)
+                try:
+                    result = process_pair(
+                        model=model, video_path=video_path, audio_path=audio_path,
+                        device=device, stack_order_audio=int(args.stack_order_audio),
+                        output_layer=output_layer,
+                    )
+                except Exception as e:
+                    result = {"video_path": video_path, "audio_path": audio_path,
+                              "ok": False, "reason": f"{type(e).__name__}: {e}"}
+                op.parent.mkdir(parents=True, exist_ok=True)
+                op.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
 
         manifest_path = output_root / "manifest.json"
-        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(json.dumps({"manifest": str(manifest_path), "num_pairs": len(pairs)}, ensure_ascii=False, indent=2))
+        manifest_path.write_text(json.dumps({
+            "input_root": str(input_root), "output_root": str(output_root),
+            "num_pairs": len(tasks), "num_gpus": num_gpus,
+        }, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(json.dumps({"manifest": str(manifest_path), "num_pairs": len(tasks)}, ensure_ascii=False, indent=2))
         return
 
     if args.video_path is None or args.audio_path is None:
         raise ValueError("Khi dùng --video-path thì phải cung cấp cả --audio-path")
 
+    device = torch.device(args.device)
+    model = load_avhubert_model(avhubert_root=avhubert_root, model_path=model_path, device=device)
     result = process_pair(
         model=model,
         video_path=args.video_path,
