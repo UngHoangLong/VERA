@@ -381,6 +381,8 @@ def main() -> None:
     parser.add_argument("--output-json", type=str, default=None, help="JSON đầu ra khi xử lý một cặp video/audio")
     parser.add_argument("--output-root", type=str, default=None, help="Thư mục đầu ra khi quét nhiều cặp trong --input-root")
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--shard-id", type=int, default=None, help="Shard index (0-based) khi chạy nhiều process song song trên cùng GPU")
+    parser.add_argument("--num-shards", type=int, default=None, help="Tổng số shard")
     args = parser.parse_args()
 
     avhubert_root = Path(args.avhubert_root)
@@ -423,6 +425,11 @@ def main() -> None:
             out_dir = output_root / rel_parent
             out_json = out_dir / f"{video_path.stem}_semantic.json"
             tasks.append((str(video_path), str(audio_path), str(out_json)))
+
+        if args.shard_id is not None and args.num_shards is not None:
+            total = len(tasks)
+            tasks = tasks[args.shard_id::args.num_shards]
+            print(f"[shard {args.shard_id}/{args.num_shards}] {total} total -> {len(tasks)} tasks", flush=True)
 
         # --- Multi-GPU: chia task cho từng GPU, mỗi GPU 1 process ---
         if num_gpus >= 2:
