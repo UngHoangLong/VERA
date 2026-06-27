@@ -485,6 +485,8 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--max-chunks", type=int, default=0, help="0 = all chunks, otherwise only first N chunks")
     parser.add_argument("--force-redownload", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--skip-done", action="store_true",
+                        help="Pre-filter: skip chunks that already have ok=True output JSON before sharding to workers")
     return parser
 
 
@@ -553,6 +555,22 @@ def main() -> None:
     tasks = build_chunk_tasks(input_root=input_root, input_video_name=args.input_video_name)
     if args.max_chunks > 0:
         tasks = tasks[: args.max_chunks]
+
+    if args.skip_done:
+        before = len(tasks)
+        filtered = []
+        for task in tasks:
+            out_json = output_root / task["video_id"] / f"{Path(task['chunk_dir']).name}.json"
+            if out_json.exists():
+                try:
+                    rec = json.loads(out_json.read_text(encoding="utf-8"))
+                    if rec.get("ok"):
+                        continue
+                except Exception:
+                    pass
+            filtered.append(task)
+        tasks = filtered
+        print(f"[skip-done] {before} total -> {len(tasks)} remaining (skipped {before - len(tasks)} done)", flush=True)
 
     if not tasks:
         manifest_path = write_manifest(
