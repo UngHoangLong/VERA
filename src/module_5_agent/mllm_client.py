@@ -58,8 +58,10 @@ def collect_frames(package: Dict[str, Any], package_dir: Path) -> List[Tuple[str
 
 def parse_output(text: str) -> Dict[str, Any]:
     """Extract <think> reasoning and the <verdict> JSON block from model output."""
-    think_match = re.search(r"<think>(.*?)</think>", text, re.DOTALL)
-    verdict_match = re.search(r"<verdict>(.*?)</verdict>", text, re.DOTALL)
+    cleaned = re.sub(r"<\|im_start\|>|<\|im_end\|>|<\|endoftext\|>", "", text).strip()
+
+    think_match = re.search(r"<think>(.*?)</think>", cleaned, re.DOTALL)
+    verdict_match = re.search(r"<verdict>(.*?)</verdict>", cleaned, re.DOTALL)
 
     reasoning = think_match.group(1).strip() if think_match else ""
     verdict = None
@@ -71,7 +73,7 @@ def parse_output(text: str) -> Dict[str, Any]:
         except json.JSONDecodeError:
             verdict = None
 
-    return {"reasoning": reasoning, "verdict": verdict, "raw_output": text}
+    return {"reasoning": reasoning, "verdict": verdict, "raw_output": cleaned}
 
 
 # ---------------------------------------------------------------------------
@@ -106,11 +108,12 @@ class QwenVLClient:
         inputs = self.processor.apply_chat_template(
             messages, tokenize=True, add_generation_prompt=True,
             return_dict=True, return_tensors="pt",
+            enable_thinking=True,
         ).to(self.model.device)
         generated_ids = self.model.generate(**inputs, max_new_tokens=self.max_new_tokens)
         trimmed = [out[len(inp):] for inp, out in zip(inputs.input_ids, generated_ids)]
         return self.processor.batch_decode(
-            trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+            trimmed, skip_special_tokens=False, clean_up_tokenization_spaces=False
         )[0]
 
 
