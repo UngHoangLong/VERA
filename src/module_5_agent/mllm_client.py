@@ -91,7 +91,7 @@ class QwenVLClient:
             model_name, torch_dtype=torch.float16, device_map="auto"
         )
         self.processor = AutoProcessor.from_pretrained(
-            model_name, min_pixels=128*28*28, max_pixels=256*28*28,
+            model_name, min_pixels=256*28*28, max_pixels=768*28*28,
         )
 
     def _build_messages(self, package, frame_groups):
