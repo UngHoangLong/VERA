@@ -96,7 +96,7 @@ class QwenVLClient:
             for p in paths:
                 content.append({"type": "image", "image": f"file://{p}"})
         return [
-            {"role": "system", "content": build_system_prompt()},
+            {"role": "system", "content": [{"type": "text", "text": build_system_prompt()}]},
             {"role": "user", "content": content},
         ]
 
