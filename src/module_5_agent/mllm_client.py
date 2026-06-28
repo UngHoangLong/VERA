@@ -94,7 +94,7 @@ class QwenVLClient:
         for label, paths in frame_groups:
             content.append({"type": "text", "text": label + ":"})
             for p in paths:
-                content.append({"type": "image", "image": f"file://{p}"})
+                content.append({"type": "image", "image": str(p)})
         return [
             {"role": "system", "content": [{"type": "text", "text": build_system_prompt()}]},
             {"role": "user", "content": content},
