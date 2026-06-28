@@ -85,11 +85,14 @@ class QwenVLClient:
         import torch
         from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
 
+        self.torch = torch
         self.max_new_tokens = max_new_tokens
         self.model = Qwen3VLForConditionalGeneration.from_pretrained(
             model_name, torch_dtype=torch.float16, device_map="auto"
         )
-        self.processor = AutoProcessor.from_pretrained(model_name)
+        self.processor = AutoProcessor.from_pretrained(
+            model_name, min_pixels=128*28*28, max_pixels=256*28*28,
+        )
 
     def _build_messages(self, package, frame_groups):
         content: List[Dict[str, Any]] = [{"type": "text", "text": build_user_prompt(package)}]
@@ -108,13 +111,14 @@ class QwenVLClient:
         inputs = self.processor.apply_chat_template(
             messages, tokenize=True, add_generation_prompt=True,
             return_dict=True, return_tensors="pt",
-            enable_thinking=True,
         ).to(self.model.device)
         generated_ids = self.model.generate(**inputs, max_new_tokens=self.max_new_tokens)
         trimmed = [out[len(inp):] for inp, out in zip(inputs.input_ids, generated_ids)]
-        return self.processor.batch_decode(
-            trimmed, skip_special_tokens=False, clean_up_tokenization_spaces=False
+        output = self.processor.batch_decode(
+            trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
         )[0]
+        self.torch.cuda.empty_cache()
+        return output
 
 
 # ---------------------------------------------------------------------------
