@@ -55,6 +55,20 @@ def load_verdicts(verdicts_dir: Path) -> Dict[str, Dict]:
     return verdicts
 
 
+def load_videos_with_evidence(evidence_dir: Path) -> set:
+    """Return video_ids that have status == 'analyzed' (i.e., had valid chunks)."""
+    valid = set()
+    for p in sorted(evidence_dir.glob("*_evidence.json")):
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        video_id = data.get("video_metadata", {}).get("video_id", p.stem.replace("_evidence", ""))
+        if data.get("video_metadata", {}).get("status") == "analyzed" and data.get("chunks"):
+            valid.add(video_id)
+    return valid
+
+
 def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> Dict:
     tp = int(np.sum((y_true == 1) & (y_pred == 1)))
     tn = int(np.sum((y_true == 0) & (y_pred == 0)))
@@ -75,8 +89,14 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> Dict:
     }
 
 
-def evaluate(labels: Dict, verdicts: Dict, backend: str) -> Dict:
+def evaluate(labels: Dict, verdicts: Dict, backend: str, valid_evidence_ids: set = None) -> Dict:
     matched = sorted(set(labels.keys()) & set(verdicts.keys()))
+
+    no_evidence_excluded = 0
+    if valid_evidence_ids is not None:
+        before = len(matched)
+        matched = [vid for vid in matched if vid in valid_evidence_ids]
+        no_evidence_excluded = before - len(matched)
 
     if not matched:
         return {"error": "No matched video_ids."}
@@ -161,6 +181,7 @@ def evaluate(labels: Dict, verdicts: Dict, backend: str) -> Dict:
         "backend": backend,
         "summary": {
             "total_matched": len(matched),
+            "no_evidence_excluded": no_evidence_excluded,
             "total_certain": len(certain),
             "total_uncertain": len(uncertain),
             "total_real_gt": int(np.sum(gt_label == 0)),
@@ -182,6 +203,10 @@ def main():
     parser.add_argument("--manifest", type=str, required=True)
     parser.add_argument("--backend", type=str, default="qwen")
     parser.add_argument("--output", type=str, default=None)
+    parser.add_argument("--evidence-dir", type=str, default=None,
+                        help="If set, exclude videos with no valid Module 3 evidence "
+                             "(status != 'analyzed'), since Module 5 may hallucinate a "
+                             "verdict for them despite having no chunks to analyze.")
     args = parser.parse_args()
 
     print("Loading manifest...", flush=True)
@@ -192,7 +217,13 @@ def main():
     verdicts = load_verdicts(Path(args.verdicts_dir))
     print(f"  {len(verdicts)} verdicts loaded", flush=True)
 
-    results = evaluate(labels, verdicts, args.backend)
+    valid_evidence_ids = None
+    if args.evidence_dir:
+        print("Loading evidence status...", flush=True)
+        valid_evidence_ids = load_videos_with_evidence(Path(args.evidence_dir))
+        print(f"  {len(valid_evidence_ids)} videos with valid evidence", flush=True)
+
+    results = evaluate(labels, verdicts, args.backend, valid_evidence_ids)
 
     output_json = json.dumps(results, ensure_ascii=False, indent=2)
     print("\n" + output_json)
