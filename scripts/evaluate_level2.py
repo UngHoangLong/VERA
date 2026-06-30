@@ -101,11 +101,14 @@ def evaluate(labels: Dict, verdicts: Dict, backend: str) -> Dict:
     audio_fake_metrics = compute_metrics(gt_af, pred_af)
 
     # --- Per generative_method ---
+    # generative_method only tracks VIDEO manipulation; audio-only fakes
+    # (video untouched, audio cloned) also have generative_method == "real".
+    # Bucket those separately so "real" only contains truly genuine videos.
     method_results = defaultdict(lambda: {"gt": [], "pred": []})
     for vid in certain:
         method = labels[vid]["generative_method"] or "real"
-        if method == "real":
-            method = "real"
+        if method == "real" and labels[vid]["label"] == "fake":
+            method = "real_video_audio_only_fake"
         gt = 1 if labels[vid]["label"] == "fake" else 0
         pred = 1 if verdicts[vid].get("label") == "FAKE" else 0
         method_results[method]["gt"].append(gt)

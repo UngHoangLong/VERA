@@ -189,11 +189,14 @@ def evaluate(
         }
 
     # --- Per generative_method ---
+    # generative_method only tracks VIDEO manipulation; audio-only fakes
+    # (video untouched, audio cloned) also have generative_method == "real".
+    # Bucket those separately so "real" only contains truly genuine videos.
     method_results = defaultdict(list)
     for vid in matched_ids:
-        method = labels[vid]["generative_method"]
-        if not method or method == "real":
-            method = "real"
+        method = labels[vid]["generative_method"] or "real"
+        if method == "real" and labels[vid]["label"] == "fake":
+            method = "real_video_audio_only_fake"
         method_results[method].append(scores[vid])
 
     method_summary = {}
