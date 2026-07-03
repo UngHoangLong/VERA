@@ -9,6 +9,7 @@ Entry point: main()
 """
 
 import argparse
+import csv
 import json
 import time
 from pathlib import Path
@@ -213,14 +214,46 @@ def train_model(
 
 
 # ---------------------------------------------------------------------------
+# Manifest-based train/val split
+# ---------------------------------------------------------------------------
+
+def _split_by_manifest(
+    report_files: List[Path], manifest_path: str
+) -> Tuple[List[Path], List[Path]]:
+    """Partition report files into train/val using the MAVOS-DD manifest.csv."""
+    train_stems: set = set()
+    val_stems: set = set()
+    with open(manifest_path, encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            stem = Path(row["local_path"]).stem
+            if row["usage"] == "genuine_train":
+                train_stems.add(stem)
+            elif row["usage"] == "genuine_val":
+                val_stems.add(stem)
+
+    train_files, val_files = [], []
+    for p in report_files:
+        video_stem = p.stem.replace("_report", "")
+        if video_stem in train_stems:
+            train_files.append(p)
+        elif video_stem in val_stems:
+            val_files.append(p)
+    return train_files, val_files
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train MVAE-PoE on genuine Module 2 reports.")
     parser.add_argument("--input_dir", type=str, default="./final_reports_genuine")
+    parser.add_argument("--manifest", type=str, default=None,
+                        help="Path to MAVOS-DD manifest.csv. If supplied, uses the dataset's "
+                             "genuine_train / genuine_val split instead of --val_ratio.")
     parser.add_argument("--model_dir", type=str, default="./module3_models")
-    parser.add_argument("--val_ratio", type=float, default=0.15)
+    parser.add_argument("--val_ratio", type=float, default=0.15,
+                        help="Val fraction (used only when --manifest is not provided).")
     parser.add_argument("--epochs", type=int, default=300)
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--lr", type=float, default=1e-3)
@@ -244,9 +277,12 @@ def main() -> None:
     if not report_files:
         raise FileNotFoundError(f"No *_report.json files found in {input_dir}")
 
-    train_files, val_files = split_report_files_by_video(report_files, args.val_ratio, args.seed)
-    print("Train:", [str(p) for p in train_files])
-    print("Val:", [str(p) for p in val_files])
+    if args.manifest and Path(args.manifest).exists():
+        train_files, val_files = _split_by_manifest(report_files, args.manifest)
+        print(f"Manifest split: {len(train_files)} train / {len(val_files)} val report files")
+    else:
+        train_files, val_files = split_report_files_by_video(report_files, args.val_ratio, args.seed)
+    print(f"Train files: {len(train_files)}  Val files: {len(val_files)}")
 
     train_rows = parse_reports(train_files)
     val_rows = parse_reports(val_files) if val_files else []

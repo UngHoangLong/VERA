@@ -200,6 +200,20 @@ def collapse_pathological_repetition(text: str, min_unit_words: int = 4, min_rep
     return best_text, best_found
 
 
+ASR_TIMEOUT_SEC = 120
+
+
+def _run_with_timeout(fn, timeout_sec):
+    """Run fn() in a thread with timeout. Raises TimeoutError if exceeded."""
+    from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeout
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        future = pool.submit(fn)
+        try:
+            return future.result(timeout=timeout_sec)
+        except FuturesTimeout:
+            raise TimeoutError(f"ASR inference timed out after {timeout_sec}s")
+
+
 def build_generate_kwargs(
     language: str,
     condition_on_prev_tokens: bool,
@@ -375,6 +389,7 @@ def build_pipe_kwargs(
         repetition_penalty=repetition_penalty,
         no_repeat_ngram_size=no_repeat_ngram_size,
     )
+    generate_kwargs.setdefault("max_new_tokens", 440)
     if generate_kwargs:
         pipe_kwargs["generate_kwargs"] = generate_kwargs
     return pipe_kwargs
@@ -446,8 +461,11 @@ def run_one_chunk(
             no_repeat_ngram_size=no_repeat_ngram_size,
         )
 
-        with torch.inference_mode():
-            result = pipe(model_input, **pipe_kwargs)
+        def _first_pass():
+            with torch.inference_mode():
+                return pipe(model_input, **pipe_kwargs)
+
+        result = _run_with_timeout(_first_pass, ASR_TIMEOUT_SEC)
 
         initial_text = normalize_transcript_text(result.get("text") or "")
         final_text, repeated_detected = collapse_pathological_repetition(initial_text)
@@ -466,8 +484,12 @@ def run_one_chunk(
 
             retry_pipe_kwargs = dict(pipe_kwargs)
             retry_pipe_kwargs["generate_kwargs"] = retry_kwargs
-            with torch.inference_mode():
-                retry_result = pipe(model_input, **retry_pipe_kwargs)
+
+            def _retry_pass():
+                with torch.inference_mode():
+                    return pipe(model_input, **retry_pipe_kwargs)
+
+            retry_result = _run_with_timeout(_retry_pass, ASR_TIMEOUT_SEC)
 
             retry_text = normalize_transcript_text(retry_result.get("text") or "")
             retry_text_collapsed, retry_still_repeated = collapse_pathological_repetition(retry_text)
@@ -492,6 +514,9 @@ def run_one_chunk(
         if return_timestamps:
             record["chunks"] = final_result.get("chunks") or []
         record["reason"] = "success" if not postprocess_note else f"success_{postprocess_note}"
+    except TimeoutError as e:
+        record["reason"] = f"TimeoutError: {e}"
+        print(f"[TIMEOUT] {task['video_id']}/{Path(task['chunk_dir']).name} — skipped after {ASR_TIMEOUT_SEC}s", flush=True)
     except torch.cuda.OutOfMemoryError as e:
         if torch.cuda.is_available():
             torch.cuda.empty_cache()

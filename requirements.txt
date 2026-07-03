@@ -6,6 +6,7 @@ cycler==0.12.1
 decorator==5.2.1
 flatbuffers==25.12.19
 fonttools==4.62.1
+huggingface_hub==1.11.0
 ImageIO==2.37.3
 imageio-ffmpeg==0.6.0
 jax==0.4.38
@@ -22,6 +23,7 @@ packaging==26.0
 pillow==11.3.0
 proglog==0.1.12
 protobuf==4.25.9
+pyarrow==24.0.0
 pycparser==3.0
 pyparsing==3.3.2
 python-dateutil==2.9.0.post0

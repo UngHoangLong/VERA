@@ -2,15 +2,24 @@ import argparse
 import sys
 import os
 import json
+import multiprocessing
 from pathlib import Path
 import shutil
 import cv2
 import numpy as np
 from moviepy import VideoFileClip
+from tqdm import tqdm
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from src.utils.face_crop import AdvancedFaceCropper
 from src.utils.paths import get_pipeline_paths, VALID_MODES
+
+
+def _worker_process_video(args):
+    video_path, output_dir, chunk_duration, stride, slide_duration, min_duration = args
+    slicer = VideoSlicer(chunk_duration=chunk_duration, stride=stride, slide_duration=slide_duration)
+    slicer.process_video(video_path, output_dir, min_duration=min_duration)
 
 
 class VideoSlicer:
@@ -26,7 +35,7 @@ class VideoSlicer:
             margin_ratio=margin_ratio
         )
 
-    def process_directory(self, input_dir, output_dir):
+    def process_directory(self, input_dir, output_dir, workers=1, min_duration=0.0):
         input_dir = Path(input_dir)
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -40,21 +49,50 @@ class VideoSlicer:
             print(f"Không tìm thấy video nào trong: {input_dir}")
             return
 
-        for video_file in video_files:
-            try:
-                self.process_video(video_file, output_dir)
-            except Exception as e:
-                print(f"Lỗi khi xử lý {video_file.name}: {e}")
+        todo = [vf for vf in video_files if not (output_dir / vf.stem).is_dir()]
+        skipped = len(video_files) - len(todo)
+        if skipped:
+            tqdm.write(f"Bỏ qua {skipped}/{len(video_files)} video đã xử lý trước đó.")
 
-    def process_video(self, video_path, output_dir):
+        if not todo:
+            return
+
+        if workers > 1:
+            args_list = [
+                (vf, output_dir, self.chunk_duration, self.stride, self.slide_duration, min_duration)
+                for vf in todo
+            ]
+            ctx = multiprocessing.get_context("spawn")
+            with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
+                futures = {pool.submit(_worker_process_video, a): a[0] for a in args_list}
+                for future in tqdm(as_completed(futures), total=len(futures),
+                                   desc=input_dir.name, unit="video"):
+                    try:
+                        future.result()
+                    except Exception as e:
+                        vf = futures[future]
+                        tqdm.write(f"Lỗi khi xử lý {vf.name}: {e}")
+        else:
+            for video_file in tqdm(todo, desc=input_dir.name, unit="video"):
+                try:
+                    self.process_video(video_file, output_dir, min_duration=min_duration)
+                except Exception as e:
+                    tqdm.write(f"Lỗi khi xử lý {video_file.name}: {e}")
+
+    def process_video(self, video_path, output_dir, min_duration=0.0):
         video_path = Path(video_path)
         video_id = video_path.stem
         video_out = Path(output_dir) / video_id
-        video_out.mkdir(parents=True, exist_ok=True)
 
         clip = VideoFileClip(str(video_path))
         duration, fps = clip.duration, clip.fps
         width, height = clip.size
+
+        if duration < min_duration:
+            clip.close()
+            return
+
+        video_out.mkdir(parents=True, exist_ok=True)
 
         # ÉP FPS VỀ ĐÚNG 25.0 CHO TOÀN BỘ PIPELINE
         target_fps = 25.0
@@ -92,7 +130,8 @@ class VideoSlicer:
                 str(video_file), audio=False, codec="libx264", logger=None
             )
             chunk_clip.write_videofile(
-                str(preview_file), audio=True, ffmpeg_params=["-crf", "18"], logger=None
+                str(preview_file), audio=True, ffmpeg_params=["-crf", "18"], logger=None,
+                temp_audiofile=str(chunk_dir / "temp_audio.mp3"),
             )
 
             if clip.audio:
@@ -223,14 +262,35 @@ if __name__ == "__main__":
         help="genuine: genuine-only videos for Module 3 training; "
              "infer: videos to be scored/evaluated.",
     )
+    parser.add_argument("--workers", type=int, default=1,
+                        help="Number of parallel workers (default 1 = sequential).")
+    parser.add_argument("--min_duration", type=float, default=0.0,
+                        help="Skip videos shorter than this (seconds). E.g. 7.0")
     args = parser.parse_args()
 
     paths = get_pipeline_paths(args.mode)
     RAW_DATA_DIR = paths["raw_dir"]
     INTERIM_DATA_DIR = paths["interim_dir"]
 
-    RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
     INTERIM_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     slicer = VideoSlicer(chunk_duration=4.0, stride=2.0, slide_duration=0.5)
-    slicer.process_directory(RAW_DATA_DIR, INTERIM_DATA_DIR)
+
+    if args.mode == "genuine":
+        # Data is pre-split into train/ and val/ subdirs (matches Drive/MAVOS-DD structure)
+        for split in ("train", "val"):
+            split_dir = RAW_DATA_DIR / split
+            if split_dir.is_dir():
+                print(f"\n--- Processing genuine/{split} ---")
+                slicer.process_directory(split_dir, INTERIM_DATA_DIR, workers=args.workers, min_duration=args.min_duration)
+            else:
+                print(f"Warning: {split_dir} not found, skipping {split}.")
+    else:
+        # infer data is organised into per-method subdirs (real/, hififace/, roop/, ...)
+        method_dirs = sorted(d for d in RAW_DATA_DIR.iterdir() if d.is_dir())
+        if method_dirs:
+            for md in method_dirs:
+                print(f"\n--- Processing infer/{md.name} ---")
+                slicer.process_directory(md, INTERIM_DATA_DIR, workers=args.workers, min_duration=args.min_duration)
+        else:
+            slicer.process_directory(RAW_DATA_DIR, INTERIM_DATA_DIR, workers=args.workers, min_duration=args.min_duration)

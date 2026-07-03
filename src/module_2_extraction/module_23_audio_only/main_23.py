@@ -2,8 +2,10 @@ import argparse
 import json
 import os
 import sys
+from multiprocessing import Pool
 from pathlib import Path
 from audio_artifacts import AudioArtifactFeature
+from tqdm import tqdm
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 from src.utils.paths import get_pipeline_paths, VALID_MODES
@@ -22,11 +24,14 @@ class AudioOrchestrator:
         video_interim_dir = self.base_interim_dir / video_id
 
         if not report_path.exists():
-            print(f"Không tìm thấy báo cáo tại: {report_path}")
+            tqdm.write(f"Không tìm thấy báo cáo tại: {report_path}")
             return
 
         with open(report_path, 'r', encoding='utf-8') as f:
             report_data = json.load(f)
+
+        if report_data.get("video_metadata", {}).get("status") == "audio_artifacts_completed":
+            return
 
         chunks_data = report_data.get("chunks", {})
         if not chunks_data:
@@ -57,19 +62,31 @@ class AudioOrchestrator:
         with open(report_path, 'w', encoding='utf-8') as f:
             json.dump(report_data, f, indent=4, ensure_ascii=False)
 
-    def process_dataset(self):
-        """Quét toàn bộ thư mục và chạy tuần tự"""
+    def process_dataset(self, num_workers=1):
+        """Quét toàn bộ thư mục và chạy tuần tự hoặc song song"""
         if not self.base_interim_dir.exists():
             print(f" Không tìm thấy thư mục: {self.base_interim_dir}")
             return
-            
+
         if not self.report_dir.exists():
             print(f" Không tìm thấy thư mục báo cáo: {self.report_dir}")
             return
-            
+
         videos = sorted([d.name for d in self.base_interim_dir.iterdir() if d.is_dir()])
-        for vid in videos:
-            self.process_video_report(vid)
+        if num_workers <= 1:
+            for vid in tqdm(videos, desc="Module 2.3", unit="video"):
+                self.process_video_report(vid)
+        else:
+            args_list = [(vid, str(self.base_interim_dir), str(self.report_dir)) for vid in videos]
+            with Pool(processes=num_workers) as pool:
+                list(tqdm(pool.imap_unordered(_process_video_worker, args_list),
+                          total=len(args_list), desc="Module 2.3", unit="video"))
+
+def _process_video_worker(args):
+    video_id, base_interim_dir, report_dir = args
+    orch = AudioOrchestrator(base_interim_dir, report_dir)
+    orch.process_video_report(video_id)
+
 
 # ==========================================
 # KHỞI CHẠY
@@ -81,6 +98,7 @@ if __name__ == "__main__":
         help="genuine: genuine-only videos for Module 3 training; "
              "infer: videos to be scored/evaluated.",
     )
+    parser.add_argument("--workers", type=int, default=1, help="Number of parallel workers (default: 1)")
     args = parser.parse_args()
 
     paths = get_pipeline_paths(args.mode)
@@ -88,5 +106,5 @@ if __name__ == "__main__":
         base_interim_dir=paths["interim_dir"],
         report_dir=paths["final_reports_dir"],
     )
-    orchestrator.process_dataset()
+    orchestrator.process_dataset(num_workers=args.workers)
     print("\n🏆 HOÀN THÀNH TOÀN BỘ PIPELINE MODULE 2.3!")

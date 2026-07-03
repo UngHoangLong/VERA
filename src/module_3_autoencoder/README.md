@@ -77,8 +77,8 @@ x_audio  (8)  ──► AudioEncoder  ──► μ_a, σ_a ─┘               
 ### Encoder (mỗi modality)
 
 ```
-input_dim → Linear(32) → LayerNorm → GELU → Dropout(0.1)
-          → Linear(16) → LayerNorm → GELU → Dropout(0.1)
+input_dim → Linear(64) → LayerNorm → GELU → Dropout(0.1)
+          → Linear(32) → LayerNorm → GELU → Dropout(0.1)
           → μ_head (Linear → latent_dim)
           → logvar_head (Linear → latent_dim, clamped [-10, 4])
 ```
@@ -161,8 +161,8 @@ L_KL = -½ × mean_batch [ Σ_j (1 + logvar_j - μ²_j - exp(logvar_j)) ]
 
 | Tham số | Giá trị | Lý do |
 |---|---|---|
-| `hidden_dims` | [32, 16] | Sâu hơn (cũ: [10]), đủ capacity học quan hệ phi tuyến 21 features |
-| `latent_dim` | 6 | Compact đủ để anomaly detection nhạy, không quá rộng |
+| `hidden_dims` | [64, 32] | Sâu hơn (cũ: [10]), đủ capacity học quan hệ phi tuyến 21 features |
+| `latent_dim` | 8 | Compact đủ để anomaly detection nhạy, không quá rộng |
 | `beta` | 1.0 | ELBO chuẩn, cân bằng reconstruction và regularization |
 | `dropout` | 0.1 | Regularization nhẹ tránh overfitting |
 | `epochs` | 300 | Với early stopping patience=30 |
@@ -254,7 +254,7 @@ Với thiết kế mới: `null` tường minh → MLLM suy luận "không có d
 | Latent space | Deterministic | Probabilistic (VAE) |
 | Multimodal fusion | Flatten 15-dim cùng nhau | 2 encoder độc lập + PoE |
 | Silent chunk | Impute audio giả → False Negative | `m_audio=0` → không score audio |
-| Capacity | hidden=10, latent=5 | hidden=[32,16], latent=6 |
+| Capacity | hidden=10, latent=5 | hidden=[64,32], latent=8 |
 | JSON cho MLLM | Null features + score thấp giả → hallucination | `null` tường minh → reasoning đúng |
 
 ---
