@@ -109,7 +109,7 @@ def download_drive_file(dest: Path, file_id: str, label: str):
     dest.parent.mkdir(parents=True, exist_ok=True)
     print(f"\n[download] {label} → {dest}")
     url = f"https://drive.google.com/uc?id={file_id}"
-    result = gdown.download(url, str(dest), quiet=False, fuzzy=True)
+    result = gdown.download(url, str(dest), quiet=False)
     if result is None or not dest.exists():
         print(f"  ERROR: download failed for {label}.")
         print(f"  Make sure the file is shared publicly or run `gdown --login` first.")
