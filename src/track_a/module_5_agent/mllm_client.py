@@ -6,8 +6,8 @@ Supports two self-hosted backends (both ~8B, sharded across GPUs via device_map)
     --backend internvl  -> OpenGVLab/InternVL2_5-8B
 
 For each <video_id>/prompt_package.json from Module 4:
-  - build the 3-block prompt (prompt_eng.py)
-  - attach the sampled frames (labeled per chunk)
+  - build the prompt (prompt_eng.py)
+  - interleave each chunk's frames (with timestamps) right after its evidence
   - run the chosen MLLM
   - parse the <verdict> JSON and save <video_id>_verdict.json
 
@@ -31,7 +31,9 @@ from typing import Any, Dict, List, Tuple
 from tqdm import tqdm
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
-from src.track_a.module_5_agent.prompt_eng import build_system_prompt, build_user_prompt
+from src.track_a.module_5_agent.prompt_eng import (
+    build_prompt_parts, build_system_prompt, frame_times,
+)
 
 QWEN_MODEL = "Qwen/Qwen3-VL-8B-Instruct"
 INTERNVL_MODEL = "OpenGVLab/InternVL2_5-8B"
@@ -41,18 +43,20 @@ INTERNVL_MODEL = "OpenGVLab/InternVL2_5-8B"
 # Shared: gather labeled frames + parse output
 # ---------------------------------------------------------------------------
 
-def collect_frames(package: Dict[str, Any], package_dir: Path) -> List[Tuple[str, List[Path]]]:
-    """Return [(chunk_label, [abs frame paths]), ...] in chunk order."""
-    groups: List[Tuple[str, List[Path]]] = []
+def collect_frames(package: Dict[str, Any], package_dir: Path) -> List[List[Tuple[str, Path]]]:
+    """Per top chunk (same order/length as package["top_chunks"]): [(frame label, abs path), ...].
+
+    A chunk without frames gives an empty list, so the result stays aligned with
+    the chunk text blocks and frames can be interleaved right after their chunk.
+    """
+    groups: List[List[Tuple[str, Path]]] = []
     for chunk in package.get("top_chunks", []):
         frame_files = chunk.get("frame_files", [])
-        if not frame_files:
-            continue
-        tm = chunk.get("time_metadata", {})
-        label = (f"Frames for {chunk.get('chunk_id','?')} "
-                 f"[{tm.get('start_sec',0):.1f}s-{tm.get('end_sec',0):.1f}s]")
-        paths = [(package_dir / fn).resolve() for fn in frame_files]
-        groups.append((label, paths))
+        times = frame_times(chunk) if frame_files else []
+        groups.append([
+            (f"Frame {i + 1} of {chunk.get('chunk_id', '?')} (~{t:.1f}s)", (package_dir / fn).resolve())
+            for i, (fn, t) in enumerate(zip(frame_files, times))
+        ])
     return groups
 
 
@@ -95,11 +99,14 @@ class QwenVLClient:
         )
 
     def _build_messages(self, package, frame_groups):
-        content: List[Dict[str, Any]] = [{"type": "text", "text": build_user_prompt(package)}]
-        for label, paths in frame_groups:
-            content.append({"type": "text", "text": label + ":"})
-            for p in paths:
-                content.append({"type": "image", "image": str(p)})
+        head, chunk_blocks, tail = build_prompt_parts(package)
+        content: List[Dict[str, Any]] = [{"type": "text", "text": head}]
+        for block, frames in zip(chunk_blocks, frame_groups):
+            content.append({"type": "text", "text": block})
+            for label, path in frames:
+                content.append({"type": "text", "text": label + ":"})
+                content.append({"type": "image", "image": str(path)})
+        content.append({"type": "text", "text": tail})
         return [
             {"role": "system", "content": [{"type": "text", "text": build_system_prompt()}]},
             {"role": "user", "content": content},
@@ -167,25 +174,24 @@ class InternVLClient:
 
     def analyze(self, package: Dict[str, Any], package_dir: Path) -> str:
         frame_groups = collect_frames(package, package_dir)
+        head, chunk_blocks, tail = build_prompt_parts(package)
 
-        # Build pixel_values (one tile per frame) + num_patches_list, in order.
+        # <image> placeholders sit right after their chunk's evidence; pv_list /
+        # num_patches_list follow the same order.
         pv_list = []
         num_patches_list: List[int] = []
-        placeholder_lines: List[str] = []
-        for label, paths in frame_groups:
-            placeholder_lines.append(label + ":")
-            for i, p in enumerate(paths):
-                pv = _internvl_load_image(str(p)).to(self.torch.float16)
+        parts: List[str] = [build_system_prompt(), head]
+        for block, frames in zip(chunk_blocks, frame_groups):
+            parts.append(block)
+            for label, path in frames:
+                pv = _internvl_load_image(str(path)).to(self.torch.float16)
                 pv_list.append(pv)
                 num_patches_list.append(pv.size(0))
-                placeholder_lines.append(f"Frame-{i+1}: <image>")
-
-        question = build_system_prompt() + "\n\n" + build_user_prompt(package)
-        if pv_list:
-            pixel_values = self.torch.cat(pv_list, dim=0).to(self.model.device)
-            question = question + "\n\nFRAMES:\n" + "\n".join(placeholder_lines)
-        else:
-            pixel_values = None
+                parts.append(f"{label}: <image>")
+        parts.append(tail)
+        question = "\n\n".join(parts)
+        pixel_values = (self.torch.cat(pv_list, dim=0).to(self.model.device)
+                        if pv_list else None)
 
         generation_config = dict(max_new_tokens=self.max_new_tokens, do_sample=False)
         response = self.model.chat(

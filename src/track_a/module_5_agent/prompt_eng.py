@@ -11,7 +11,7 @@ Turns a Module 4 prompt_package.json into a multi-block prompt:
 
 import os
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
 from src.track_a.module_3_autoencoder.config import FEATURE_INTERPRETATIONS  # noqa: F401
@@ -115,7 +115,9 @@ def build_system_prompt() -> str:
         "   - Face-background boundary: blending seams, color/lighting mismatch\n"
         "   - Skin texture: unnatural smoothness, inconsistency across face regions\n"
         "   - Eyes: reflection consistency, symmetry, natural movement\n"
-        "   - Temporal consistency: compare frames within and across chunks for flickering/morphing\n"
+        "   - Temporal consistency: compare frames WITHIN one chunk only for flickering/morphing. "
+        "Chunks are non-consecutive excerpts of the video (the top-ranked ones), so differences "
+        "BETWEEN chunks (camera, scene, person, lighting) are NOT evidence of manipulation\n"
         "   - Overall naturalness: does the face look photorealistic or synthetic?\n"
         "2. AUTOMATED METRICS — per-chunk features compared against a genuine baseline.\n"
         "   Each metric has a severity tag:\n"
@@ -168,6 +170,12 @@ def build_block_a(video_id: str, summary: Dict[str, Any], top_chunks: List[Dict]
         level = an.get("level", "?").upper()
         lines.append(f"  {c.get('chunk_id','?')}  [{start:.1f}s-{end:.1f}s]  score={score:.4f}  {level}")
     lines.append(f"\n  Temporal pattern: {summary.get('temporal_pattern', 'NONE')}")
+    lines.append(
+        "\nNOTE: The chunks above are the top-ranked excerpts, NOT consecutive parts of the "
+        "video. Each chunk's frames are evenly sampled from the window that the metrics "
+        "were computed on, and are shown right after that chunk's evidence with their "
+        "timestamps. Judge frames within a chunk only."
+    )
     return "\n".join(lines)
 
 
@@ -205,52 +213,70 @@ def _normal_summary(names: List[str]) -> str:
     return f"  [NORMAL] {', '.join(names)}"
 
 
+def frame_times(chunk: Dict[str, Any]) -> List[float]:
+    """Timestamps (s, video time) of the chunk's attached frames.
+
+    Uses frame_times_sec from Module 4 when present; packages built before that
+    field existed fall back to an even spread over the analysed window.
+    """
+    n = len(chunk.get("frame_files", []))
+    times = chunk.get("frame_times_sec") or []
+    if len(times) == n:
+        return [float(t) for t in times]
+    tm = chunk.get("time_metadata", {})
+    start = float(tm.get("start_sec", 0.0))
+    dur = float(tm.get("end_sec", start)) - start
+    return [start + (i + 0.5) * dur / n for i in range(n)]
+
+
+def build_chunk_block(c: Dict[str, Any]) -> str:
+    """Evidence text for one chunk (header + metric groups)."""
+    tm = c.get("time_metadata", {})
+    an = c.get("anomaly", {})
+    feats: Dict[str, Any] = {}
+    feats.update(c.get("features", {}).get("visual", {}))
+    feats.update(c.get("features", {}).get("audio_visual", {}))
+
+    header = [
+        "-" * 60,
+        f"{c.get('chunk_id','?')}  |  Analysed window: {tm.get('start_sec',0):.1f}s-{tm.get('end_sec',0):.1f}s"
+        f"  |  Frames: {len(c.get('frame_files', []))} attached (shown after this evidence)",
+        f"Anomaly Score: {an.get('joint_anomaly_score',0):.4f}  "
+        f"(level {an.get('level','?')})",
+        f"Modalities analyzed: {', '.join(c.get('modalities_analyzed', [])) or 'none'}",
+    ]
+    if c.get("modalities_missing"):
+        header.append(f"Modalities ABSENT: {', '.join(c['modalities_missing'])}")
+
+    group_texts = []
+    for gname, gfeats in GROUPS:
+        elevated_rows = []
+        normal_names = []
+        for fn in gfeats:
+            if fn not in feats:
+                continue
+            entry = feats[fn]
+            if not isinstance(entry, dict):
+                continue
+            row = _feature_row(fn, entry)
+            if row:
+                elevated_rows.append(row)
+            elif entry.get("value") is not None:
+                normal_names.append(fn)
+
+        if elevated_rows or normal_names:
+            parts = [gname]
+            parts.extend(elevated_rows)
+            ns = _normal_summary(normal_names)
+            if ns:
+                parts.append(ns)
+            group_texts.append("\n".join(parts))
+
+    return "\n".join(header) + "\n\n" + "\n\n".join(group_texts)
+
+
 def build_block_b(top_chunks: List[Dict]) -> str:
-    blocks: List[str] = []
-    for c in top_chunks:
-        tm = c.get("time_metadata", {})
-        an = c.get("anomaly", {})
-        feats: Dict[str, Any] = {}
-        feats.update(c.get("features", {}).get("visual", {}))
-        feats.update(c.get("features", {}).get("audio_visual", {}))
-
-        header = [
-            "-" * 60,
-            f"{c.get('chunk_id','?')}  |  Time: {tm.get('start_sec',0):.1f}s-{tm.get('end_sec',0):.1f}s"
-            f"  |  Frames: {len(c.get('frame_files', []))} attached",
-            f"Anomaly Score: {an.get('joint_anomaly_score',0):.4f}  "
-            f"(level {an.get('level','?')})",
-            f"Modalities analyzed: {', '.join(c.get('modalities_analyzed', [])) or 'none'}",
-        ]
-        if c.get("modalities_missing"):
-            header.append(f"Modalities ABSENT: {', '.join(c['modalities_missing'])}")
-
-        group_texts = []
-        for gname, gfeats in GROUPS:
-            elevated_rows = []
-            normal_names = []
-            for fn in gfeats:
-                if fn not in feats:
-                    continue
-                entry = feats[fn]
-                if not isinstance(entry, dict):
-                    continue
-                row = _feature_row(fn, entry)
-                if row:
-                    elevated_rows.append(row)
-                elif entry.get("value") is not None:
-                    normal_names.append(fn)
-
-            if elevated_rows or normal_names:
-                parts = [gname]
-                parts.extend(elevated_rows)
-                ns = _normal_summary(normal_names)
-                if ns:
-                    parts.append(ns)
-                group_texts.append("\n".join(parts))
-
-        blocks.append("\n".join(header) + "\n\n" + "\n\n".join(group_texts))
-    return "\n\n".join(blocks)
+    return "\n\n".join(build_chunk_block(c) for c in top_chunks)
 
 
 # ---------------------------------------------------------------------------
@@ -269,7 +295,8 @@ def build_block_c() -> str:
         "  Carefully examine the attached frames. For each chunk, describe:\n"
         "  - Face quality: skin texture, boundary with background, blending artifacts\n"
         "  - Eye region: reflections, symmetry, natural movement\n"
-        "  - Temporal consistency: do frames within/across chunks look consistent?\n"
+        "  - Temporal consistency: do the frames within THIS chunk look consistent with each other? "
+        "(do not compare across chunks; they are not temporally continuous)\n"
         "  - Any synthetic or unnatural appearance?\n\n"
 
         "STEP 2 — METRIC REVIEW:\n"
@@ -317,23 +344,20 @@ def build_block_c() -> str:
 # Top-level builder
 # ---------------------------------------------------------------------------
 
-def build_user_prompt(package: Dict[str, Any]) -> str:
+def build_prompt_parts(package: Dict[str, Any]) -> Tuple[str, List[str], str]:
+    """(head, per-chunk blocks, tail) so a client can interleave frames after each block."""
     video_id = package.get("video_id", "unknown")
     summary = package.get("video_summary", {})
     top_chunks = package.get("top_chunks", [])
 
+    head = build_block_a(video_id, summary, top_chunks)
     if not top_chunks:
-        return (
-            build_block_a(video_id, summary, top_chunks)
-            + "\n\nNOTE: No valid chunks were extracted for this video. "
-            "Answer UNCERTAIN with LOW confidence.\n\n"
-            + build_block_c()
-        )
+        head += ("\n\nNOTE: No valid chunks were extracted for this video. "
+                 "Answer UNCERTAIN with LOW confidence.")
+        return head, [], build_block_c()
+    return head, [build_chunk_block(c) for c in top_chunks], build_block_c()
 
-    return (
-        build_block_a(video_id, summary, top_chunks)
-        + "\n\n"
-        + build_block_b(top_chunks)
-        + "\n\n"
-        + build_block_c()
-    )
+
+def build_user_prompt(package: Dict[str, Any]) -> str:
+    head, chunk_blocks, tail = build_prompt_parts(package)
+    return "\n\n".join([head, *chunk_blocks, tail])

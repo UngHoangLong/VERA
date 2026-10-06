@@ -8,7 +8,7 @@ Three active improvements to VERA Track A. Priority is **reducing false positive
 |---|---|---|---|---|
 | 1a | Module 1 + 2.1 | Specificity — scene cut false positives | 33.9% | Active |
 | 1b | Module 2.2 + 2.3 | Audio handling for silent primary face | — | Active |
-| 1c | Module 5 | Prompt quality for frame evidence | — | Active |
+| 1c | Module 4 + 5 | Prompt quality for frame evidence | — | Implemented (not yet re-run) |
 
 **Dropped:**
 - Prosody features: pitch/speaking-rate features risk false positives on genuine emotional speech → not pursued.
@@ -344,3 +344,12 @@ src/module_5_agent/mllm_client.py
 - VLM không còn bị instruction sai dẫn đến hallucinate temporal consistency across chunks
 - VLM có grounding rõ hơn: biết frame nào từ chunk nào, ở giây nào
 - Reasoning quality cải thiện, đặc biệt với genuine videos có nhiều chunk không liên tục
+
+### 1c — Implementation status (2026-10-06)
+
+Done in code (not yet run on GPU):
+- `mllm_client.py`: each chunk's frames are interleaved right after that chunk's evidence text (Qwen messages and InternVL `<image>` placeholders); each frame has its own label with a timestamp ("Frame 2 of chunk_0023 (~47.5s)").
+- `prompt_eng.py`: system prompt and Step 1 now say to compare frames within one chunk only; Block A notes that chunks are non-consecutive excerpts; new `build_prompt_parts` / `build_chunk_block` / `frame_times`.
+- **Extra bug found (Module 4):** `packager.sample_frames` sampled over the whole `video.mp4`, but Module 1's re-ID filter only deletes the rejected slides' npy files, so frames could come from the discarded scene/identity while the metrics (and the labelled time window) excluded it. `packager.py` now samples evenly inside `time_metadata` (the analysed window) and writes `frame_times_sec` per chunk. Packages built before this change lack that field (prompt falls back to an estimate), but their frames are still from the wrong window, so Module 4 must be re-run.
+
+Still to do: per-feature genuine base rates (from genuine val) in the prompt; ablations (text-only / images-only / no severity tags / K-sensitivity) against the 8,764 old Qwen verdicts.
