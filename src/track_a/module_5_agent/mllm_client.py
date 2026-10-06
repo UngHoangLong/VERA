@@ -23,6 +23,7 @@ Requires (on the GPU box):
 import argparse
 import json
 import os
+import random
 import re
 import sys
 from pathlib import Path
@@ -224,6 +225,11 @@ def main() -> None:
     parser.add_argument("--model", type=str, default=None,
                         help="Override the model id for the chosen backend.")
     parser.add_argument("--max_new_tokens", type=int, default=2048)
+    parser.add_argument("--shuffle_seed", type=int, default=None,
+                        help="Process packages in a seeded random order, so any prefix "
+                             "of the run is a random sample (default: sorted by id).")
+    parser.add_argument("--limit", type=int, default=None,
+                        help="Stop after this many packages (after shuffling).")
     args = parser.parse_args()
 
     packages_dir = Path(args.packages_dir)
@@ -231,6 +237,11 @@ def main() -> None:
                           if d.is_dir() and (d / "prompt_package.json").exists())
     if not package_dirs:
         raise FileNotFoundError(f"No prompt_package.json found under {packages_dir}")
+
+    if args.shuffle_seed is not None:
+        random.Random(args.shuffle_seed).shuffle(package_dirs)
+    if args.limit is not None:
+        package_dirs = package_dirs[:args.limit]
 
     output_dir = Path(args.output_dir) if args.output_dir else Path(f"./verdicts_{args.backend}")
     output_dir.mkdir(parents=True, exist_ok=True)
